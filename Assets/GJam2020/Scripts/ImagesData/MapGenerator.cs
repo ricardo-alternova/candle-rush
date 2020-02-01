@@ -31,12 +31,10 @@ public class MapGenerator : MonoBehaviour
         byte[] imageData = File.ReadAllBytes(folderPath + FileName);
         Texture2D texture = new Texture2D(2,2);
         texture.LoadImage(imageData);
-        print(texture.width + " " + texture.height);
-        print(imageData.Length);
-        GenerateCubesPerPixel(texture.width,texture.height, texture);
-        
-
+        GenerateCubesPerPixel(texture.width, texture.height, texture);
+        //StartCoroutine(GenerateCubes(texture.width, texture.height, texture));
     }
+    
 
     public void GenerateCubesPerPixel(int width, int height, Texture2D data,  int scale = 1)
     {
@@ -45,11 +43,10 @@ public class MapGenerator : MonoBehaviour
         float cPos = 0;
         for(int f = 0; f < height; f++)
         {
-            for(int c=0; c< width; c++)
+            for(int c = 0; c < width; c++)
             {
-                Color color = colors[(f * height + c)];
+                Color color = colors[((f * width) + c)];
                 GameObject cube;
-                print(GetColorType(color));
                 switch(GetColorType(color))
                 {
                     case 1:
@@ -80,27 +77,24 @@ public class MapGenerator : MonoBehaviour
                         cube = Instantiate(GroundPrefab);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         cube = Instantiate(PiecePrefab);
-                        cube.transform.position = new Vector3(cPos, 1, fPos);
+                        cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                     default:
                         cube = Instantiate(GroundPrefab);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                 }
-
-                
                 //cube.GetComponent<Renderer>().material.color = colors[(f * height + c)];
-                
+
                 cPos += 1;
             }
             fPos += 1;
-            cPos = 0;            
+            cPos = 0;
         }
     }
 
     private int GetColorType(Color color)
     {
-        print(color);
         if(color == holeColor)
             return 1;
         if(color == groundColor)

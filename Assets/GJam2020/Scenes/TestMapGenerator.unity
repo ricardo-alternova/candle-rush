@@ -555,7 +555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1915215063
 AudioListener:
   m_ObjectHideFlags: 0
@@ -650,7 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6074ee3dd875e498d67e5aeb96b3de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: map2.png
+  FileName: map3.png
   GroundPrefab: {fileID: 2622313423910693472, guid: 9c685588e906a7941bf4517e97a0a9ee,
     type: 3}
   StartPrefab: {fileID: 2459627192200031090, guid: 390377da00d72784b86590ccfba3c831,
@@ -780,7 +780,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2120561235}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.189, y: 0.904, z: 5.16}
+  m_LocalPosition: {x: -5.32, y: 0.904, z: 5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1055871843}
