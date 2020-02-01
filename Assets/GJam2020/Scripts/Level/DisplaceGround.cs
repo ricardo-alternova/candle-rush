@@ -1,15 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using GGJ2020.Avatar;
 
 namespace GGJ2020.Levels
 {
     public class DisplaceGround : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject _avatar;
-
         public static float GROUND_REGULAR_POS = 0;
         public static float GROUND_DISPLACED_POS = -5;
         public static float EFFECT_STARTS_AT = 5;
@@ -39,16 +34,12 @@ namespace GGJ2020.Levels
 
 
             distance = Mathf.Abs((tempv2a - tempv2b).magnitude);
-            //if (distance < EFFECT_STARTS_AT)
-            //{
-                lerpValue = (distance - EFFECT_STARTS_AT) / 
-                    (EFFECT_COMPLETED_AT - EFFECT_STARTS_AT);
-                
-                tempV3 = localTransf.position;
-                tempV3.y = Mathf.Lerp(GROUND_DISPLACED_POS, GROUND_REGULAR_POS, lerpValue);
-                localTransf.position = tempV3;
-            //}
-            //Shader.SetGlobalVector("_AVATARposition", transform.position);
+            lerpValue = (distance - EFFECT_STARTS_AT) /
+                (EFFECT_COMPLETED_AT - EFFECT_STARTS_AT);
+
+            tempV3 = localTransf.position;
+            tempV3.y = Mathf.Lerp(GROUND_DISPLACED_POS, GROUND_REGULAR_POS, lerpValue);
+            localTransf.position = tempV3;
         }
     }
 }
