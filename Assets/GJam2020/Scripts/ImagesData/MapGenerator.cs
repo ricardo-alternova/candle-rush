@@ -33,7 +33,6 @@ public class MapGenerator : MonoBehaviour
         Texture2D texture = new Texture2D(2,2);
         texture.LoadImage(imageData);
         GenerateCubesPerPixel(texture.width, texture.height, texture);
-        //StartCoroutine(GenerateCubes(texture.width, texture.height, texture));
     }
     
 
@@ -62,8 +61,8 @@ public class MapGenerator : MonoBehaviour
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         cube = Instantiate(WallPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 1, fPos);
-                        //cube = Instantiate(WallPrefab, Ground);
-                        //cube.transform.position = new Vector3(cPos, 2, fPos);
+                        cube = Instantiate(WallPrefab, Ground);
+                        cube.transform.position = new Vector3(cPos, 2, fPos);
 
                         break;
                     case 4:
@@ -85,7 +84,6 @@ public class MapGenerator : MonoBehaviour
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                 }
-                //cube.GetComponent<Renderer>().material.color = colors[(f * height + c)];
 
                 cPos += 1;
             }

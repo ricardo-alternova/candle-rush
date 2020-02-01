@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 {
     private GameData _gameData;
     public static GameManager Get;
+    private string _nextLevel;
    
 
     private void Awake()
@@ -26,16 +27,25 @@ public class GameManager : MonoBehaviour
         {
             Get = this;
             DontDestroyOnLoad(gameObject);
-            LoadGameData();
+            
         }
         else
         {
-            Destroy(gameObject);
+            if(Get != this)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
-    public void NewLevelComplete(int level, int score)
+    private void Start()
     {
+        LoadGameData();
+    }
+
+    public void NewLevelComplete(int level, int score, string nextLevel)
+    {
+        _nextLevel = nextLevel;
         if(_gameData.levelsScore.Count < level)
         {
             _gameData.levelsScore.Add(score);
@@ -43,9 +53,17 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            _gameData.levelsScore[level] = score;
+            print(level);
+            print(_gameData.levelsScore.Count);
+            _gameData.levelsScore[level-1] = score;
         }
         SaveGameData();
+        SceneManager.LoadScene("IntersectionScene");
+    }
+
+    public void ChargeNextLevel()
+    {
+        SceneManager.LoadScene(_nextLevel);
     }
 
     public int GetLastLevelComplete()
