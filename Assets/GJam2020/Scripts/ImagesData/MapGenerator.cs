@@ -13,6 +13,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject EndPrefab;
     public GameObject WallPrefab;
     public GameObject PiecePrefab;
+    public Transform Ground;
 
     public Color holeColor;
     public  Color groundColor;
@@ -53,34 +54,34 @@ public class MapGenerator : MonoBehaviour
 
                         break;
                     case 2:
-                        cube = Instantiate(GroundPrefab);
+                        cube = Instantiate(GroundPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                     case 3:
-                        cube = Instantiate(WallPrefab);
+                        cube = Instantiate(WallPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
-                        cube = Instantiate(WallPrefab);
+                        cube = Instantiate(WallPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 1, fPos);
-                        cube = Instantiate(WallPrefab);
+                        cube = Instantiate(WallPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 2, fPos);
 
                         break;
                     case 4:
-                        cube = Instantiate(StartPrefab);
+                        cube = Instantiate(StartPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                     case 5:
-                        cube = Instantiate(EndPrefab);
+                        cube = Instantiate(EndPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                     case 6:
-                        cube = Instantiate(GroundPrefab);
+                        cube = Instantiate(GroundPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
-                        cube = Instantiate(PiecePrefab);
+                        cube = Instantiate(PiecePrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                     default:
-                        cube = Instantiate(GroundPrefab);
+                        cube = Instantiate(GroundPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                 }
