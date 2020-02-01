@@ -5,8 +5,9 @@ namespace GGJ2020.Levels
 {
     public class DisplaceGround : MonoBehaviour
     {
-        public static float GROUND_REGULAR_POS = 0;
-        public static float GROUND_DISPLACED_POS = -4;
+        public float GROUND_REGULAR_POS = 0;
+        public float GROUND_DISPLACED_POS = -4;
+        private float displacement = -4;
         public static float EFFECT_STARTS_AT = 5;
         public static float EFFECT_COMPLETED_AT = 2.5f;
         private Transform localTransf;
@@ -19,6 +20,8 @@ namespace GGJ2020.Levels
         private void Awake()
         {
             localTransf = transform;
+            GROUND_REGULAR_POS = localTransf.position.y;
+            GROUND_DISPLACED_POS = GROUND_REGULAR_POS + displacement;
             Vector3 displacedPos = localTransf.position;
             displacedPos.y = GROUND_DISPLACED_POS;
             localTransf.position = displacedPos;

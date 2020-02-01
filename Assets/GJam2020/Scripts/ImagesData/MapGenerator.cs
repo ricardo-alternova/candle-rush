@@ -62,8 +62,8 @@ public class MapGenerator : MonoBehaviour
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         cube = Instantiate(WallPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 1, fPos);
-                        cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 2, fPos);
+                        //cube = Instantiate(WallPrefab, Ground);
+                        //cube.transform.position = new Vector3(cPos, 2, fPos);
 
                         break;
                     case 4:
