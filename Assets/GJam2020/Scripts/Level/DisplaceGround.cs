@@ -6,9 +6,9 @@ namespace GGJ2020.Levels
     public class DisplaceGround : MonoBehaviour
     {
         public static float GROUND_REGULAR_POS = 0;
-        public static float GROUND_DISPLACED_POS = -5;
+        public static float GROUND_DISPLACED_POS = -4;
         public static float EFFECT_STARTS_AT = 5;
-        public static float EFFECT_COMPLETED_AT = 3;
+        public static float EFFECT_COMPLETED_AT = 2.5f;
         private Transform localTransf;
         private float distance;
         private float lerpValue;
