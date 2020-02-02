@@ -708,6 +708,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7607135842179725939, guid: a680eff0c8ee158489ed42da66ab1ff4,
+        type: 3}
+      propertyPath: playerMovement
+      value: 
+      objectReference: {fileID: 1877077759}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a680eff0c8ee158489ed42da66ab1ff4, type: 3}
 --- !u!1 &1877077756 stripped

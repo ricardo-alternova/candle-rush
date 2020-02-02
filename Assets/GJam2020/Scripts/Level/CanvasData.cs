@@ -2,31 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GJam2020.Avatar;
 
-public class CanvasData : MonoBehaviour
-{
-    public Text NumberOfPieces;
-    public GameObject panelDead;
-
-    public static CanvasData Get;
-
-    private void Awake()
+namespace GJam2020.Core {
+    public class CanvasData : MonoBehaviour
     {
-        Get = this;
-    }
+        public PlayerMovement playerMovement;
+        public Text NumberOfPieces;
+        public GameObject panelDead;
 
-    public void SetNumberOfPieces(int pieces)
-    {
-        NumberOfPieces.text = pieces + "";
-    }
+        public static CanvasData Get;
 
-    public void Dead()
-    {
-        panelDead.SetActive(true);
-    }
+        private void Awake()
+        {
+            Get = this;
+        }
 
-    public void Restore()
-    {
-        panelDead.SetActive(false);
+        public void SetNumberOfPieces(int pieces)
+        {
+            NumberOfPieces.text = pieces + "";
+        }
+
+        public void Dead()
+        {
+            panelDead.SetActive(true);
+        }
+
+        public void Restore()
+        {
+            panelDead.SetActive(false);
+            CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
+        }
     }
 }

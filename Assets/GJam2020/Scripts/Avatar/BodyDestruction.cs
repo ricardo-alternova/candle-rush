@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GJam2020.Core;
 
 namespace GJam2020.Avatar
 {
