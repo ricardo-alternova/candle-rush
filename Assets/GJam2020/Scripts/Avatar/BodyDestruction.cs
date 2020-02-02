@@ -35,6 +35,7 @@ namespace GJam2020.Avatar
             partsDestroyed--;
             if (partsDestroyed < 0)
             {
+                partsDestroyed = 0;
                 Debug.LogWarning("All body is visible already");
                 return;
             }
