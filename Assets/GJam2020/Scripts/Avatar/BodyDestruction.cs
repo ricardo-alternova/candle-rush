@@ -26,6 +26,7 @@ namespace GJam2020.Avatar
         {
             emission = particleS.emission;
             emission.enabled = false;
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
         [ContextMenu("DestroyBodyPart")]
@@ -40,6 +41,12 @@ namespace GJam2020.Avatar
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
             StartCoroutine(EmmitParticles());
             ++partsDestroyed;
+            if(bodyParts.Length - partsDestroyed == 0)
+            {
+                AvatarGeneralManager.Get.Dead();
+            }
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
+
         }
 
         private IEnumerator EmmitParticles()
@@ -62,6 +69,7 @@ namespace GJam2020.Avatar
             }
             SetAlpha(bodyParts[partsDestroyed], 1);
             Debug.Log("Reconstruct body part: " + bodyParts[partsDestroyed].name);
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
         [ContextMenu("ResetBodyParts")]
@@ -69,6 +77,7 @@ namespace GJam2020.Avatar
         {
             for (int index = 0; index < bodyParts.Length; index++)
                 SetAlpha(bodyParts[index], 1);
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
         private void SetAlpha(SkinnedMeshRenderer skinnedMeshRenderer, float alpha)
