@@ -45,7 +45,7 @@ namespace GJam2020.Avatar
 
             foreach (var obstaclePosition in MapGenerator.Get.GetObstaclesPosition())
             {
-                var tempObstaclePosition = new Vector3(obstaclePosition.x, 1, obstaclePosition.z);
+                var tempObstaclePosition = new Vector3(obstaclePosition.x, 0, obstaclePosition.z);
                 if ((tempObstaclePosition - futurePos).magnitude < 0.1f)
                 {
                     isValidMovement = false;
