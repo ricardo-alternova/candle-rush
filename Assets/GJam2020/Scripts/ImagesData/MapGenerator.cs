@@ -69,20 +69,20 @@ public class MapGenerator : MonoBehaviour
                 switch(GetColorType(color))
                 {
                     case 1:
-                        _obstaclesPosition.Add(new Vector3(cPos, -0.5f, fPos));
+                        _obstaclesPosition.Add(new Vector3(cPos, .5f, fPos));
                         break;
                     case 2:
                         cube = Instantiate(GroundPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
+                        cube.transform.position = new Vector3(cPos, .5f, fPos);
                         break;
                     case 3:
-                        _obstaclesPosition.Add(new Vector3(cPos, -0.5f, fPos));
+                        _obstaclesPosition.Add(new Vector3(cPos, 0, fPos));
                         cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
+                        cube.transform.position = new Vector3(cPos, 0, fPos);
                         cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 0.5f, fPos);
+                        cube.transform.position = new Vector3(cPos, 1f, fPos);
                         cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 1.5f, fPos);
+                        cube.transform.position = new Vector3(cPos, 2f, fPos);
 
                         break;
                     case 4:

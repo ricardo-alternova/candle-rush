@@ -55,6 +55,8 @@ namespace GJam2020.Avatar
                 StartCoroutine(MovePlayer(futurePos, onMovementComplete, timeForDisplacement));
             else
             {
+
+                AvatarGeneralManager.Get.EndMovement();
                 onMovementComplete();
                 Debug.Log("No valid move");
             }
@@ -63,6 +65,7 @@ namespace GJam2020.Avatar
 
         private IEnumerator MovePlayer(Vector3 newPos, Action onMovementComplete, float timeForDisplacement)
         {
+            AvatarGeneralManager.Get.StartMovement();
             var displacement = newPos - playerRigidbody.position;
             var distance = displacement.magnitude;
             var speed = distance / timeForDisplacement;
@@ -81,6 +84,7 @@ namespace GJam2020.Avatar
             var correctedPos = new Vector3((int)(position.x + 0.5f), (int) (position.y + 0.5f), (int)
                 (position.z + 0.5f));
             playerRigidbody.MovePosition(correctedPos);
+            AvatarGeneralManager.Get.EndMovement();
             onMovementComplete();
         }
 
