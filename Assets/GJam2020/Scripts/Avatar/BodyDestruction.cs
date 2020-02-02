@@ -10,6 +10,7 @@ namespace GJam2020.Avatar
         [SerializeField]
         private SkinnedMeshRenderer[] bodyParts;
         private int partsDestroyed;
+        public GameObject Part;
         void Start()
         {
 
@@ -23,6 +24,7 @@ namespace GJam2020.Avatar
                 Debug.LogWarning("Trying to destroy more body parts than exists");
                 return;
             }
+            Instantiate(Part,transform.position,Quaternion.identity);
             SetAlpha(bodyParts[partsDestroyed], 0);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
 
