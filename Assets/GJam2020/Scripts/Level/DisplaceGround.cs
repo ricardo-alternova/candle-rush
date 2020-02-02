@@ -17,7 +17,7 @@ namespace GGJ2020.Levels
         private Vector2 tempv2a;
         private Vector2 tempv2b;
 
-        private void Awake()
+        private void Start()
         {
             localTransf = transform;
             GROUND_REGULAR_POS = localTransf.position.y;
