@@ -22,6 +22,16 @@ public class MapGenerator : MonoBehaviour
     public Color endColor;
     public Color pieceColor;
 
+    private List<Vector3> _obstaclesPosition;
+
+
+    public static MapGenerator Get;
+
+    private void Awake()
+    {
+        Get = this;
+    }
+
     public void Start()
     {
         ReadImage();
@@ -50,13 +60,14 @@ public class MapGenerator : MonoBehaviour
                 switch(GetColorType(color))
                 {
                     case 1:
-
+                        _obstaclesPosition.Add(new Vector3(cPos, 0, fPos));
                         break;
                     case 2:
                         cube = Instantiate(GroundPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                     case 3:
+                        _obstaclesPosition.Add(new Vector3(cPos, 0, fPos));
                         cube = Instantiate(WallPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         cube = Instantiate(WallPrefab, Ground);
@@ -90,6 +101,10 @@ public class MapGenerator : MonoBehaviour
             fPos += 1;
             cPos = 0;
         }
+    }
+
+    public List<Vector3> GetObstaclesPosition() {
+        return _obstaclesPosition;
     }
 
     private int GetColorType(Color color)
