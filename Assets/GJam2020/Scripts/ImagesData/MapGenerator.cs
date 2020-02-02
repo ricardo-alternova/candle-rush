@@ -22,7 +22,7 @@ public class MapGenerator : MonoBehaviour
     public Color endColor;
     public Color pieceColor;
 
-    private List<Vector3> _obstaclesPosition;
+    private List<Vector3> _obstaclesPosition = new List<Vector3>();
 
 
     public static MapGenerator Get;
