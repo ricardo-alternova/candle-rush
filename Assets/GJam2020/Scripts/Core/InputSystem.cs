@@ -41,7 +41,7 @@ namespace GJam2020.Core
             }
             else
             {
-                if (lastCommand.IsExecuting) return;
+                if (lastCommand.IsExecuting || lastCommand.ReverseCommand.IsExecuting) return;
                 HandleInput();
             }
         }

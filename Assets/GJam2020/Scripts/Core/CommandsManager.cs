@@ -52,11 +52,12 @@ namespace GJam2020.Core
             var lastCommand = GetLastCommand;
             while (MovementsCommandsEntered.Count > 0)
             {
-                while (lastCommand.IsExecuting)
+                while (lastCommand.IsExecuting || lastCommand.ReverseCommand.IsExecuting)
                     yield return null;
+
                 lastCommand = GetLastCommand;
-                lastCommand.Undo(playerMovement,0.05f);
-                while (lastCommand.ReverseCommand.IsExecuting)
+                lastCommand.Undo(playerMovement,0.1f);
+                while (lastCommand.IsExecuting || lastCommand.ReverseCommand.IsExecuting)
                     yield return null;
             }
             playerMovement.ResetRotation();

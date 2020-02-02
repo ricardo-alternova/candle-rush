@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using GJam2020.Avatar;
-using UnityEngine;
+﻿using GJam2020.Avatar;
 
 namespace GJam2020.Core
 {
@@ -43,7 +41,6 @@ namespace GJam2020.Core
         //Undo an old command
         public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
-            Debug.Log("undoing");
             ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
@@ -54,7 +51,6 @@ namespace GJam2020.Core
         //Called when we press a key
         public override void Execute(PlayerMovement playerMovement, bool needToBeSaved, float timeForDisplacement = 1)
         {
-            Debug.Log("Executing");
             isExecuting = true;
 
             //Move the box
