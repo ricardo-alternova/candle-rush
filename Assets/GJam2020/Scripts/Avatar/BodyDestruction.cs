@@ -20,7 +20,7 @@ namespace GJam2020.Avatar
 
         void Start()
         {
-
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
         [ContextMenu("DestroyBodyPart")]
@@ -31,10 +31,16 @@ namespace GJam2020.Avatar
                 Debug.LogWarning("Trying to destroy more body parts than exists");
                 return;
             }
+            
             SetAlpha(bodyParts[partsDestroyed], 0);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
 
             ++partsDestroyed;
+            if(bodyParts.Length - partsDestroyed == 0)
+            {
+                AvatarGeneralManager.Get.Dead();
+            }
+                CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
         [ContextMenu("ConstructBodyPart")]
@@ -49,6 +55,7 @@ namespace GJam2020.Avatar
             }
             SetAlpha(bodyParts[partsDestroyed], 1);
             Debug.Log("Reconstruct body part: " + bodyParts[partsDestroyed].name);
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
         [ContextMenu("ResetBodyParts")]
@@ -56,6 +63,7 @@ namespace GJam2020.Avatar
         {
             for (int index = 0; index < bodyParts.Length; index++)
                 SetAlpha(bodyParts[index], 1);
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
         private void SetAlpha(SkinnedMeshRenderer skinnedMeshRenderer, float alpha)
