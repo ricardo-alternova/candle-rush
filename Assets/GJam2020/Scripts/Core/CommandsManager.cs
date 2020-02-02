@@ -47,10 +47,10 @@ namespace GJam2020.Core
         public void StartRewindCommands(PlayerMovement playerMovement, Action onComplete)
         {
             isRewinding = true;
-            StartCoroutine(RewindCommands(playerMovement));
+            StartCoroutine(RewindCommands(playerMovement, onComplete));
         }
 
-        private static IEnumerator RewindCommands(PlayerMovement playerMovement)
+        private static IEnumerator RewindCommands(PlayerMovement playerMovement, Action onComplete)
         {
             var lastCommand = GetLastCommand;
             while (MovementsCommandsEntered.Count > 0)
@@ -65,6 +65,7 @@ namespace GJam2020.Core
             }
             playerMovement.ResetRotation();
             isRewinding = false;
+            onComplete.Invoke();
         }
     }
 }
