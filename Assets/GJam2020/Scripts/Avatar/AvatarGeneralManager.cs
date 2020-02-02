@@ -21,11 +21,7 @@ namespace GJam2020.Avatar {
         }
         public void StartMovement()
         {
-            if(_isReverse)
-            {
-                _bodyDestruction.ReconstructBodyPart();
-            }
-            else
+            if(!_isReverse)
             {
                 _bodyDestruction.DestroyBodyPart();
             }
