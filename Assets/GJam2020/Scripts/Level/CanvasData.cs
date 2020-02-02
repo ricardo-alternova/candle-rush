@@ -7,7 +7,7 @@ using GJam2020.Avatar;
 namespace GJam2020.Core {
     public class CanvasData : MonoBehaviour
     {
-        public PlayerMovement playerMovement;
+        
         public Text NumberOfPieces;
         public GameObject panelDead;
 
@@ -30,8 +30,9 @@ namespace GJam2020.Core {
 
         public void Restore()
         {
+            print("restore");
             panelDead.SetActive(false);
-            CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
+            GameManager.Get.Restore();
         }
     }
 }
