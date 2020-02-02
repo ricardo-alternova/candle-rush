@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class AvatarAnimator : MonoBehaviour
 {
-    public Animator anim;
+    private Animator anim;
 
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
     public void Walking(bool walking) {
         anim.SetInteger("State", walking?1:0);
     }
