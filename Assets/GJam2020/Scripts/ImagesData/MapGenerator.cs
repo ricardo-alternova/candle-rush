@@ -152,11 +152,11 @@ public class MapGenerator : MonoBehaviour
             PairPositions pair = PairPositions[color];
             if(pair.Pos1 == vector3)
             {
-                return pair.Pos2;
+                return pair.Pos2+new Vector3(0f,1f,0f);
             }
             else
             {
-                return pair.Pos1;
+                return pair.Pos1 + new Vector3(0f, 1f, 0f);
             }
         }
         return vector3;

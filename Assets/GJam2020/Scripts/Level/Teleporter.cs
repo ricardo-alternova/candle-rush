@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GGJ2020.Avatar;
 
 public class Teleporter : MonoBehaviour
 {
@@ -14,7 +15,12 @@ public class Teleporter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        other.transform.position=MapGenerator.Get.GetPairPosition(_localColor, _localPosition);
+        if(AvatarPosition.CanTeleporter)
+        {
+            AvatarPosition.CanTeleporter = false;
+            StartCoroutine(AvatarPosition.Teleporter());
+            other.transform.position = MapGenerator.Get.GetPairPosition(_localColor, _localPosition);
+        }
     }
 
     public void SetColor(Color color)
