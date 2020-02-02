@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using UnityEngine.SceneManagement;
 using GJam2020.Core;
 using GJam2020.Avatar;
+using UnityEngine.Assertions;
 
 [System.Serializable]
 public class GameData
@@ -121,6 +122,10 @@ public class GameManager : MonoBehaviour
 
     public void Restore()
     {
+        if (playerMovement == null)
+            playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
+        Assert.IsNotNull(playerMovement, "Player movement not found");
+
         foreach(GameObject obj in ObjectsUnactive)
         {
             obj.SetActive(true);
