@@ -12,11 +12,15 @@ namespace GJam2020.Avatar
 
         [SerializeField]
         private ParticleSystem particleS;
+        [SerializeField]
+        private ParticleSystem constructParticleS;
         [Header("Body parts")]
         [SerializeField]
         private SkinnedMeshRenderer[] bodyParts;
         private int partsDestroyed;
+
         private ParticleSystem.EmissionModule emission;
+        private ParticleSystem.EmissionModule constructEmission;
 
         private void Awake()
         {
@@ -27,6 +31,9 @@ namespace GJam2020.Avatar
         {
             emission = particleS.emission;
             emission.enabled = false;
+
+            constructEmission = constructParticleS.emission;
+            constructEmission.enabled = false;
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
@@ -40,7 +47,7 @@ namespace GJam2020.Avatar
             }
             SetAlpha(bodyParts[partsDestroyed], 0);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
-            StartCoroutine(EmmitParticles());
+            StartCoroutine(EmmitParticles(emission));
             ++partsDestroyed;
             if(bodyParts.Length - partsDestroyed == 0)
             {
@@ -50,12 +57,11 @@ namespace GJam2020.Avatar
 
         }
 
-        private IEnumerator EmmitParticles()
+        private IEnumerator EmmitParticles(ParticleSystem.EmissionModule emissionModule)
         {
-            emission.enabled = true;
+            emissionModule.enabled = true;
             yield return new WaitForSeconds(0.2f);
-            emission.enabled = false;
-
+            emissionModule.enabled = false;
         }
 
         [ContextMenu("ConstructBodyPart")]
@@ -71,6 +77,8 @@ namespace GJam2020.Avatar
             SetAlpha(bodyParts[partsDestroyed], 1);
             Debug.Log("Reconstruct body part: " + bodyParts[partsDestroyed].name);
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
+            StartCoroutine(EmmitParticles(constructEmission));
+
         }
 
         [ContextMenu("ResetBodyParts")]
