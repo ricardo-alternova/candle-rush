@@ -27,13 +27,19 @@ namespace GJam2020.Avatar
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
 
             ++partsDestroyed;
-            Debug.Log("Parts: " + partsDestroyed);
         }
 
         [ContextMenu("ConstructBodyPart")]
         public void ReconstructBodyPart()
         {
             partsDestroyed--;
+            if (partsDestroyed < 0)
+            {
+                Debug.LogWarning("All body is visible already");
+                return;
+            }
+            SetAlpha(bodyParts[partsDestroyed], 1);
+            Debug.Log("Reconstruct body part: " + bodyParts[partsDestroyed].name);
         }
 
         [ContextMenu("ResetBodyParts")]
