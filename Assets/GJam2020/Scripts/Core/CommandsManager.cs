@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GJam2020.Avatar;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace GJam2020.Core
@@ -14,7 +15,9 @@ namespace GJam2020.Core
         //Stores all commands for replay and undo
         private static readonly List<Command> MovementsCommandsEntered = new List<Command>();
 
-        public static Command GetLastCommand => MovementsCommandsEntered[MovementsCommandsEntered.Count - 1];
+        public static Command GetLastCommand => MovementsCommandsEntered.Count > 0
+            ? MovementsCommandsEntered[MovementsCommandsEntered.Count - 1]
+            : null;
 
         private void Awake()
         {
@@ -46,13 +49,15 @@ namespace GJam2020.Core
 
         private static IEnumerator RewindCommands(PlayerMovement playerMovement)
         {
+            var lastCommand = GetLastCommand;
             while (MovementsCommandsEntered.Count > 0)
             {
-                var commandToRewind = GetLastCommand;
-                commandToRewind.Undo(playerMovement);
-                while (commandToRewind.isExecuting)
+                while (lastCommand.IsExecuting)
                     yield return null;
-                yield return new WaitForSeconds(0.1f);// TODO Remove
+                lastCommand = GetLastCommand;
+                lastCommand.Undo(playerMovement,0.05f);
+                while (lastCommand.ReverseCommand.IsExecuting)
+                    yield return null;
             }
 
             isRewinding = false;
