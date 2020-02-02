@@ -15,14 +15,16 @@ namespace GJam2020.Core
         //Stores all commands for replay and undo
         private static readonly List<Command> MovementsCommandsEntered = new List<Command>();
 
-        public static Command GetLastCommand => MovementsCommandsEntered.Count > 0
-            ? MovementsCommandsEntered[MovementsCommandsEntered.Count - 1]
-            : null;
-
         private void Awake()
         {
             Instance = this;
         }
+
+        public static Command GetLastCommand => MovementsCommandsEntered.Count > 0
+            ? MovementsCommandsEntered[MovementsCommandsEntered.Count - 1]
+            : null;
+
+        public static int GetCommandsEntered => MovementsCommandsEntered.Count;
 
         public static void AddCommand(Command commandToAdd)
         {
