@@ -9,7 +9,7 @@ namespace GGJ2020.Avatar
     {
         [SerializeField]
         private SkinnedMeshRenderer[] bodyParts;
-        private int partsDestroyed = 0;
+        private int partsDestroyed;
         void Start()
         {
 
@@ -20,10 +20,12 @@ namespace GGJ2020.Avatar
         {
             if (bodyParts.Length == partsDestroyed && partsDestroyed != 0)
             {
-                throw new Exception("All body parts already destroyed");
+                Debug.LogWarning("Trying to destroy more body parts than exists");
+                return;
             }
-            bodyParts[partsDestroyed].material.SetColor("_Color", Color.clear);
-
+            SetAlpha(bodyParts[partsDestroyed], 0);
+            Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
+            //bodyParts[partsDestroyed].material.SetColor("_Color", Color.clear);
             partsDestroyed++;
         }
 
@@ -33,9 +35,25 @@ namespace GGJ2020.Avatar
             partsDestroyed--;
         }
 
+        [ContextMenu("ResetBodyParts")]
         public void ResetBody()
         {
-            
+            for (int index = 0; index < bodyParts.Length; index++)
+                SetAlpha(bodyParts[index], 1);
+        }
+
+        private void SetAlpha(SkinnedMeshRenderer skinnedMeshRenderer, float alpha)
+        {
+            List<Material> materials = new List<Material>();
+            skinnedMeshRenderer.GetMaterials(materials);
+
+            foreach (var mat in materials)
+            {
+                var matColor = mat.GetColor("_Color");
+                matColor.a = alpha;
+                mat.SetColor("_Color", matColor);
+            }
+            partsDestroyed = 0;
         }
     }
 }
