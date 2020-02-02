@@ -7,9 +7,17 @@ namespace GJam2020.Avatar
 {
     public class BodyDestruction : MonoBehaviour
     {
+        public static BodyDestruction Instance;
+
         [SerializeField]
         private SkinnedMeshRenderer[] bodyParts;
         private int partsDestroyed;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
         void Start()
         {
 
