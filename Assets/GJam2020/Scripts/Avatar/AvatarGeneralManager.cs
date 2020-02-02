@@ -9,6 +9,7 @@ namespace GJam2020.Avatar {
         private AvatarAnimator _animator;
         private PlayerMovement _movement;
         private BodyDestruction _bodyDestruction;
+        private bool _isReverse = false;
 
         private void Start()
         {
@@ -19,11 +20,22 @@ namespace GJam2020.Avatar {
         }
         public void StartMovement()
         {
-            _bodyDestruction.DestroyBodyPart();
+            if(_isReverse)
+            {
+                _bodyDestruction.ReconstructBodyPart();
+            }
+            else
+            {
+                _bodyDestruction.DestroyBodyPart();
+            }
+            _isReverse = false;
             _animator.Walking(true);
 
         }
-
+        public void IsReverseCommand()
+        {
+            _isReverse = true;
+        }
         public void EndMovement()
         {
             _animator.Walking(false);

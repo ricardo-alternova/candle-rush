@@ -41,6 +41,7 @@ namespace GJam2020.Core
         //Undo an old command
         public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
+            AvatarGeneralManager.Get.IsReverseCommand();
             ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
@@ -64,6 +65,7 @@ namespace GJam2020.Core
         //Undo an old command
         public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
+            AvatarGeneralManager.Get.IsReverseCommand();
             ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
@@ -87,6 +89,7 @@ namespace GJam2020.Core
         //Undo an old command
         public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
+            AvatarGeneralManager.Get.IsReverseCommand();
             ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
@@ -110,6 +113,7 @@ namespace GJam2020.Core
         //Undo an old command
         public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
+            AvatarGeneralManager.Get.IsReverseCommand();
             ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
