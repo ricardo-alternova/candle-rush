@@ -32,10 +32,10 @@ namespace GJam2020.Core
         {
             isExecuting = true;
             //Move the box
-            playerMovement.Move(MovementDirection.Forward, OnExecutionComplete, timeForDisplacement);
+            var isValidMovement = playerMovement.Move(MovementDirection.Forward, OnExecutionComplete, timeForDisplacement);
 
             //Save the command
-            if (!needToBeSaved) return;
+            if (!needToBeSaved || !isValidMovement) return;
             CommandsManager.AddCommand(this);
 
         }
@@ -58,10 +58,10 @@ namespace GJam2020.Core
             isExecuting = true;
 
             //Move the box
-            playerMovement.Move(MovementDirection.Backward, OnExecutionComplete, timeForDisplacement);
+            var isValidMovement = playerMovement.Move(MovementDirection.Backward, OnExecutionComplete, timeForDisplacement);
             
             //Save the command
-            if (!needToBeSaved) return;
+            if (!needToBeSaved || !isValidMovement) return;
             CommandsManager.AddCommand(this);
         }
 
@@ -81,10 +81,10 @@ namespace GJam2020.Core
             isExecuting = true;
 
             //Move the box
-            playerMovement.Move(MovementDirection.Left, OnExecutionComplete, timeForDisplacement);
+            var isValidMovement = playerMovement.Move(MovementDirection.Left, OnExecutionComplete, timeForDisplacement);
 
             //Save the command
-            if (!needToBeSaved) return;
+            if (!needToBeSaved || !isValidMovement) return;
             CommandsManager.AddCommand(this);
         }
 
@@ -104,10 +104,10 @@ namespace GJam2020.Core
             isExecuting = true;
 
             //Move the box
-            playerMovement.Move(MovementDirection.Right, OnExecutionComplete, timeForDisplacement);
+            var isValidMovement = playerMovement.Move(MovementDirection.Right, OnExecutionComplete, timeForDisplacement);
 
             //Save the command
-            if (!needToBeSaved) return;
+            if (!needToBeSaved || !isValidMovement) return;
             CommandsManager.AddCommand(this);
         }
 

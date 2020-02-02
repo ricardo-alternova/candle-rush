@@ -22,25 +22,39 @@ namespace GJam2020.Avatar
             _initialForward = transform.forward;
         }
 
-        public void Move(MovementDirection dir, Action onMovementComplete, float timeForDisplacement)
+        public bool Move(MovementDirection dir, Action onMovementComplete, float timeForDisplacement)
         {
+            var futurePos = Vector3.zero;
+            var isValidMovement = true;
+
             switch (dir)
             {
                 case MovementDirection.Forward:
-                    StartCoroutine(MovePlayer(playerRigidbody.position + Vector3.forward, onMovementComplete, timeForDisplacement));
+                    futurePos = playerRigidbody.position + Vector3.forward;
                     break;
                 case MovementDirection.Backward:
-                    StartCoroutine(MovePlayer(playerRigidbody.position + Vector3.back, onMovementComplete, timeForDisplacement));
+                    futurePos = playerRigidbody.position + Vector3.back;
                     break;
                 case MovementDirection.Left:
-                    StartCoroutine(MovePlayer(playerRigidbody.position + Vector3.left, onMovementComplete, timeForDisplacement));
+                    futurePos = playerRigidbody.position + Vector3.left;
                     break;
                 case MovementDirection.Right:
-                    StartCoroutine(MovePlayer(playerRigidbody.position + Vector3.right, onMovementComplete, timeForDisplacement));
+                    futurePos = playerRigidbody.position + Vector3.right;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(dir), dir, null);
             }
+
+            foreach (var obstaclePosition in MapGenerator.Get.GetObstaclesPosition())
+            {
+                var tempObstaclePosition = new Vector3(obstaclePosition.x, 1, obstaclePosition.z);
+                if ((tempObstaclePosition - futurePos).magnitude < 1)
+                    isValidMovement = false;
+            }
+            Debug.Log(isValidMovement);
+            if(isValidMovement)
+                StartCoroutine(MovePlayer(futurePos, onMovementComplete, timeForDisplacement));
+            else
+                onMovementComplete();
+            return isValidMovement;
         }
 
         private IEnumerator MovePlayer(Vector3 newPos, Action onMovementComplete, float timeForDisplacement)
