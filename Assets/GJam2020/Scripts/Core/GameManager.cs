@@ -126,10 +126,13 @@ public class GameManager : MonoBehaviour
             playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
         Assert.IsNotNull(playerMovement, "Player movement not found");
 
-        foreach(GameObject obj in ObjectsUnactive)
-        {
-            obj.SetActive(true);
-        }
-        CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
+        
+        CommandsManager.Instance.StartRewindCommands(playerMovement, (() => { 
+            Debug.Log("Rewind finished");
+            foreach (GameObject obj in ObjectsUnactive)
+            {
+                obj.SetActive(true);
+            }
+        }));
     }
 }

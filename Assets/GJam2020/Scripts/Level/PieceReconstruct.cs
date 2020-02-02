@@ -6,11 +6,15 @@ namespace GJam2020.Avatar
     public class PieceReconstruct : MonoBehaviour
     {
         public int PieceValue;
+
+        private void Start()
+        {
+            GameManager.Get.AddElementToRestore(gameObject);
+        }
         private void OnTriggerEnter(Collider other)
         {
             AvatarGeneralManager.Get.CapturePiece(PieceValue);
             gameObject.SetActive(false);
-            GameManager.Get.AddElementToRestore(gameObject);
         }
     }
 }
