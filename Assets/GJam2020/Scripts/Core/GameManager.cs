@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
         {
             if(Get != this)
             {
+                Get.ObjectsUnactive = new List<GameObject>();
+                Get.playerMovement = playerMovement;
                 Destroy(gameObject);
             }
         }
