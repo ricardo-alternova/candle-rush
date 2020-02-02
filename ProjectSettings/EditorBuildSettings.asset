@@ -26,4 +26,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GJam2020/Scenes/Level3.unity
     guid: a5fc080fc7652cc40b1820d497dffa0b
+  - enabled: 1
+    path: Assets/GJam2020/Scenes/Level4.unity
+    guid: 79aed723690287249a1942ff31a91a1c
+  - enabled: 1
+    path: Assets/GJam2020/Scenes/Level5.unity
+    guid: 719cbfe30f54db4458784ceaa39ab5e1
+  - enabled: 1
+    path: Assets/GJam2020/Scenes/Level6.unity
+    guid: a546609b1bc86234d8466b752547adc9
   m_configObjects: {}
