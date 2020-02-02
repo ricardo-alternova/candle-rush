@@ -29,6 +29,11 @@ namespace GJam2020.Core
             _buttonS.ReverseCommand = _buttonW;
             _buttonA.ReverseCommand = _buttonD;
             _buttonD.ReverseCommand = _buttonA;
+
+            _buttonW.Restore();
+            _buttonS.Restore();
+            _buttonA.Restore();
+            _buttonD.Restore();
         }
 
         private void Update()

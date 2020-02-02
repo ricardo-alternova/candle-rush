@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GJam2020.Avatar {
     public class AvatarGeneralManager : MonoBehaviour
@@ -46,6 +47,18 @@ namespace GJam2020.Avatar {
             {
                 _bodyDestruction.ReconstructBodyPart();
             }
+        }
+
+        public void Dead()
+        {
+            CanvasData.Get.Dead();
+            StartCoroutine(Restore());
+        }
+
+        public IEnumerator Restore()
+        {
+            yield return new WaitForSeconds(2f);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

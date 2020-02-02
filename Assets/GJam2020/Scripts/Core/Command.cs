@@ -25,6 +25,11 @@ namespace GJam2020.Core
             onCommandComplete();
         }
 
+        public void Restore()
+        {
+            isExecuting = false;
+        }
+
     }
 
     public class MoveForward : Command

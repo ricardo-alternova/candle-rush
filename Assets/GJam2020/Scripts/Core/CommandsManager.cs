@@ -18,6 +18,7 @@ namespace GJam2020.Core
         private void Awake()
         {
             Instance = this;
+            MovementsCommandsEntered.RemoveRange(0, MovementsCommandsEntered.Count);
         }
 
         public static Command GetLastCommand => MovementsCommandsEntered.Count > 0
