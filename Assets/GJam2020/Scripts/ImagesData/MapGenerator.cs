@@ -4,6 +4,12 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 
+public class PairPositions
+{
+    public Vector3 Pos1;
+    public Vector3 Pos2;
+}
+
 public class MapGenerator : MonoBehaviour
 {
     public string FileName;
@@ -13,6 +19,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject EndPrefab;
     public GameObject WallPrefab;
     public GameObject PiecePrefab;
+    public GameObject Teleporter;
     public Transform Ground;
 
     public Color holeColor;
@@ -23,6 +30,8 @@ public class MapGenerator : MonoBehaviour
     public Color pieceColor;
 
     private List<Vector3> _obstaclesPosition = new List<Vector3>();
+
+    private Dictionary<Color, PairPositions> PairPositions = new Dictionary<Color, PairPositions>();
 
 
     public static MapGenerator Get;
@@ -91,8 +100,20 @@ public class MapGenerator : MonoBehaviour
                         cube.transform.position = new Vector3(cPos, 0, fPos);
                         break;
                     default:
-                        cube = Instantiate(GroundPrefab, Ground);
+                        cube = Instantiate(Teleporter, Ground);
                         cube.transform.position = new Vector3(cPos, 0, fPos);
+                        cube.GetComponent<Teleporter>().SetColor(color);
+                        print(PairPositions);
+                        if(PairPositions.ContainsKey(color)) {
+                            PairPositions[color].Pos2 = new Vector3(cPos, 0, fPos);
+                            print(PairPositions[color]);
+                        }
+                        else
+                        {
+                            PairPositions[color] = new PairPositions() { Pos1 = new Vector3(cPos, 0, fPos) };
+                            print(PairPositions[color]);
+                            
+                        }
                         break;
                 }
 
@@ -121,6 +142,23 @@ public class MapGenerator : MonoBehaviour
             return 5;
         if(color == pieceColor)
             return 6;
+        print("return 0");
         return 0;
+    }
+
+    public Vector3 GetPairPosition(Color color, Vector3 vector3)
+    {
+        if(PairPositions.ContainsKey(color)) {
+            PairPositions pair = PairPositions[color];
+            if(pair.Pos1 == vector3)
+            {
+                return pair.Pos2;
+            }
+            else
+            {
+                return pair.Pos1;
+            }
+        }
+        return vector3;
     }
 }

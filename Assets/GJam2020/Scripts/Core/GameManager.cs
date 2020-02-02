@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     private GameData _gameData;
     public static GameManager Get;
     private string _nextLevel;
-   
+
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         {
             Get = this;
             DontDestroyOnLoad(gameObject);
-            
+
         }
         else
         {
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         {
             print(level);
             print(_gameData.levelsScore.Count);
-            _gameData.levelsScore[level-1] = score;
+            _gameData.levelsScore[level - 1] = score;
         }
         SaveGameData();
         SceneManager.LoadScene("IntersectionScene");
@@ -84,13 +84,13 @@ public class GameManager : MonoBehaviour
     {
         XmlSerializer serializer = new XmlSerializer(typeof(GameData));
         string text = PlayerPrefs.GetString("Gamedata");
-        if (text.Length == 0)
+        if(text.Length == 0)
         {
             _gameData = new GameData();
         }
         else
         {
-            using (var reader = new StringReader(text))
+            using(var reader = new StringReader(text))
             {
                 _gameData = serializer.Deserialize(reader) as GameData;
             }
@@ -110,6 +110,5 @@ public class GameManager : MonoBehaviour
     public void LoadLevelScene()
     {
         SceneManager.LoadScene("LevelsMenu");
-    }
-
+    }    
 }
