@@ -32,8 +32,16 @@ namespace GJam2020.Core
 
         private void Update()
         {
-            if (!CommandsManager.isRewinding)
+            if (CommandsManager.isRewinding) return;
+            var lastCommand = CommandsManager.GetLastCommand;
+            
+            if (lastCommand == null)
             {
+                HandleInput();
+            }
+            else
+            {
+                if (lastCommand.IsExecuting) return;
                 HandleInput();
             }
         }

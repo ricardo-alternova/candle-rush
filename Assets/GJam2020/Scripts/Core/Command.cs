@@ -9,12 +9,14 @@ namespace GJam2020.Core
         public Command ReverseCommand { get; set; }
 
         //Move and save command
-        public abstract void Execute(PlayerMovement playerMovement, bool needToBeSaved);
+        public abstract void Execute(PlayerMovement playerMovement, bool needToBeSaved, float timeForDisplacement = 1);
 
         //Undo an old command
-        public abstract void Undo(PlayerMovement playerMovement);
+        public abstract void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1);
 
-        public bool isExecuting;
+        protected bool isExecuting;
+
+        public bool IsExecuting => isExecuting;
 
         protected void OnExecutionComplete()
         {
@@ -26,22 +28,23 @@ namespace GJam2020.Core
     public class MoveForward : Command
     {
         //Called when we press a key
-        public override void Execute(PlayerMovement playerMovement, bool needToBeSaved)
+        public override void Execute(PlayerMovement playerMovement, bool needToBeSaved, float timeForDisplacement = 1)
         {
             isExecuting = true;
             //Move the box
-            playerMovement.Move(MovementDirection.Forward, OnExecutionComplete);
+            playerMovement.Move(MovementDirection.Forward, OnExecutionComplete, timeForDisplacement);
 
             //Save the command
             if (!needToBeSaved) return;
             CommandsManager.AddCommand(this);
+
         }
 
         //Undo an old command
-        public override void Undo(PlayerMovement playerMovement)
+        public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
-            Debug.Log("Undoing");
-            ReverseCommand.Execute(playerMovement, false);
+            Debug.Log("undoing");
+            ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
     }
@@ -49,22 +52,23 @@ namespace GJam2020.Core
     public class MoveBackward : Command
     {
         //Called when we press a key
-        public override void Execute(PlayerMovement playerMovement, bool needToBeSaved)
+        public override void Execute(PlayerMovement playerMovement, bool needToBeSaved, float timeForDisplacement = 1)
         {
+            Debug.Log("Executing");
             isExecuting = true;
-            //Move the box
-            playerMovement.Move(MovementDirection.Backward, OnExecutionComplete);
 
+            //Move the box
+            playerMovement.Move(MovementDirection.Backward, OnExecutionComplete, timeForDisplacement);
+            
             //Save the command
             if (!needToBeSaved) return;
             CommandsManager.AddCommand(this);
         }
 
         //Undo an old command
-        public override void Undo(PlayerMovement playerMovement)
+        public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
-            Debug.Log("Undoing");
-            ReverseCommand.Execute(playerMovement, false);
+            ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
     }
@@ -72,11 +76,12 @@ namespace GJam2020.Core
     public class MoveLeft : Command
     {
         //Called when we press a key
-        public override void Execute(PlayerMovement playerMovement, bool needToBeSaved)
+        public override void Execute(PlayerMovement playerMovement, bool needToBeSaved, float timeForDisplacement = 1)
         {
             isExecuting = true;
+
             //Move the box
-            playerMovement.Move(MovementDirection.Left, OnExecutionComplete);
+            playerMovement.Move(MovementDirection.Left, OnExecutionComplete, timeForDisplacement);
 
             //Save the command
             if (!needToBeSaved) return;
@@ -84,10 +89,9 @@ namespace GJam2020.Core
         }
 
         //Undo an old command
-        public override void Undo(PlayerMovement playerMovement)
+        public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
-            Debug.Log("Undoing");
-            ReverseCommand.Execute(playerMovement, false);
+            ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
     }
@@ -95,11 +99,12 @@ namespace GJam2020.Core
     public class MoveRight : Command
     {
         //Called when we press a key
-        public override void Execute(PlayerMovement playerMovement, bool needToBeSaved)
+        public override void Execute(PlayerMovement playerMovement, bool needToBeSaved, float timeForDisplacement = 1)
         {
             isExecuting = true;
+
             //Move the box
-            playerMovement.Move(MovementDirection.Right, OnExecutionComplete);
+            playerMovement.Move(MovementDirection.Right, OnExecutionComplete, timeForDisplacement);
 
             //Save the command
             if (!needToBeSaved) return;
@@ -107,10 +112,9 @@ namespace GJam2020.Core
         }
 
         //Undo an old command
-        public override void Undo(PlayerMovement playerMovement)
+        public override void Undo(PlayerMovement playerMovement, float timeForDisplacement = 1)
         {
-            Debug.Log("Undoing");
-            ReverseCommand.Execute(playerMovement, false);
+            ReverseCommand.Execute(playerMovement, false, timeForDisplacement);
             CommandsManager.RemoveLastCommand();
         }
     }
