@@ -40,5 +40,12 @@ namespace GJam2020.Avatar {
         {
             _animator.Walking(false);
         }
+        public void CapturePiece(int value)
+        {
+            for(int i = 0; i < value; i++)
+            {
+                _bodyDestruction.ReconstructBodyPart();
+            }
+        }
     }
 }

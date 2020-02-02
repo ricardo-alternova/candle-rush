@@ -23,7 +23,7 @@ namespace GGJ2020.Avatar
 
         public static IEnumerator Teleporter()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.5f);
             CanTeleporter = true;
         }
     }

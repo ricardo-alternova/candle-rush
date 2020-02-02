@@ -97,7 +97,7 @@ public class MapGenerator : MonoBehaviour
                         cube = Instantiate(GroundPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         cube = Instantiate(PiecePrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
+                        cube.transform.position = new Vector3(cPos, .5f, fPos);
                         break;
                     default:
                         cube = Instantiate(Teleporter, Ground);
@@ -152,11 +152,11 @@ public class MapGenerator : MonoBehaviour
             PairPositions pair = PairPositions[color];
             if(pair.Pos1 == vector3)
             {
-                return pair.Pos2+new Vector3(0f,1f,0f);
+                return pair.Pos2+new Vector3(0f,.5f,0f);
             }
             else
             {
-                return pair.Pos1 + new Vector3(0f, 1f, 0f);
+                return pair.Pos1 + new Vector3(0f, .5f, 0f);
             }
         }
         return vector3;
