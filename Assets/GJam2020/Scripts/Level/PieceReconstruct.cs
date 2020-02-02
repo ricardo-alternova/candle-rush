@@ -9,7 +9,8 @@ namespace GJam2020.Avatar
         private void OnTriggerEnter(Collider other)
         {
             AvatarGeneralManager.Get.CapturePiece(PieceValue);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            GameManager.Get.AddElementToRestore(gameObject);
         }
     }
 }

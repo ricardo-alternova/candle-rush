@@ -6,6 +6,8 @@ using System.IO;
 using System.Xml.Serialization;
 
 using UnityEngine.SceneManagement;
+using GJam2020.Core;
+using GJam2020.Avatar;
 
 [System.Serializable]
 public class GameData
@@ -19,7 +21,8 @@ public class GameManager : MonoBehaviour
     private GameData _gameData;
     public static GameManager Get;
     private string _nextLevel;
-
+    public List<GameObject> ObjectsUnactive=new List<GameObject>();
+    public PlayerMovement playerMovement;
 
     private void Awake()
     {
@@ -36,6 +39,7 @@ public class GameManager : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        ObjectsUnactive = new List<GameObject>();
         LoadGameData();
     }  
 
@@ -109,4 +113,18 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("LevelsMenu");
     }    
+
+    public void AddElementToRestore(GameObject objeto)
+    {
+        ObjectsUnactive.Add(objeto);
+    }
+
+    public void Restore()
+    {
+        foreach(GameObject obj in ObjectsUnactive)
+        {
+            obj.SetActive(true);
+        }
+        CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
+    }
 }
