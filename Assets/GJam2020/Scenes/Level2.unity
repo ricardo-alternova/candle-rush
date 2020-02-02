@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 484decec5a8b9254d94e2630279ee214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelNumber: 1
+  LevelNumber: 2
   Score: 200
   NextLevel: Level3
 --- !u!1 &1562543991

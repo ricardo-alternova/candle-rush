@@ -36,12 +36,8 @@ public class GameManager : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-    }
-
-    private void Start()
-    {
         LoadGameData();
-    }
+    }  
 
     public void NewLevelComplete(int level, int score, string nextLevel)
     {
@@ -68,6 +64,8 @@ public class GameManager : MonoBehaviour
 
     public int GetLastLevelComplete()
     {
+        if(_gameData==null)
+            LoadGameData();
         return _gameData.lastLevelUnLock;
     }
 
@@ -75,7 +73,7 @@ public class GameManager : MonoBehaviour
     {
         if(level <= _gameData.lastLevelUnLock)
         {
-            return _gameData.levelsScore[level];
+            return _gameData.levelsScore[level-1];
         }
         return 0;
     }
