@@ -58,7 +58,6 @@ namespace GJam2020.Avatar
 
                 AvatarGeneralManager.Get.EndMovement();
                 onMovementComplete();
-                Debug.Log("No valid move");
             }
             return isValidMovement;
         }

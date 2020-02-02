@@ -11,7 +11,8 @@ namespace GJam2020.Core
         public PlayerMovement playerMovement;
         //The different keys we need
         private Command _buttonW, _buttonS, _buttonA, _buttonD;
-        
+
+        private bool _isHandlingCommand;
         ////To reset the coroutine
         //private Coroutine _replayCoroutine;
         ////If we should start the replay
@@ -39,14 +40,15 @@ namespace GJam2020.Core
         {
             if (CommandsManager.isRewinding) return;
             var lastCommand = CommandsManager.GetLastCommand;
-            
             if (lastCommand == null)
             {
-                HandleInput();
+                if (!_isHandlingCommand)
+                    HandleInput();
             }
             else
             {
-                if (lastCommand.IsExecuting || lastCommand.ReverseCommand.IsExecuting) return;
+                if (lastCommand.IsExecuting || lastCommand.ReverseCommand.IsExecuting ||
+                                            _isHandlingCommand) return;
                 HandleInput();
             }
         }
@@ -57,37 +59,47 @@ namespace GJam2020.Core
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                if(CommandsManager.IsLastCommandReverse(_buttonW))
-                    CommandsManager.GetLastCommand.Undo(playerMovement);
+                _isHandlingCommand = true;
+                if (CommandsManager.IsLastCommandReverse(_buttonW))
+                    CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
                 else
-                    _buttonW.Execute(playerMovement, true);
+                    _buttonW.Execute(playerMovement, true, OnCommandDone);
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
+                _isHandlingCommand = true;
                 if (CommandsManager.IsLastCommandReverse(_buttonS))
-                    CommandsManager.GetLastCommand.Undo(playerMovement);
+                    CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
                 else
-                    _buttonS.Execute(playerMovement, true);
+                    _buttonS.Execute(playerMovement, true, OnCommandDone);
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
+                _isHandlingCommand = true;
                 if (CommandsManager.IsLastCommandReverse(_buttonA))
-                    CommandsManager.GetLastCommand.Undo(playerMovement);
+                    CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
                 else
-                    _buttonA.Execute(playerMovement, true);
+                    _buttonA.Execute(playerMovement, true, OnCommandDone);
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
+                _isHandlingCommand = true;
                 if (CommandsManager.IsLastCommandReverse(_buttonD))
-                    CommandsManager.GetLastCommand.Undo(playerMovement);
+                    CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
                 else
-                    _buttonD.Execute(playerMovement, true);
+                    _buttonD.Execute(playerMovement, true, OnCommandDone);
             }
 
             if (Input.GetKeyDown(KeyCode.R))
             {
                 CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
             }
+        }
+
+        public void OnCommandDone()
+        {
+            _isHandlingCommand = false;
+            Debug.Log("Command done");
         }
     }
 }
