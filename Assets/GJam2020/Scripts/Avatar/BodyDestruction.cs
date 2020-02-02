@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GGJ2020.Avatar
+namespace GJam2020.Avatar
 {
     public class BodyDestruction : MonoBehaviour
     {
