@@ -15,6 +15,12 @@ namespace GJam2020.Avatar
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private Rigidbody playerRigidbody;
+        private Vector3 _initialForward;
+
+        private void Awake()
+        {
+            _initialForward = transform.forward;
+        }
 
         public void Move(MovementDirection dir, Action onMovementComplete, float timeForDisplacement)
         {
@@ -52,8 +58,16 @@ namespace GJam2020.Avatar
                 timeInDisplacement += Time.deltaTime;
                 yield return null;
             }
-            playerRigidbody.MovePosition(newPos);
+
+            var position = playerRigidbody.position;
+            var correctedPos = new Vector3((int)position.x, (int)position.y, (int)position.z);
+            playerRigidbody.MovePosition(correctedPos);
             onMovementComplete();
+        }
+
+        public void ResetRotation()
+        {
+            playerRigidbody.rotation = Quaternion.LookRotation(_initialForward, Vector3.up);
         }
     }
 }

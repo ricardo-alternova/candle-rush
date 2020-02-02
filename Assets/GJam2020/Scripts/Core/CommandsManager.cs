@@ -59,7 +59,7 @@ namespace GJam2020.Core
                 while (lastCommand.ReverseCommand.IsExecuting)
                     yield return null;
             }
-
+            playerMovement.ResetRotation();
             isRewinding = false;
         }
     }
