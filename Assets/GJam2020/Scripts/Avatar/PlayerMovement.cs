@@ -60,7 +60,8 @@ namespace GJam2020.Avatar
             }
 
             var position = playerRigidbody.position;
-            var correctedPos = new Vector3((int)position.x+0.5f, (int)position.y+0.5f, (int)position.z+0.5f);
+            var correctedPos = new Vector3((int)(position.x + 0.5f), (int) (position.y + 0.5f), (int)
+                (position.z + 0.5f));
             playerRigidbody.MovePosition(correctedPos);
             onMovementComplete();
         }
