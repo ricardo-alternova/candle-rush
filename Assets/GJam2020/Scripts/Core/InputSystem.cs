@@ -90,10 +90,10 @@ namespace GJam2020.Core
                     _buttonD.Execute(playerMovement, true, OnCommandDone);
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
-            }
+            //if (Input.GetKeyDown(KeyCode.R))
+            //{
+            //    CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
+            //}
         }
 
         public void OnCommandDone()
