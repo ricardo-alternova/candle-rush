@@ -59,7 +59,7 @@ namespace GJam2020.Core
                     yield return null;
 
                 lastCommand = GetLastCommand;
-                lastCommand.Undo(playerMovement,() =>Debug.Log("Done rewind step"),0.1f);
+                lastCommand.Undo(playerMovement,() =>Debug.Log("Done rewind step"),0.2f);
                 while (lastCommand.IsExecuting || lastCommand.ReverseCommand.IsExecuting)
                     yield return null;
             }
