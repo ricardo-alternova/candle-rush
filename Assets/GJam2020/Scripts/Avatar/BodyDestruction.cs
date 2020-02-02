@@ -10,8 +10,12 @@ namespace GJam2020.Avatar
         public static BodyDestruction Instance;
 
         [SerializeField]
+        private ParticleSystem particleS;
+        [Header("Body parts")]
+        [SerializeField]
         private SkinnedMeshRenderer[] bodyParts;
         private int partsDestroyed;
+        private ParticleSystem.EmissionModule emission;
 
         private void Awake()
         {
@@ -20,7 +24,8 @@ namespace GJam2020.Avatar
 
         void Start()
         {
-
+            emission = particleS.emission;
+            emission.enabled = false;
         }
 
         [ContextMenu("DestroyBodyPart")]
@@ -33,8 +38,16 @@ namespace GJam2020.Avatar
             }
             SetAlpha(bodyParts[partsDestroyed], 0);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
-
+            StartCoroutine(EmmitParticles());
             ++partsDestroyed;
+        }
+
+        private IEnumerator EmmitParticles()
+        {
+            emission.enabled = true;
+            yield return new WaitForSeconds(0.2f);
+            emission.enabled = false;
+
         }
 
         [ContextMenu("ConstructBodyPart")]
