@@ -69,48 +69,48 @@ public class MapGenerator : MonoBehaviour
                 switch(GetColorType(color))
                 {
                     case 1:
-                        _obstaclesPosition.Add(new Vector3(cPos, 0, fPos));
+                        _obstaclesPosition.Add(new Vector3(cPos, -0.5f, fPos));
                         break;
                     case 2:
                         cube = Instantiate(GroundPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 0, fPos);
+                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         break;
                     case 3:
-                        _obstaclesPosition.Add(new Vector3(cPos, 0, fPos));
+                        _obstaclesPosition.Add(new Vector3(cPos, -0.5f, fPos));
                         cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 0, fPos);
+                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 1, fPos);
+                        cube.transform.position = new Vector3(cPos, 0.5f, fPos);
                         cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 2, fPos);
+                        cube.transform.position = new Vector3(cPos, 1.5f, fPos);
 
                         break;
                     case 4:
                         cube = Instantiate(StartPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 0, fPos);
+                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         break;
                     case 5:
                         cube = Instantiate(EndPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 0, fPos);
+                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         break;
                     case 6:
                         cube = Instantiate(GroundPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 0, fPos);
+                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         cube = Instantiate(PiecePrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 0, fPos);
+                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         break;
                     default:
                         cube = Instantiate(Teleporter, Ground);
-                        cube.transform.position = new Vector3(cPos, 0, fPos);
+                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         cube.GetComponent<Teleporter>().SetColor(color);
                         print(PairPositions);
                         if(PairPositions.ContainsKey(color)) {
-                            PairPositions[color].Pos2 = new Vector3(cPos, 0, fPos);
+                            PairPositions[color].Pos2 = new Vector3(cPos, -0.5f, fPos);
                             print(PairPositions[color]);
                         }
                         else
                         {
-                            PairPositions[color] = new PairPositions() { Pos1 = new Vector3(cPos, 0, fPos) };
+                            PairPositions[color] = new PairPositions() { Pos1 = new Vector3(cPos, -0.5f, fPos) };
                             print(PairPositions[color]);
                             
                         }
