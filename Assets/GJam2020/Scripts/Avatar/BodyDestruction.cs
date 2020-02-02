@@ -25,8 +25,9 @@ namespace GGJ2020.Avatar
             }
             SetAlpha(bodyParts[partsDestroyed], 0);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
-            //bodyParts[partsDestroyed].material.SetColor("_Color", Color.clear);
-            partsDestroyed++;
+
+            ++partsDestroyed;
+            Debug.Log("Parts: " + partsDestroyed);
         }
 
         [ContextMenu("ConstructBodyPart")]
@@ -53,7 +54,6 @@ namespace GGJ2020.Avatar
                 matColor.a = alpha;
                 mat.SetColor("_Color", matColor);
             }
-            partsDestroyed = 0;
         }
     }
 }
