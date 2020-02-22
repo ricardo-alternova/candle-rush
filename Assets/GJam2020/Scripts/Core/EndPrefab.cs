@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EndPrefab : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Score, LevelManager.Get.NextLevel);
+        if(other.gameObject.layer == LayerMask.NameToLayer("Avatar"))
+            GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Score, LevelManager.Get.NextLevel);
     }
 }
