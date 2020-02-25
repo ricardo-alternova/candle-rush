@@ -6815,7 +6815,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8328259915138144108}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.3
   m_Height: 1
@@ -7101,6 +7101,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Particle System
       objectReference: {fileID: 0}
+    - target: {fileID: 6638204231866449045, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6638204231866449044, guid: 09ea91d4a20f655438f65572cf81e8ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7155,6 +7160,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638204232619708236, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638204231866449046, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 1.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638204231866449046, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
+      propertyPath: CollisionModule.m_EnergyLossOnCollision.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638204231866449046, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
+      propertyPath: CollisionModule.collidesWith.m_Bits
+      value: 2049
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638204232619708225, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
+      propertyPath: CollisionModule.collidesWith.m_Bits
+      value: 2049
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09ea91d4a20f655438f65572cf81e8ba, type: 3}

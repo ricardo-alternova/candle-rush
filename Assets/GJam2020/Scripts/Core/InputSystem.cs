@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using GJam2020.Avatar;
+﻿using GJam2020.Avatar;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.UI;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace GJam2020.Core
 {
@@ -12,11 +13,38 @@ namespace GJam2020.Core
         //The different keys we need
         private Command _buttonW, _buttonS, _buttonA, _buttonD;
 
+        public delegate void MoveCallback(Vector2 direction);
+        public event MoveCallback OnMove;
+        
         private bool _isHandlingCommand;
         ////To reset the coroutine
         //private Coroutine _replayCoroutine;
         ////If we should start the replay
         //public static bool shouldStartReplay;
+        [SerializeField]
+        private PlayerInputActions inputActions;
+
+        private void Awake()
+        {
+            inputActions = new PlayerInputActions();
+            
+            inputActions.Player.Move.performed += moveAction => {
+                CheckMoveInput(moveAction.ReadValue<Vector2>());
+                };
+        }
+
+        Vector2 moveValue;
+        private void FixedUpdate()
+        {
+            //moveValue = inputActions.Player.Move. ReadValue<Vector2>();
+            if (Touch.activeTouches.Count > 0) {
+                var touch = Touch.activeTouches[0];
+                moveValue = touch.delta;
+                moveValue.x = Mathf.Abs(moveValue.x) < 100f ? 0 : moveValue.x;
+                moveValue.y = Mathf.Abs(moveValue.y) < 100f ? 0 : moveValue.y;
+                //_debugText.text = moveValue.ToString();
+            }
+        }
 
         private void Start()
         {
@@ -34,22 +62,42 @@ namespace GJam2020.Core
             _buttonS.Restore();
             _buttonA.Restore();
             _buttonD.Restore();
+
+        }
+        //public Text _debugText;
+        private void CheckMoveInput(Vector2 direction)
+        {
+#if UNITY_ANDROID 
+            direction = moveValue.magnitude != 0 ? moveValue : direction;
+#endif
+            if (direction.x != 0) {
+                if (direction.x > 0) DecideAction(_buttonD);
+                if (direction.x < 0) DecideAction(_buttonA);
+            }
+            if (direction.y != 0)
+            {
+                if (direction.y > 0) DecideAction(_buttonW);
+                if (direction.y < 0) DecideAction(_buttonS);
+            }
         }
 
-        private void Update()
+        private void DecideAction(Command command)
         {
             if (CommandsManager.isRewinding) return;
             var lastCommand = CommandsManager.GetLastCommand;
             if (lastCommand == null)
             {
                 if (!_isHandlingCommand)
-                    HandleInput();
+                    CommandPressed(command);
+                    //HandleInput();
             }
             else
             {
-                if (lastCommand.IsExecuting || lastCommand.ReverseCommand.IsExecuting ||
-                                            _isHandlingCommand) return;
-                HandleInput();
+                if (lastCommand.IsExecuting || 
+                    lastCommand.ReverseCommand.IsExecuting ||                        
+                    _isHandlingCommand) return;
+                CommandPressed(command);
+                //HandleInput();
             }
         }
 
@@ -96,10 +144,30 @@ namespace GJam2020.Core
             //}
         }
 
+        private void CommandPressed(Command command)
+        {
+            _isHandlingCommand = true;
+            if (CommandsManager.IsLastCommandReverse(command))
+                CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
+            else
+                command.Execute(playerMovement, true, OnCommandDone);
+        }
+
         public void OnCommandDone()
         {
             _isHandlingCommand = false;
             Debug.Log("Command done");
+        }
+
+        private void OnEnable()
+        {
+            inputActions.Enable();
+            EnhancedTouchSupport.Enable();
+        }
+        private void OnDisable()
+        {
+            inputActions.Disable();
+            EnhancedTouchSupport.Disable();
         }
     }
 }

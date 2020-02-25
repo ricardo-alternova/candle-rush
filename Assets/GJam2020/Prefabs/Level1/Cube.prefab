@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2622313423910693485}
   - component: {fileID: 2622313423910693474}
   - component: {fileID: 2622313423910693487}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,3 +107,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GROUND_REGULAR_POS: 0
   GROUND_DISPLACED_POS: -4
+  layerMask: 0
