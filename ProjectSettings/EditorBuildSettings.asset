@@ -15,9 +15,6 @@ EditorBuildSettings:
     path: Assets/GJam2020/Scenes/IntersectionScene.unity
     guid: e420de586498deb459edb8e43523a6cd
   - enabled: 1
-    path: Assets/GJam2020/Scenes/Level1.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
     path: Assets/GJam2020/Scenes/TestMapGenerator.unity
     guid: b83df669800957c43a010bb01136142b
   - enabled: 1
@@ -35,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GJam2020/Scenes/Level6.unity
     guid: a546609b1bc86234d8466b752547adc9
+  - enabled: 1
+    path: Assets/GJam2020/Scenes/Level1.unity
+    guid: ab2aaca7b65208b4999f47367336adcb
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 3151c606eed79a24a94a90babc68239a,
       type: 2}

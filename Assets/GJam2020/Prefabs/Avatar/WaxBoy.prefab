@@ -7168,8 +7168,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6638204231866449046, guid: 09ea91d4a20f655438f65572cf81e8ba,
         type: 3}
+      propertyPath: InitialModule.startLifetime.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638204231866449046, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 1.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638204231866449046, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638204231866449046, guid: 09ea91d4a20f655438f65572cf81e8ba,
+        type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6638204231866449046, guid: 09ea91d4a20f655438f65572cf81e8ba,
         type: 3}

@@ -40,8 +40,8 @@ namespace GJam2020.Core
             if (Touch.activeTouches.Count > 0) {
                 var touch = Touch.activeTouches[0];
                 moveValue = touch.delta;
-                moveValue.x = Mathf.Abs(moveValue.x) < 100f ? 0 : moveValue.x;
-                moveValue.y = Mathf.Abs(moveValue.y) < 100f ? 0 : moveValue.y;
+                moveValue.x = Mathf.Abs(moveValue.x) < 75f ? 0 : moveValue.x;
+                moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
                 //_debugText.text = moveValue.ToString();
             }
         }
