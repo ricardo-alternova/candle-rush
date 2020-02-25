@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿//using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
-using UnityEngine.UI;
+//using System.IO;
+//using UnityEngine.UI;
 
 public class PairPositions
 {
@@ -13,7 +13,7 @@ public class PairPositions
 public class MapGenerator : MonoBehaviour
 {
     public string FileName;
-    private readonly string folderPath = Application.streamingAssetsPath + "/maps/";
+    private readonly string folderPath = "Assets/GJam2020/Resources/LevelDesigns/maps/";
     public GameObject GroundPrefab;
     public GameObject StartPrefab;
     public GameObject EndPrefab;
@@ -48,9 +48,7 @@ public class MapGenerator : MonoBehaviour
 
     public void ReadImage()
     {
-        byte[] imageData = File.ReadAllBytes(folderPath + FileName);
-        Texture2D texture = new Texture2D(2,2);
-        texture.LoadImage(imageData);
+        Texture2D texture = Resources.Load<Texture2D>("LevelDesigns/" + FileName);
         GenerateCubesPerPixel(texture.width, texture.height, texture);
     }
     

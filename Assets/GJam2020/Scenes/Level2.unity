@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6074ee3dd875e498d67e5aeb96b3de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: map2.png
+  FileName: map2
   GroundPrefab: {fileID: 2622313423910693472, guid: 9c685588e906a7941bf4517e97a0a9ee,
     type: 3}
   StartPrefab: {fileID: 2459627192200031090, guid: 390377da00d72784b86590ccfba3c831,
@@ -695,12 +695,6 @@ PrefabInstance:
       objectReference: {fileID: 1877077759}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a680eff0c8ee158489ed42da66ab1ff4, type: 3}
---- !u!1 &1877077756 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8328259915138144108, guid: 3a91b024cc5e4594f80d4bcc7af4dd4f,
-    type: 3}
-  m_PrefabInstance: {fileID: 42602292}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1877077757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5028468667214062975, guid: 3a91b024cc5e4594f80d4bcc7af4dd4f,
@@ -713,34 +707,10 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 42602292}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877077756}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0512faf1cdc70246915c5a807ddb311, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1877077764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877077756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b454c2be9b9c7c4087b4a75b789ad58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1877077765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877077756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb82e351c2aee684492f1cb0f6ff554a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1915131034

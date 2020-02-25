@@ -303,6 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 1877077759}
+  _debugText: {fileID: 0}
 --- !u!1001 &972677891
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -615,7 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6074ee3dd875e498d67e5aeb96b3de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: map5.png
+  FileName: map5
   GroundPrefab: {fileID: 2622313423910693472, guid: 9c685588e906a7941bf4517e97a0a9ee,
     type: 3}
   StartPrefab: {fileID: 2459627192200031090, guid: 390377da00d72784b86590ccfba3c831,

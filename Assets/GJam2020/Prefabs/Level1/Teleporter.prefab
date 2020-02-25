@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8276289561022776877}
   - component: {fileID: 614067101558549673}
   - component: {fileID: 3100809897120081202}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Teleporter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 8276289562648710640}
   - component: {fileID: 8276289562648710643}
   - component: {fileID: 8276289562648710642}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
