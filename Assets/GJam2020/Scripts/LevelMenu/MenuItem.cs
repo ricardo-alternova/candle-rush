@@ -59,7 +59,7 @@ public class MenuItem : MonoBehaviour
     {
         _label.color = Color.white;
         _button.interactable = true;
-        _star.gameObject.SetActive(false);
+        _star.gameObject.SetActive(true);
     }
 
     private void IsEnable()
