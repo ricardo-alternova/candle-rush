@@ -112,10 +112,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LoadLevelScene()
-    {
-        SceneManager.LoadScene("LevelsMenu");
-    }    
+    //public void LoadLevelScene()
+    //{
+    //    SceneManager.LoadScene("LevelsMenu");
+    //}    
 
     public void AddElementToRestore(GameObject objeto)
     {

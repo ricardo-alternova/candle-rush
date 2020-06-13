@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelMenuController : MonoBehaviour
@@ -13,6 +13,11 @@ public class LevelMenuController : MonoBehaviour
     void Start()
     {
         StartCoroutine(AdjustContentSize());
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
     private IEnumerator AdjustContentSize()

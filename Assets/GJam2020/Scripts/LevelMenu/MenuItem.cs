@@ -12,6 +12,7 @@ public class MenuItem : MonoBehaviour
     private GameObject _star;
     [SerializeField]
     private Button _button;
+    private TextMeshProUGUI _label;
     private const string SceneNamePrefix = "Level";
     private int _score;
     
@@ -19,6 +20,9 @@ public class MenuItem : MonoBehaviour
     {
         _button.interactable = false;
         _star.gameObject.SetActive(false);
+        _label = _button.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        Assert.IsNotNull(_label, "Not textMP component found");
+        _label.color = new Color(1, 1, 1, 0.5f);
 
         Debug.Log("Level: " + _level);
         if(_level <= GameManager.Get.GetLastLevelComplete() + 1)
@@ -30,7 +34,6 @@ public class MenuItem : MonoBehaviour
         if(_level <= GameManager.Get.GetLastLevelComplete())
         {
             Debug.Log("Unlock: " + _level);
-            //_score = GameManager.Get.GetLevelScore(_level);
             ShowAsUnlock();
         }
         Init();
@@ -39,12 +42,7 @@ public class MenuItem : MonoBehaviour
     [ContextMenu("Setup")]
     private void Init()
     {
-        var textMP = _button.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        Assert.IsNotNull(textMP, "Not textMP component found");
-        textMP.text = _level.ToString();
-
-        //var chargeScene = GetComponentInParent<ChargeScene>();
-        //Assert.IsNotNull(chargeScene);
+        _label.text = _level.ToString();
 
         var button = GetComponentInChildren<Button>();
         string sceneName = SceneNamePrefix + _level;
@@ -59,12 +57,14 @@ public class MenuItem : MonoBehaviour
 
     private void ShowAsUnlock()
     {
+        _label.color = Color.white;
         _button.interactable = true;
         _star.gameObject.SetActive(false);
     }
 
     private void IsEnable()
     {
+        _label.color = Color.white;
         _button.interactable = true;
     }
 }
