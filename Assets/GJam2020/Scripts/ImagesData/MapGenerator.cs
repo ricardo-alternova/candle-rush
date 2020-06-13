@@ -66,14 +66,15 @@ public class MapGenerator : MonoBehaviour
                 GameObject cube;
                 switch(GetColorType(color))
                 {
-                    case 1:
+                    case MapEntity.hole:
                         _obstaclesPosition.Add(new Vector3(cPos, -.5f, fPos));
                         break;
-                    case 2:
+                    case MapEntity.ground:
                         cube = Instantiate(GroundPrefab, Ground);
+                        //cube.GetComponent<Renderer>().sharedMaterial = GroundPrefab.GetComponent<Renderer>().sharedMaterial;
                         cube.transform.position = new Vector3(cPos, -.5f, fPos);
                         break;
-                    case 3:
+                    case MapEntity.wall:
                         _obstaclesPosition.Add(new Vector3(cPos, -.5f, fPos));
                         cube = Instantiate(WallPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, -.5f, fPos);
@@ -83,15 +84,15 @@ public class MapGenerator : MonoBehaviour
                         cube.transform.position = new Vector3(cPos, 1.5f, fPos);
 
                         break;
-                    case 4:
+                    case MapEntity.startFlag:
                         cube = Instantiate(StartPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         break;
-                    case 5:
+                    case MapEntity.endFlag:
                         cube = Instantiate(EndPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         break;
-                    case 6:
+                    case MapEntity.teleporter:
                         cube = Instantiate(GroundPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, -0.5f, fPos);
                         cube = Instantiate(PiecePrefab, Ground);
@@ -126,22 +127,24 @@ public class MapGenerator : MonoBehaviour
         return _obstaclesPosition;
     }
 
-    private int GetColorType(Color color)
+    public enum MapEntity { hole, ground, wall, endFlag, startFlag, teleporter, other}
+
+    private MapEntity GetColorType(Color color)
     {
         if(color == holeColor)
-            return 1;
+            return MapEntity.hole;
         if(color == groundColor)
-            return 2;
+            return MapEntity.ground;
         if(color == wallColor)
-            return 3;
+            return MapEntity.wall;
         if(color == startColor)
-            return 4;
+            return MapEntity.startFlag;
         if(color == endColor)
-            return 5;
+            return MapEntity.endFlag;
         if(color == pieceColor)
-            return 6;
+            return MapEntity.teleporter;
         print("return 0");
-        return 0;
+        return MapEntity.other;
     }
 
     public Vector3 GetPairPosition(Color color, Vector3 vector3)
