@@ -5,8 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class ChargeScene : MonoBehaviour
 {
-   public void LoadScene(string scene)
+    public void LoadScene(string scene)
     {
         SceneManager.LoadScene(scene);
+    }
+
+    public void NextSlide()
+    {
+
+    }
+
+    public void PreviousSlide()
+    {
+
     }
 }
