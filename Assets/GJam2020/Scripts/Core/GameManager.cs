@@ -111,12 +111,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetString("Gamedata", sw.ToString());
         }
     }
-
-    //public void LoadLevelScene()
-    //{
-    //    SceneManager.LoadScene("LevelsMenu");
-    //}    
-
+    
     public void AddElementToRestore(GameObject objeto)
     {
         ObjectsUnactive.Add(objeto);
