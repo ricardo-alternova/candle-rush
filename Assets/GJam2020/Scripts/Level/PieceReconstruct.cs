@@ -13,6 +13,7 @@ namespace GJam2020.Avatar
         public int PieceValue;
         private int avatarLayer;
         private Transform[] _childrensTransform;
+        private BoxCollider _boxCollider;
 
         private void Start()
         {
@@ -21,7 +22,7 @@ namespace GJam2020.Avatar
             _audioSource.clip = _sound;
 
             _childrensTransform = GetComponentsInChildren<Transform>();
-
+            _boxCollider = GetComponent<BoxCollider>();
 
             avatarLayer = LayerMask.NameToLayer("Avatar");
             GameManager.Get.AddElementToRestore(gameObject);
@@ -43,6 +44,7 @@ namespace GJam2020.Avatar
                 if (child.name == name) continue;
                 child.gameObject.SetActive(false);
             }
+            _boxCollider.enabled = false;
             yield return new WaitWhile(()=> _audioSource.isPlaying);
             gameObject.SetActive(false);
         }
@@ -56,6 +58,7 @@ namespace GJam2020.Avatar
         private void OnEnable()
         {
             if (_childrensTransform == null) return;
+            if (_boxCollider != null) _boxCollider.enabled = true;
             foreach(var child in _childrensTransform)
             {
                 child.gameObject.SetActive(true);
