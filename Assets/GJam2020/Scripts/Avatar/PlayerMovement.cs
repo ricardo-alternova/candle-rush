@@ -14,7 +14,10 @@ namespace GJam2020.Avatar
 
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private Rigidbody playerRigidbody;
+        public event Action MovementCompleted;
+
+        [SerializeField]
+        private Rigidbody playerRigidbody;
         private Vector3 _initialForward;
 
         private void Awake()
@@ -85,6 +88,8 @@ namespace GJam2020.Avatar
                 (position.z + 0.5f));
             playerRigidbody.MovePosition(correctedPos);
             AvatarGeneralManager.Get.EndMovement();
+            if (MovementCompleted != null)
+                MovementCompleted();
             onMovementComplete();
         }
 
