@@ -36,9 +36,9 @@
 			half dist = max(0.0, _Distance - distance(IN.worldPos, _AVATARposition));
 
 			o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb;
-			fixed3 emission = tex2D(_EmissionTex, IN.uv_MainTex).rgb;
+			fixed3 emission = tex2D(_EmissionTex, IN.uv_MainTex).rgb * _EmissionValue * dist;
 
-			o.Albedo += emission * _EmissionValue * dist;
+			o.Emission = emission;
 		}
 		ENDCG
 	}
