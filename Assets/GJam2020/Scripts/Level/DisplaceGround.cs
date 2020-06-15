@@ -11,9 +11,9 @@ namespace GGJ2020.Levels
         public static float EFFECT_COMPLETED_AT = 2.5f;
         public int layerMask;
 
+        private const string NormalGroundName = "NormalGround";
         private float displacement = -4;
         private Transform localTransf;
-        private static Quaternion quaternionIdentity = Quaternion.identity;
         private Quaternion initQuaternion;
         private Quaternion finalRotation;
         private float distance;
@@ -27,7 +27,10 @@ namespace GGJ2020.Levels
         {
             layerMask = LayerMask.NameToLayer("AvatarArea");
             initQuaternion = GetRandomRotation();
-            finalRotation = GetRandomInitialRotation();
+            finalRotation = name.Contains("NormalGround")
+                ? GetRandomInitialRotation()
+                : Quaternion.identity;
+
             localTransf = transform;
             localTransf.localRotation = initQuaternion;
             GROUND_REGULAR_POS = localTransf.position.y;
