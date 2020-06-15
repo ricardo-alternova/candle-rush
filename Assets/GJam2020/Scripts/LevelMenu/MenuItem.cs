@@ -12,8 +12,11 @@ public class MenuItem : MonoBehaviour
     private GameObject _star;
     [SerializeField]
     private Button _button;
+    [SerializeField]
+    private LevelSettings levelSettings;
+
     private TextMeshProUGUI _label;
-    private const string SceneNamePrefix = "Level";
+    private const string GameplayScene = "Gameplay";
     private int _score;
     
     private void Start()
@@ -45,14 +48,14 @@ public class MenuItem : MonoBehaviour
         _label.text = _level.ToString();
 
         var button = GetComponentInChildren<Button>();
-        string sceneName = SceneNamePrefix + _level;
         button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => LoadScene(sceneName));
+        button.onClick.AddListener(() => LoadScene());
     }
 
-    public void LoadScene(string scene)
+    public void LoadScene()
     {
-        SceneManager.LoadScene(scene);
+        GameManager.Get.currentLevel = levelSettings;
+        SceneManager.LoadScene(GameplayScene);
     }
 
     private void ShowAsUnlock()

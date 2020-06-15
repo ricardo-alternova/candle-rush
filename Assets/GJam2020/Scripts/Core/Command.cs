@@ -26,7 +26,7 @@ namespace GJam2020.Core
 
         protected void OnExecutionComplete(Action onCommandComplete)
         {
-            UnityEngine.Debug.Log("Command Executed");
+            //UnityEngine.Debug.Log("Command Executed");
             isExecuting = false;
             onCommandComplete();
         }

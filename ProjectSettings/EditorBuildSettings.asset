@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GJam2020/Scenes/Level6.unity
     guid: a546609b1bc86234d8466b752547adc9
+  - enabled: 1
+    path: Assets/GJam2020/Scenes/Gameplay.unity
+    guid: 11a8af9f291e9574ab12fea3f6c2d1b3
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 3151c606eed79a24a94a90babc68239a,
       type: 2}

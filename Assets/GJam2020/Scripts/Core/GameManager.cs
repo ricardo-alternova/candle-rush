@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     private string _nextLevel;
     public List<GameObject> ObjectsUnactive=new List<GameObject>();
     public PlayerMovement playerMovement;
+    public LevelSettings currentLevel;
 
     private void Awake()
     {
@@ -119,6 +120,7 @@ public class GameManager : MonoBehaviour
 
     public void Restore()
     {
+        print("Restore");
         if (playerMovement == null)
             playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
         Assert.IsNotNull(playerMovement, "Player movement not found");

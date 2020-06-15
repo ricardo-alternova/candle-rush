@@ -156,7 +156,7 @@ namespace GJam2020.Core
         public void OnCommandDone()
         {
             _isHandlingCommand = false;
-            Debug.Log("Command done");
+            //Debug.Log("Command done");
         }
 
         private void OnEnable()

@@ -19,6 +19,7 @@ namespace GJam2020.Avatar
 
         private void Awake()
         {
+            transform.localPosition = GameManager.Get.currentLevel.StartLocation;
             _initialForward = transform.forward;
         }
 

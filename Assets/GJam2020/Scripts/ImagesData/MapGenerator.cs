@@ -12,8 +12,8 @@ public class PairPositions
 
 public class MapGenerator : MonoBehaviour
 {
-    public string FileName;
-    private readonly string folderPath = "Assets/GJam2020/Resources/LevelDesigns/maps/";
+    private LevelSettings settings;
+
     public GameObject GroundPrefab;
     public GameObject StartPrefab;
     public GameObject EndPrefab;
@@ -23,7 +23,7 @@ public class MapGenerator : MonoBehaviour
     public Transform Ground;
 
     public Color holeColor;
-    public  Color groundColor;
+    public Color groundColor;
     public Color wallColor;
     public Color startColor;
     public Color endColor;
@@ -38,6 +38,7 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
+        settings = GameManager.Get.currentLevel;
         Get = this;
     }
 
@@ -48,7 +49,7 @@ public class MapGenerator : MonoBehaviour
 
     public void ReadImage()
     {
-        Texture2D texture = Resources.Load<Texture2D>("LevelDesigns/" + FileName);
+        Texture2D texture = settings.Map;
         GenerateCubesPerPixel(texture.width, texture.height, texture);
     }
     
