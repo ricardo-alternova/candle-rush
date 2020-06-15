@@ -15,6 +15,7 @@ namespace GGJ2020.Levels
         private Transform localTransf;
         private static Quaternion quaternionIdentity = Quaternion.identity;
         private Quaternion initQuaternion;
+        private Quaternion finalRotation;
         private float distance;
         private float lerpValue;
         private Vector3 tempV3;
@@ -26,6 +27,7 @@ namespace GGJ2020.Levels
         {
             layerMask = LayerMask.NameToLayer("AvatarArea");
             initQuaternion = GetRandomRotation();
+            finalRotation = GetRandomInitialRotation();
             localTransf = transform;
             localTransf.localRotation = initQuaternion;
             GROUND_REGULAR_POS = localTransf.position.y;
@@ -52,7 +54,7 @@ namespace GGJ2020.Levels
             tempV3.y = Mathf.Lerp(GROUND_DISPLACED_POS, GROUND_REGULAR_POS, lerpValue);
             localTransf.position = tempV3;
 
-            var quat = Quaternion.Slerp(initQuaternion, quaternionIdentity, lerpValue);
+            var quat = Quaternion.Slerp(initQuaternion, finalRotation, lerpValue);
             localTransf.localRotation = quat;
         }
         
@@ -75,6 +77,35 @@ namespace GGJ2020.Levels
                 Random.Range(-maxAngle, maxAngle),
                 Random.Range(-maxAngle, maxAngle),
                 Random.Range(-maxAngle, maxAngle),1);
+            return quat.normalized;
+        }
+
+        private Quaternion GetRandomInitialRotation()
+        {
+            int rotation = Random.Range(0, 5);
+            Vector3 finalDir = Vector3.up;
+            switch (rotation)
+            {
+                case 0:
+                    finalDir = Vector3.forward;
+                    break;
+                case 1:
+                    finalDir = Vector3.back;
+                    break;
+                case 2:
+                    finalDir = Vector3.right;
+                    break;
+                case 3:
+                    finalDir = Vector3.left;
+                    break;
+                case 4:
+                    finalDir = Vector3.up;
+                    break;
+                case 5:
+                    finalDir = Vector3.down;
+                    break;
+            }
+            var quat = Quaternion.FromToRotation(Vector3.up, finalDir);
             return quat.normalized;
         }
     }

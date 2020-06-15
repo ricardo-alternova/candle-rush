@@ -52,5 +52,13 @@ namespace GJam2020.Avatar
         {
             _audioSource.Play();
         }
+
+        private void OnEnable()
+        {
+            foreach(var child in _childrensTransform)
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
     }
 }
