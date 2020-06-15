@@ -55,6 +55,7 @@ namespace GJam2020.Avatar
 
         private void OnEnable()
         {
+            if (_childrensTransform == null) return;
             foreach(var child in _childrensTransform)
             {
                 child.gameObject.SetActive(true);
