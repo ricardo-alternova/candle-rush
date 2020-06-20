@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
     private LevelSettings settings;
+
+    public static LevelManager Get;
 
     public int LevelNumber
     {
@@ -20,8 +20,6 @@ public class LevelManager : MonoBehaviour
     {
         get { return settings.NextLevel; }
     }
-
-    public static LevelManager Get;
 
     private void Awake()
     {

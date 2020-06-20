@@ -1,8 +1,6 @@
-﻿//using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-//using System.IO;
-//using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PairPositions
 {
@@ -12,7 +10,7 @@ public class PairPositions
 
 public class MapGenerator : MonoBehaviour
 {
-    private LevelSettings settings;
+    public Vector3 StartPosition { get; private set; }
 
     public GameObject GroundPrefab;
     public GameObject StartPrefab;
@@ -29,6 +27,9 @@ public class MapGenerator : MonoBehaviour
     public Color endColor;
     public Color pieceColor;
 
+    public UnityEvent OnSceneCreated;
+
+    private LevelSettings settings;
     private List<Vector3> _obstaclesPosition = new List<Vector3>();
 
     private Dictionary<Color, PairPositions> PairPositions = new Dictionary<Color, PairPositions>();
@@ -42,7 +43,7 @@ public class MapGenerator : MonoBehaviour
         Get = this;
     }
 
-    public void Start()
+    private void Start()
     {
         ReadImage();
     }
@@ -51,9 +52,9 @@ public class MapGenerator : MonoBehaviour
     {
         Texture2D texture = settings.Map;
         GenerateCubesPerPixel(texture.width, texture.height, texture);
+        OnSceneCreated.Invoke();
     }
     
-
     public void GenerateCubesPerPixel(int width, int height, Texture2D data,  int scale = 1)
     {
         Color[] colors = data.GetPixels();
@@ -88,6 +89,7 @@ public class MapGenerator : MonoBehaviour
                     case MapEntity.startFlag:
                         cube = Instantiate(StartPrefab, Ground);
                         cube.transform.position = new Vector3(cPos, -0.5f, fPos);
+                        StartPosition = cube.transform.position + new Vector3(0, 0.5f, 0);
                         break;
                     case MapEntity.endFlag:
                         cube = Instantiate(EndPrefab, Ground);
@@ -130,6 +132,22 @@ public class MapGenerator : MonoBehaviour
 
     public enum MapEntity { hole, ground, wall, endFlag, startFlag, teleporter, other}
 
+    public Vector3 GetPairPosition(Color color, Vector3 vector3)
+    {
+        if(PairPositions.ContainsKey(color)) {
+            PairPositions pair = PairPositions[color];
+            if(pair.Pos1 == vector3)
+            {
+                return pair.Pos2+new Vector3(0f,.5f,0f);
+            }
+            else
+            {
+                return pair.Pos1 + new Vector3(0f, .5f, 0f);
+            }
+        }
+        return vector3;
+    }
+
     private MapEntity GetColorType(Color color)
     {
         if(color == holeColor)
@@ -146,21 +164,5 @@ public class MapGenerator : MonoBehaviour
             return MapEntity.teleporter;
         print("return 0");
         return MapEntity.other;
-    }
-
-    public Vector3 GetPairPosition(Color color, Vector3 vector3)
-    {
-        if(PairPositions.ContainsKey(color)) {
-            PairPositions pair = PairPositions[color];
-            if(pair.Pos1 == vector3)
-            {
-                return pair.Pos2+new Vector3(0f,.5f,0f);
-            }
-            else
-            {
-                return pair.Pos1 + new Vector3(0f, .5f, 0f);
-            }
-        }
-        return vector3;
     }
 }

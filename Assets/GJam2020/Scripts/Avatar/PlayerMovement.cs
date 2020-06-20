@@ -24,7 +24,12 @@ namespace GJam2020.Avatar
 
         private void Awake()
         {
-            transform.localPosition = GameManager.Get.currentLevel.StartLocation;
+            
+        }
+
+        private void Start()
+        {
+            transform.localPosition = MapGenerator.Get.StartPosition;
             _initialForward = transform.forward;
         }
 
