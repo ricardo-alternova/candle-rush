@@ -80,7 +80,25 @@ namespace GJam2020.Avatar
             StartCoroutine(EmmitParticles(constructEmission));
 
         }
+        
+        public void ReconstructAllBody()
+        {
+            StartCoroutine(ReconstructAllBodyCoroutine());
+        }
 
+        private IEnumerator ReconstructAllBodyCoroutine()
+        {
+            while(partsDestroyed > 0)
+            {
+                ReconstructBodyPart();
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return null;
+        }
+
+        /// <summary>
+        /// Reset body inmediately.
+        /// </summary>
         [ContextMenu("ResetBodyParts")]
         public void ResetBody()
         {

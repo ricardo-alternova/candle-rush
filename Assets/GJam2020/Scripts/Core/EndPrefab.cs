@@ -1,4 +1,5 @@
 ﻿using GJam2020.Avatar;
+using GJam2020.Core;
 using UnityEngine;
 
 public class EndPrefab : MonoBehaviour
@@ -19,10 +20,6 @@ public class EndPrefab : MonoBehaviour
     {
         playerMovement.MovementCompleted -= CharacterMovementCompleted;
 
-        GameManager.Get.currentLevel = LevelManager.Get.NextLevel;
-        if (GameManager.Get.currentLevel == null)
-            GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Score, "MainMenu");
-        else
-            GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Score, "Gameplay");
+        LevelManager.Get.PlayFinishLevel();
     }
 }

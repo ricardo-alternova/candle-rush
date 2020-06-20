@@ -18,11 +18,11 @@ namespace UnityEditor.SceneManagement
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             EditorSceneManager.OpenScene("Assets/GJam2020/Scenes/LevelsMenu.unity");
         }
-        [MenuItem("Scenes/Level1")]
-        static void OpenLevel1Scene()
+        [MenuItem("Scenes/Gameplay")]
+        static void OpenCommonLevelScene()
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-            EditorSceneManager.OpenScene("Assets/GJam2020/Scenes/Level1.unity");
+            EditorSceneManager.OpenScene("Assets/GJam2020/Scenes/Gameplay.unity");
         }
 #endif
     }

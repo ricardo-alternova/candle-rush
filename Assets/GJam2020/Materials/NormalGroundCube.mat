@@ -63,9 +63,9 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _Distance: 5.28
+    - _Distance: 2.97
     - _DstBlend: 0
-    - _EmissionValue: 0.15
+    - _EmissionValue: 0.45
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
