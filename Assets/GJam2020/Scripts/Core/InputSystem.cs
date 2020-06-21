@@ -67,6 +67,7 @@ namespace GJam2020.Core
         //public Text _debugText;
         private void CheckMoveInput(Vector2 direction)
         {
+            if (GameManager.Get.IsPlaying == false) return;
 #if UNITY_ANDROID 
             direction = moveValue.magnitude != 0 ? moveValue : direction;
 #endif

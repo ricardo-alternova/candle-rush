@@ -26,25 +26,30 @@ namespace GJam2020.Level.UI
 
         public void OpenOptions()
         {
+            GameManager.Get.IsPlaying = false;
             _optionsButton.SetActive(false);
             _optionsMenu.SetActive(true);
         }
         public void OpenGameOver()
         {
+            GameManager.Get.IsPlaying = false;
             _gameOverMenu.SetActive(true);
         }
         public void OpenWin()
         {
+            GameManager.Get.IsPlaying = false;
             _winMenu.SetActive(true);
         }
         public void OpenPause()
         {
+            GameManager.Get.IsPlaying = false;
             _pauseMenu.SetActive(true);
         }
 
         public void CloseOptions()
         {
             _optionsButton.SetActive(true);
+            GameManager.Get.IsPlaying = true;
         }
     }
 }

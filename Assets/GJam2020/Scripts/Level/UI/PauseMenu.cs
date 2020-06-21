@@ -18,6 +18,7 @@ namespace GJam2020.Level.UI
         {
             Time.timeScale = 1;
             gameObject.SetActive(false);
+            GameManager.Get.IsPlaying = true;
         }
     }
 }

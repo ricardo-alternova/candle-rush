@@ -19,15 +19,17 @@ public class GameData
 
 public class GameManager : MonoBehaviour
 {
-    private GameData _gameData;
-    public static GameManager Get;
-    private string _nextLevel;
-    public List<GameObject> ObjectsUnactive=new List<GameObject>();
-    public PlayerMovement playerMovement;
+    public bool IsPlaying;
     public LevelSettings currentLevel;
+    public PlayerMovement playerMovement;
+    public List<GameObject> ObjectsUnactive=new List<GameObject>();
+    public static GameManager Get;
     public static string MAIN_MENU_NAME = "MainMenu";
     public static string LEVELS_MENU_NAME = "LevelsMenu";
     public static string GAMEPLAY_NAME = "Gameplay";
+
+    private GameData _gameData;
+    private string _nextLevel;
 
     private void Awake()
     {
@@ -136,5 +138,7 @@ public class GameManager : MonoBehaviour
                 obj.SetActive(true);
             }
         }));
+
+        IsPlaying = true;
     }
 }

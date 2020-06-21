@@ -68,6 +68,7 @@ namespace GJam2020.Core
             _audioSource.FadeTime = 1.5f;
             _audioSource.Play(_mapSong, loop: true, 0.5f);
             Get = this;
+            GameManager.Get.IsPlaying = true;
         }
     }
 }
