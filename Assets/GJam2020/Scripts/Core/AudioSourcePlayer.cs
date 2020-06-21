@@ -50,6 +50,7 @@ namespace GJam2020.Core
             }
             _audioSource.clip = clip;
             _audioSource.volume = 0;
+            _audioSource.loop = loop;
             _audioSource.Play();
 
             while (_audioSource.volume < 1)
