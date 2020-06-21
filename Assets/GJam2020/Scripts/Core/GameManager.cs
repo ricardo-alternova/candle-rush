@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     public List<GameObject> ObjectsUnactive=new List<GameObject>();
     public PlayerMovement playerMovement;
     public LevelSettings currentLevel;
+    public static string MAIN_MENU_NAME = "MainMenu";
+    public static string LEVELS_MENU_NAME = "LevelsMenu";
+    public static string GAMEPLAY_NAME = "Gameplay";
 
     private void Awake()
     {

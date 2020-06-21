@@ -1,4 +1,5 @@
 ﻿using GJam2020.Avatar;
+using GJam2020.Level.UI;
 using System.Collections;
 using UnityEngine;
 
@@ -48,12 +49,12 @@ namespace GJam2020.Core
 
             yield return new WaitForSeconds(_winningTime);
 
-
-            GameManager.Get.currentLevel = NextLevel;
-            if (GameManager.Get.currentLevel == null)
-                GameManager.Get.NewLevelComplete(LevelNumber, Score, "MainMenu");
-            else
-                GameManager.Get.NewLevelComplete(LevelNumber, Score, "Gameplay");
+            LevelMenuMgr.Get().OpenWin();
+            //GameManager.Get.currentLevel = NextLevel;
+            //if (GameManager.Get.currentLevel == null)
+            //    GameManager.Get.NewLevelComplete(LevelNumber, Score, "MainMenu");
+            //else
+            //    GameManager.Get.NewLevelComplete(LevelNumber, Score, "Gameplay");
         }
 
         private void Awake()

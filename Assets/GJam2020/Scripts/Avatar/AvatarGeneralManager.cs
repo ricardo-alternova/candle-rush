@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GJam2020.Core;
+using GJam2020.Level.UI;
 
 namespace GJam2020.Avatar {
     public class AvatarGeneralManager : MonoBehaviour
@@ -48,8 +49,7 @@ namespace GJam2020.Avatar {
 
         public void Dead()
         {
-            CanvasData.Get.Dead();
-            
+            LevelMenuMgr.Get().OpenGameOver();
         }
 
         public void Restore()

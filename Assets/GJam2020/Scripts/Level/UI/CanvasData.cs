@@ -23,16 +23,16 @@ namespace GJam2020.Core {
             NumberOfPieces.text = pieces + "";
         }
 
-        public void Dead()
-        {
-            panelDead.SetActive(true);
-        }
+        //public void Dead()
+        //{
+        //    panelDead.SetActive(true);
+        //}
 
-        public void Restore()
-        {
-            print("restore");
-            panelDead.SetActive(false);
-            GameManager.Get.Restore();
-        }
+        //public void Restore()
+        //{
+        //    print("restore");
+        //    panelDead.SetActive(false);
+        //    GameManager.Get.Restore();
+        //}
     }
 }
