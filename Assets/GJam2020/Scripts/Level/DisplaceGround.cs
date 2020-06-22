@@ -27,7 +27,7 @@ namespace GGJ2020.Levels
         {
             layerMask = LayerMask.NameToLayer("AvatarArea");
             initQuaternion = GetRandomRotation();
-            finalRotation = name.Contains("NormalGround")
+            finalRotation = name.Contains("Normal")
                 ? GetRandomInitialRotation()
                 : Quaternion.identity;
 
@@ -85,6 +85,15 @@ namespace GGJ2020.Levels
 
         private Quaternion GetRandomInitialRotation()
         {
+            Vector3 initialDir = GetRandomDirection();
+            Vector3 finalDir = GetRandomDirection();
+
+            var quat = Quaternion.FromToRotation(initialDir, finalDir);
+            return quat.normalized;
+        }
+
+        private Vector3 GetRandomDirection()
+        {
             int rotation = Random.Range(0, 5);
             Vector3 finalDir = Vector3.up;
             switch (rotation)
@@ -108,8 +117,7 @@ namespace GGJ2020.Levels
                     finalDir = Vector3.down;
                     break;
             }
-            var quat = Quaternion.FromToRotation(Vector3.up, finalDir);
-            return quat.normalized;
+            return finalDir;
         }
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3613057509222594325}
   - component: {fileID: -7833589773379278894}
   m_Layer: 11
-  m_Name: NormalCubePrefab
+  m_Name: NormalGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e9b3e60157f2e244898d1d49020c5dc8, type: 2}
+  - {fileID: 2100000, guid: 6f005e67c18b47848a30efb7eb5aea7f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
