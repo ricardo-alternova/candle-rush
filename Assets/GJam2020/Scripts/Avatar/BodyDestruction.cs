@@ -39,6 +39,11 @@ namespace GJam2020.Avatar
         }
 
         [ContextMenu("DestroyBodyPart")]
+        public void DestroyBodyPart()
+        {
+            DestroyBodyPart(1f);
+        }
+
         public void DestroyBodyPart(float time)
         {
             if (bodyParts.Length == partsDestroyed && partsDestroyed != 0)
@@ -118,6 +123,7 @@ namespace GJam2020.Avatar
                 var matColor = mat.GetColor("_Color");
                 matColor.a = alpha;
                 //mat.SetColor("_Color", matColor);
+                mat.DOKill();
                 mat.DOColor(matColor, 1);
             }
         }
