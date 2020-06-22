@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GJam2020.Core;
+using UnityEngine;
 
 namespace GJam2020.Level.UI
 {
@@ -42,6 +43,7 @@ namespace GJam2020.Level.UI
         }
         public void OpenPause()
         {
+            SoundManager.Get().Pause();
             GameManager.Get.IsPlaying = false;
             _pauseMenu.SetActive(true);
         }

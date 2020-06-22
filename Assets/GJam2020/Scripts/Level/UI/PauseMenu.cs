@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GJam2020.Core;
+using UnityEngine;
 
 namespace GJam2020.Level.UI
 {
@@ -17,6 +18,7 @@ namespace GJam2020.Level.UI
         public void Play()
         {
             Time.timeScale = 1;
+            SoundManager.Get().Play();
             gameObject.SetActive(false);
             GameManager.Get.IsPlaying = true;
         }
