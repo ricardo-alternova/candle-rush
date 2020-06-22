@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GJam2020.Core;
+using DG.Tweening;
 
 namespace GJam2020.Avatar
 {
@@ -38,14 +39,14 @@ namespace GJam2020.Avatar
         }
 
         [ContextMenu("DestroyBodyPart")]
-        public void DestroyBodyPart()
+        public void DestroyBodyPart(float time)
         {
             if (bodyParts.Length == partsDestroyed && partsDestroyed != 0)
             {
                 Debug.LogWarning("Trying to destroy more body parts than exists");
                 return;
             }
-            SetAlpha(bodyParts[partsDestroyed], 0);
+            SetAlpha(bodyParts[partsDestroyed], 0, time);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
             StartCoroutine(EmmitParticles(emission));
             ++partsDestroyed;
@@ -107,7 +108,7 @@ namespace GJam2020.Avatar
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
-        private void SetAlpha(SkinnedMeshRenderer skinnedMeshRenderer, float alpha)
+        private void SetAlpha(SkinnedMeshRenderer skinnedMeshRenderer, float alpha, float time=0.5f)
         {
             List<Material> materials = new List<Material>();
             skinnedMeshRenderer.GetMaterials(materials);
@@ -116,7 +117,8 @@ namespace GJam2020.Avatar
             {
                 var matColor = mat.GetColor("_Color");
                 matColor.a = alpha;
-                mat.SetColor("_Color", matColor);
+                //mat.SetColor("_Color", matColor);
+                mat.DOColor(matColor, 1);
             }
         }
     }

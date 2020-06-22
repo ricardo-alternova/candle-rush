@@ -90,7 +90,7 @@ namespace GJam2020.Avatar
 
         private IEnumerator MovePlayer(Vector3 newPos, Action onMovementComplete, float timeForDisplacement)
         {
-            AvatarGeneralManager.Get.StartMovement();
+            AvatarGeneralManager.Get.StartMovement(timeForDisplacement);
 
             _initialPosition = playerRigidbody.position;
             _finalPosition = newPos;

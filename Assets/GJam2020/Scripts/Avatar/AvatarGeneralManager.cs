@@ -21,11 +21,11 @@ namespace GJam2020.Avatar {
             _movement = GetComponent<PlayerMovement>();
             _bodyDestruction = GetComponent<BodyDestruction>();
         }
-        public void StartMovement()
+        public void StartMovement(float timeForDisplacement)
         {
             if(!_isReverse)
             {
-                _bodyDestruction.DestroyBodyPart();
+                _bodyDestruction.DestroyBodyPart(timeForDisplacement);
             }
             _isReverse = false;
             _animator.Walking(true);
