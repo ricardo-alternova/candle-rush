@@ -23,9 +23,9 @@ namespace GJam2020.Core
 
         private void Start()
         {
-            SoundManager.Get().AddAudioPlayer(this);
             if (_playOnAwake)
                 Play(Clip, _audioSource.loop, 1.5f);
+            SoundManager.Get().AddAudioPlayer(this);
         }
 
         private void OnDestroy()
