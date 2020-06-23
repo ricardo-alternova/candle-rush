@@ -13,6 +13,9 @@ namespace GJam2020.Core
         private AudioClip _winningSound;
         [SerializeField]
         private AudioClip _mapSong;
+        [SerializeField]
+        private AudioSourcePlayer _MapSongAudioPlayer;
+
         private LevelSettings settings;
         private AudioSourcePlayer _audioSource;
 
@@ -43,8 +46,8 @@ namespace GJam2020.Core
             BodyDestruction.Instance.ReconstructAllBody();
             var playerMovement = BodyDestruction.Instance.GetComponent<PlayerMovement>();
             playerMovement.ResetRotation();
-            
-            _audioSource.FadeTime = 0.4f;
+
+            _MapSongAudioPlayer.Stop(0.5f);
             _audioSource.Play(_winningSound);
 
             yield return new WaitForSeconds(_winningTime);
@@ -65,8 +68,7 @@ namespace GJam2020.Core
         private void Start()
         {
             _audioSource = GetComponent<AudioSourcePlayer>();
-            _audioSource.FadeTime = 1.5f;
-            _audioSource.Play(_mapSong, loop: true, 0.5f);
+            _MapSongAudioPlayer.Play(_mapSong, loop: true, delay: 0, FadeTime: 1.5f);
             Get = this;
             GameManager.Get.IsPlaying = true;
         }

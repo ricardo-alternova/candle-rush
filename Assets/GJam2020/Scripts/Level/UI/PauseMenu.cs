@@ -3,12 +3,10 @@ using UnityEngine;
 
 namespace GJam2020.Level.UI
 {
-    public class PauseMenu : MonoBehaviour
+    public class PauseMenu : BaseLevelMenu
     {
-        private void Awake()
-        {
-            
-        }
+        [SerializeField]
+        private AudioClip _playAudioClip;
 
         private void OnEnable()
         {
@@ -19,6 +17,7 @@ namespace GJam2020.Level.UI
         {
             Time.timeScale = 1;
             SoundManager.Get().Play();
+            _audioSourcePlayer.Play(_playAudioClip);
             gameObject.SetActive(false);
             GameManager.Get.IsPlaying = true;
         }

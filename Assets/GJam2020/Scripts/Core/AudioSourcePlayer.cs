@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using static GJam2020.Core.SoundManager;
 
 namespace GJam2020.Core
 {
@@ -7,8 +8,9 @@ namespace GJam2020.Core
     public class AudioSourcePlayer : MonoBehaviour
     {
         public bool IsPlaying { get { return _audioSource.isPlaying; } }
-        public float FadeTime = 0.7f;
         public AudioClip Clip;
+        public SoundType _soundType;
+        public bool AllowPlaying = true;
 
         [SerializeField]
         private bool _playOnAwake;
@@ -38,26 +40,53 @@ namespace GJam2020.Core
 
         public void Play()
         {
-            if (_audioSource.clip != null)
+            if (_audioSource.clip != null && AllowPlaying)
                 _audioSource.Play();
         }
-        
-        public void Play(AudioClip clip, bool loop = false, float delay = 0)
+
+        public void Stop(float fadeTime = 0)
         {
-            StartCoroutine(PlaySoundCoroutine(clip, loop, delay));
+            StartCoroutine(StopCoroutine(fadeTime));
         }
 
-        private IEnumerator PlaySoundCoroutine(AudioClip clip, bool loop = false, float delay = 0)
+        private IEnumerator StopCoroutine(float fadeTime = 0)
         {
-            var delayCounter = Time.time;
-            var partialVolume = 1 / FadeTime;
-            var timeCounter = 0f;
-            if(_audioSource.isPlaying)
+            var partialVolume = 1 / fadeTime;
+            if (_audioSource.isPlaying)
             {
                 while (_audioSource.volume > 0)
                 {
                     _audioSource.volume -= partialVolume * Time.deltaTime;
                     yield return new WaitForEndOfFrame();
+                }
+            }
+        }
+        
+        public void Play(AudioClip clip, bool loop = false, float delay = 0, float FadeTime = 0)
+        {
+            StartCoroutine(PlaySoundCoroutine(clip, loop, delay, FadeTime));
+        }
+
+        private IEnumerator PlaySoundCoroutine(AudioClip clip, bool loop = false, float delay = 0, float FadeTime = 0)
+        {
+            var delayCounter = Time.time;
+            var partialVolume = FadeTime > 0 
+                ? 1 / FadeTime
+                : 1;
+            
+            if(_audioSource.isPlaying)
+            {
+                if (partialVolume != 1)
+                {
+                    while (_audioSource.volume > 0)
+                    {
+                        _audioSource.volume -= partialVolume * Time.deltaTime;
+                        yield return new WaitForEndOfFrame();
+                    }
+                }
+                else
+                {
+                    _audioSource.volume = 0;
                 }
             }
             if(Time.time - delayCounter < delay)
@@ -72,10 +101,17 @@ namespace GJam2020.Core
             _audioSource.loop = loop;
             _audioSource.Play();
 
-            while (_audioSource.volume < 1)
+            if (FadeTime > 0)
             {
-                _audioSource.volume += partialVolume * Time.deltaTime;
-                yield return new WaitForEndOfFrame();
+                while (_audioSource.volume < 1)
+                {
+                    _audioSource.volume += partialVolume * Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+            else
+            {
+                _audioSource.volume = 1;
             }
         }
     }
