@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58bc435273488c3438575bcb5ee2df7f, type: 3}
+  m_Name: Common_Map
+  m_EditorClassIdentifier: 
+  ground:
+    color: {r: 1, g: 1, b: 1, a: 1}
+    entity: 2
+    prefab: {fileID: 2954736627833355979, guid: e51d354bd6e75c54884284ee9140e5b6,
+      type: 3}
+    offset: -0.5
+    isObstacle: 0
+    isEmpty: 0
+    useGround: 0
+    usePairPosition: 0
+  prefabs:
+  - color: {r: 0, g: 0, b: 0, a: 1}
+    entity: 1
+    prefab: {fileID: 0}
+    offset: -0.5
+    isObstacle: 1
+    isEmpty: 1
+    useGround: 0
+    usePairPosition: 0
+  - color: {r: 1, g: 0, b: 0, a: 1}
+    entity: 3
+    prefab: {fileID: 8596004062763429865, guid: 58a7a378e02cbf44b87bd51698d10642,
+      type: 3}
+    offset: -0.5
+    isObstacle: 1
+    isEmpty: 0
+    useGround: 0
+    usePairPosition: 0
+  - color: {r: 0, g: 0, b: 1, a: 1}
+    entity: 4
+    prefab: {fileID: 9075672210897940381, guid: c9b12bb10dc47db4f9f4d0da04fa7869,
+      type: 3}
+    offset: -0.5
+    isObstacle: 0
+    isEmpty: 0
+    useGround: 0
+    usePairPosition: 0
+  - color: {r: 0, g: 1, b: 0, a: 1}
+    entity: 5
+    prefab: {fileID: 2459627192200031090, guid: 390377da00d72784b86590ccfba3c831,
+      type: 3}
+    offset: -0.5
+    isObstacle: 0
+    isEmpty: 0
+    useGround: 0
+    usePairPosition: 0
+  - color: {r: 1, g: 0, b: 1, a: 1}
+    entity: 6
+    prefab: {fileID: 4848963525851812169, guid: c41c44c2fb8040b4d8dd65d768d4402d,
+      type: 3}
+    offset: 0.5
+    isObstacle: 0
+    isEmpty: 0
+    useGround: 1
+    usePairPosition: 0
+  - color: {r: 0, g: 1, b: 1, a: 1}
+    entity: 7
+    prefab: {fileID: 8276289561022776875, guid: e9605c0e15c07f541a690e29659b9518,
+      type: 3}
+    offset: -0.5
+    isObstacle: 0
+    isEmpty: 0
+    useGround: 0
+    usePairPosition: 1

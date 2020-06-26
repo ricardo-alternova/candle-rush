@@ -11,6 +11,8 @@ public class LevelSettings : ScriptableObject
     [SerializeField]
     private int score;
     [SerializeField]
+    private MapGeneratorSettings mapSettings;
+    [SerializeField]
     private LevelSettings nextLevel;
 
     public int Number { get => number; }
@@ -18,4 +20,5 @@ public class LevelSettings : ScriptableObject
     public int Score { get => score; }
     public LevelSettings NextLevel { get => nextLevel; }
     public Vector3 StartLocation { get => startLocation; }
+    public MapGeneratorSettings MapSettings { get => mapSettings; }
 }

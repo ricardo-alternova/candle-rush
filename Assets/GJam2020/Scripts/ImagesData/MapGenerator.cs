@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,21 +13,7 @@ public class MapGenerator : MonoBehaviour
 {
     public Vector3 StartPosition { get; private set; }
 
-    public GameObject GroundPrefab;
-    public GameObject StartPrefab;
-    public GameObject EndPrefab;
-    public GameObject WallPrefab;
-    public GameObject PiecePrefab;
-    public GameObject Teleporter;
     public Transform Ground;
-
-    public Color holeColor;
-    public Color groundColor;
-    public Color wallColor;
-    public Color startColor;
-    public Color endColor;
-    public Color pieceColor;
-
     public UnityEvent OnSceneCreated;
 
     private LevelSettings settings;
@@ -65,58 +52,35 @@ public class MapGenerator : MonoBehaviour
             for(int c = 0; c < width; c++)
             {
                 Color color = colors[((f * width) + c)];
-                GameObject cube;
-                switch(GetColorType(color))
-                {
-                    case MapEntity.hole:
-                        _obstaclesPosition.Add(new Vector3(cPos, -.5f, fPos));
-                        break;
-                    case MapEntity.ground:
-                        cube = Instantiate(GroundPrefab, Ground);
-                        //cube.GetComponent<Renderer>().sharedMaterial = GroundPrefab.GetComponent<Renderer>().sharedMaterial;
-                        cube.transform.position = new Vector3(cPos, -.5f, fPos);
-                        break;
-                    case MapEntity.wall:
-                        _obstaclesPosition.Add(new Vector3(cPos, -.5f, fPos));
-                        cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -.5f, fPos);
-                        cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, .5f, fPos);
-                        cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 1.5f, fPos);
+                GameObject instance;
 
-                        break;
-                    case MapEntity.startFlag:
-                        cube = Instantiate(StartPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
-                        StartPosition = cube.transform.position + new Vector3(0, 0.5f, 0);
-                        break;
-                    case MapEntity.endFlag:
-                        cube = Instantiate(EndPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
-                        break;
-                    case MapEntity.teleporter:
-                        cube = Instantiate(GroundPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
-                        cube = Instantiate(PiecePrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, .5f, fPos);
-                        break;
-                    default:
-                        cube = Instantiate(Teleporter, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
-                        cube.GetComponent<Teleporter>().SetColor(color);
-                        print(PairPositions);
-                        if(PairPositions.ContainsKey(color)) {
-                            PairPositions[color].Pos2 = new Vector3(cPos, -0.5f, fPos);
-                            print(PairPositions[color]);
-                        }
-                        else
+                ColorPrefabRelation colorPrefab = settings.MapSettings.GetPrefab(color);
+
+                if (colorPrefab != null)
+                {
+                    if (colorPrefab.IsObstacle)
+                        _obstaclesPosition.Add(new Vector3(cPos, -.5f, fPos));
+
+                    if (!colorPrefab.IsEmpty)
+                    {
+                        instance = InstantiateAndLocate(colorPrefab, fPos, cPos);
+
+                        if (colorPrefab.UseGround)
+                            InstantiateAndLocate(settings.MapSettings.Ground, fPos, cPos);
+
+                        if (colorPrefab.UsePairPosition)
+                            SetPairPosition(colorPrefab, fPos, cPos);
+
+                        switch (colorPrefab.Entity)
                         {
-                            PairPositions[color] = new PairPositions() { Pos1 = new Vector3(cPos, -0.5f, fPos) };
-                            print(PairPositions[color]);
-                            
+                            case MapEntity.startFlag:
+                                StartPosition = new Vector3(cPos, 0f, fPos);
+                                break;
+                            case MapEntity.teleporter:
+                                instance.GetComponent<Teleporter>().SetColor(color);
+                                break;
                         }
-                        break;
+                    }
                 }
 
                 cPos += 1;
@@ -126,11 +90,24 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    private void SetPairPosition(ColorPrefabRelation colorPrefab, float fPos, float cPos)
+    {
+        if (PairPositions.ContainsKey(colorPrefab.Color))
+            PairPositions[colorPrefab.Color].Pos2 = new Vector3(cPos, -0.5f, fPos);
+        else
+            PairPositions[colorPrefab.Color] = new PairPositions() { Pos1 = new Vector3(cPos, -0.5f, fPos) };
+    }
+
+    private GameObject InstantiateAndLocate(ColorPrefabRelation colorPrefab, float fPos, float cPos)
+    {
+        GameObject instance = Instantiate(colorPrefab.Prefab, Ground);
+        instance.transform.position = new Vector3(cPos, colorPrefab.Offset, fPos);
+        return instance;
+    }
+
     public List<Vector3> GetObstaclesPosition() {
         return _obstaclesPosition;
     }
-
-    public enum MapEntity { hole, ground, wall, endFlag, startFlag, teleporter, other}
 
     public Vector3 GetPairPosition(Color color, Vector3 vector3)
     {
@@ -146,23 +123,5 @@ public class MapGenerator : MonoBehaviour
             }
         }
         return vector3;
-    }
-
-    private MapEntity GetColorType(Color color)
-    {
-        if(color == holeColor)
-            return MapEntity.hole;
-        if(color == groundColor)
-            return MapEntity.ground;
-        if(color == wallColor)
-            return MapEntity.wall;
-        if(color == startColor)
-            return MapEntity.startFlag;
-        if(color == endColor)
-            return MapEntity.endFlag;
-        if(color == pieceColor)
-            return MapEntity.teleporter;
-        print("return 0");
-        return MapEntity.other;
     }
 }
