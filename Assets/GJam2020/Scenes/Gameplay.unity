@@ -1421,6 +1421,7 @@ GameObject:
   - component: {fileID: 648655669}
   - component: {fileID: 648655668}
   - component: {fileID: 648655667}
+  - component: {fileID: 648655670}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -1595,6 +1596,18 @@ MonoBehaviour:
   IsUIEnabled: 1
   IsSongEnable: 1
   _fxAudioSource: {fileID: 0}
+--- !u!114 &648655670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648655663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 423027c2bba6ca34284ef5a7aea94fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &671791787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2681,7 +2694,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.024583334, y: 0.8801776}
   m_AnchorMax: {x: 0.07130769, y: 0.9622763}
-  m_AnchoredPosition: {x: 0, y: 0.000030517578}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1217804740
@@ -3220,25 +3233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6074ee3dd875e498d67e5aeb96b3de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundPrefab: {fileID: 2954736627833355979, guid: e51d354bd6e75c54884284ee9140e5b6,
-    type: 3}
-  StartPrefab: {fileID: 2459627192200031090, guid: 390377da00d72784b86590ccfba3c831,
-    type: 3}
-  EndPrefab: {fileID: 9075672210897940381, guid: c9b12bb10dc47db4f9f4d0da04fa7869,
-    type: 3}
-  WallPrefab: {fileID: 8596004062763429865, guid: 58a7a378e02cbf44b87bd51698d10642,
-    type: 3}
-  PiecePrefab: {fileID: 4848963525851812169, guid: c41c44c2fb8040b4d8dd65d768d4402d,
-    type: 3}
-  Teleporter: {fileID: 8276289561022776875, guid: e9605c0e15c07f541a690e29659b9518,
-    type: 3}
   Ground: {fileID: 352376404}
-  holeColor: {r: 0, g: 0, b: 0, a: 1}
-  groundColor: {r: 1, g: 1, b: 1, a: 1}
-  wallColor: {r: 1, g: 0, b: 0, a: 1}
-  startColor: {r: 0, g: 1, b: 0, a: 1}
-  endColor: {r: 0, g: 0, b: 1, a: 1}
-  pieceColor: {r: 1, g: 0, b: 1, a: 1}
   OnSceneCreated:
     m_PersistentCalls:
       m_Calls: []
