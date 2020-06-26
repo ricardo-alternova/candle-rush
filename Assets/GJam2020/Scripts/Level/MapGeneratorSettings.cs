@@ -35,7 +35,7 @@ public class MapGeneratorSettings : ScriptableObject
             if (ground.Color == color)
                 return ground;
 
-            Debug.LogError("There in not coincidence for ColorPrefabRelation of: " + color.ToString());
+            Debug.LogError("There is no coincidence for ColorPrefabRelation of: " + color.ToString());
             return ground;
         }
     }
