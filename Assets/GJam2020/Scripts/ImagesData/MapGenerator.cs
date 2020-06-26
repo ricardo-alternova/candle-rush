@@ -69,7 +69,7 @@ public class MapGenerator : MonoBehaviour
                             InstantiateAndLocate(settings.MapSettings.Ground, fPos, cPos);
 
                         if (colorPrefab.UsePairPosition)
-                            SetPairPosition(colorPrefab, fPos, cPos);
+                            SetPairPosition(color, fPos, cPos);
 
                         switch (colorPrefab.Entity)
                         {
@@ -90,12 +90,12 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void SetPairPosition(ColorPrefabRelation colorPrefab, float fPos, float cPos)
+    private void SetPairPosition(Color color, float fPos, float cPos)
     {
-        if (PairPositions.ContainsKey(colorPrefab.Color))
-            PairPositions[colorPrefab.Color].Pos2 = new Vector3(cPos, -0.5f, fPos);
+        if (PairPositions.ContainsKey(color))
+            PairPositions[color].Pos2 = new Vector3(cPos, -0.5f, fPos);
         else
-            PairPositions[colorPrefab.Color] = new PairPositions() { Pos1 = new Vector3(cPos, -0.5f, fPos) };
+            PairPositions[color] = new PairPositions() { Pos1 = new Vector3(cPos, -0.5f, fPos) };
     }
 
     private GameObject InstantiateAndLocate(ColorPrefabRelation colorPrefab, float fPos, float cPos)

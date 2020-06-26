@@ -20,6 +20,8 @@ public class MapGeneratorSettings : ScriptableObject
     [SerializeField]
     private ColorPrefabRelation ground;
     [SerializeField]
+    private ColorPrefabRelation teleporter;
+    [SerializeField]
     private List<ColorPrefabRelation> prefabs;
 
     public ColorPrefabRelation Ground { get => ground; }
@@ -35,8 +37,11 @@ public class MapGeneratorSettings : ScriptableObject
             if (ground.Color == color)
                 return ground;
 
-            Debug.LogError("There is no coincidence for ColorPrefabRelation of: " + color.ToString());
-            return ground;
+            if (teleporter.Color == color)
+                return teleporter;
+
+            Debug.LogWarning("There in not coincidence for ColorPrefabRelation of: " + color.ToString());
+            return teleporter;
         }
     }
 }
