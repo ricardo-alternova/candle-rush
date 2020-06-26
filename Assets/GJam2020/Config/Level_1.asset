@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_1
   m_EditorClassIdentifier: 
   number: 1
-  map: {fileID: 2800000, guid: c01bbcdf6213a5841a4ac3d973b582c5, type: 3}
+  map: {fileID: 2800000, guid: d1e7b551ddb48ca499d92467bfcc7633, type: 3}
   startLocation: {x: 1, y: 0, z: 1}
   score: 200
   mapSettings: {fileID: 11400000, guid: 1c65f51c962ac534b8631b63992953c9, type: 2}
