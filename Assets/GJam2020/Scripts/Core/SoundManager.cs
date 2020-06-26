@@ -37,11 +37,14 @@ namespace GJam2020.Core
                 _audioSongPlayers = new List<AudioSourcePlayer>();
                 _audioUIPlayers = new List<AudioSourcePlayer>();
                 _audioFxPlayers = new List<AudioSourcePlayer>();
-
-                var songEnabled = PlayerPrefsMgr.Get().LoadInt("PauseSongsState");
-                if (songEnabled < 0) EnableSong(true);
-                else IsSongEnable = songEnabled == 1 ? true :false;
             }
+        }
+
+        private void Start()
+        {
+            var songEnabled = PlayerPrefsMgr.Get().LoadInt("PauseSongsState");
+            if (songEnabled < 0) EnableSong(true);
+            else IsSongEnable = songEnabled == 1 ? true : false;
         }
 
         public static SoundManager Get() { return _instance; }
