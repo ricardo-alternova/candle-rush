@@ -22,6 +22,16 @@ MonoBehaviour:
     isEmpty: 0
     useGround: 0
     usePairPosition: 0
+  teleporter:
+    color: {r: 0, g: 1, b: 1, a: 1}
+    entity: 7
+    prefab: {fileID: 8276289561022776875, guid: e9605c0e15c07f541a690e29659b9518,
+      type: 3}
+    offset: -0.5
+    isObstacle: 0
+    isEmpty: 0
+    useGround: 0
+    usePairPosition: 1
   prefabs:
   - color: {r: 0, g: 0, b: 0, a: 1}
     entity: 1
@@ -67,12 +77,3 @@ MonoBehaviour:
     isEmpty: 0
     useGround: 1
     usePairPosition: 0
-  - color: {r: 0, g: 1, b: 1, a: 1}
-    entity: 7
-    prefab: {fileID: 8276289561022776875, guid: e9605c0e15c07f541a690e29659b9518,
-      type: 3}
-    offset: -0.5
-    isObstacle: 0
-    isEmpty: 0
-    useGround: 0
-    usePairPosition: 1
