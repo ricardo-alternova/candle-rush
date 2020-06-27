@@ -17,6 +17,10 @@ namespace GJam2020.Core
         public event MoveCallback OnMove;
         
         private bool _isHandlingCommand;
+        private Vector2 moveValue;
+        private Vector2 meanDrag = Vector2.zero;
+        private bool startDragg;
+
         ////To reset the coroutine
         //private Coroutine _replayCoroutine;
         ////If we should start the replay
@@ -33,9 +37,39 @@ namespace GJam2020.Core
                 };
         }
 
-        Vector2 moveValue;
+        
         private void FixedUpdate()
         {
+#if UNITY_WEBGL
+            if (Input.touchCount < 1) return;
+
+            if (Input.GetTouch(0).phase == TouchPhase.Moved)
+            {
+                meanDrag += Input.GetTouch(0).deltaPosition;
+                if (meanDrag.magnitude > 0.1f)
+                {
+                    startDragg = true;
+                    moveValue = meanDrag.normalized * 100;
+
+                    moveValue.x = Mathf.Abs(moveValue.x) < 75f ? 0 : moveValue.x;
+                    moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
+                }
+            }
+            if (startDragg)
+            {
+                
+
+                if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                {
+                    moveValue = Vector2.zero;
+                    startDragg = false;
+                    meanDrag = Vector2.zero;
+                }
+
+            }
+            CheckMoveInput(moveValue * -1);
+#else
+
             //moveValue = inputActions.Player.Move. ReadValue<Vector2>();
             if (Touch.activeTouches.Count > 0) {
                 var touch = Touch.activeTouches[0];
@@ -44,6 +78,7 @@ namespace GJam2020.Core
                 moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
                 //_debugText.text = moveValue.ToString();
             }
+#endif
         }
 
         private void Start()
@@ -68,7 +103,7 @@ namespace GJam2020.Core
         private void CheckMoveInput(Vector2 direction)
         {
             if (GameManager.Get.IsPlaying == false) return;
-#if UNITY_ANDROID 
+#if UNITY_ANDROID
             direction = moveValue.magnitude != 0 ? moveValue : direction;
 #endif
             if (direction.x != 0) {
