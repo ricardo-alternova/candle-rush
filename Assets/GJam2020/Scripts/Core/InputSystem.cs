@@ -40,13 +40,13 @@ namespace GJam2020.Core
         
         private void FixedUpdate()
         {
-#if UNITY_WEBGL
+//#if UNITY_WEBGL
             if (Input.touchCount < 1) return;
 
             if (Input.GetTouch(0).phase == TouchPhase.Moved)
             {
                 meanDrag += Input.GetTouch(0).deltaPosition;
-                if (meanDrag.magnitude > 0.1f)
+                if (meanDrag.magnitude > 70f)
                 {
                     startDragg = true;
                     moveValue = meanDrag.normalized * 100;
@@ -68,17 +68,17 @@ namespace GJam2020.Core
 
             }
             CheckMoveInput(moveValue * -1);
-#else
+//#else
 
-            //moveValue = inputActions.Player.Move. ReadValue<Vector2>();
-            if (Touch.activeTouches.Count > 0) {
-                var touch = Touch.activeTouches[0];
-                moveValue = touch.delta;
-                moveValue.x = Mathf.Abs(moveValue.x) < 75f ? 0 : moveValue.x;
-                moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
-                //_debugText.text = moveValue.ToString();
-            }
-#endif
+            ////moveValue = inputActions.Player.Move. ReadValue<Vector2>();
+            //if (Touch.activeTouches.Count > 0) {
+            //    var touch = Touch.activeTouches[0];
+            //    moveValue = touch.delta;
+            //    moveValue.x = Mathf.Abs(moveValue.x) < 75f ? 0 : moveValue.x;
+            //    moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
+            //    //_debugText.text = moveValue.ToString();
+            //}
+//#endif
         }
 
         private void Start()
