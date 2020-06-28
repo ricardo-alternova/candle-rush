@@ -94,7 +94,7 @@ namespace GGJ2020.Levels
 
         private Vector3 GetRandomDirection()
         {
-            int rotation = Random.Range(0, 5);
+            int rotation = Random.Range(0, 3);
             Vector3 finalDir = Vector3.up;
             switch (rotation)
             {

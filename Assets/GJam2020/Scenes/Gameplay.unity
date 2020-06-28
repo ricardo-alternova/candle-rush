@@ -1496,7 +1496,7 @@ MonoBehaviour:
   Clip: {fileID: 8300000, guid: 8419691f02d30804fb215f94d7f76572, type: 3}
   _soundType: 0
   AllowPlaying: 1
-  _playOnAwake: 0
+  _playOnAwake: 1
 --- !u!82 &648655668
 AudioSource:
   m_ObjectHideFlags: 0

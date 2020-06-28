@@ -15,7 +15,7 @@ MonoBehaviour:
   ground:
     color: {r: 1, g: 1, b: 1, a: 1}
     entity: 2
-    prefab: {fileID: 2954736627833355979, guid: e51d354bd6e75c54884284ee9140e5b6,
+    prefab: {fileID: 6427683915846647271, guid: 0de425269f7447e459c04978e33f1813,
       type: 3}
     offset: -0.5
     isObstacle: 0
