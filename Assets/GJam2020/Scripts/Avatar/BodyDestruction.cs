@@ -18,6 +18,8 @@ namespace GJam2020.Avatar
         [Header("Body parts")]
         [SerializeField]
         private SkinnedMeshRenderer[] bodyParts;
+        [SerializeField]
+        private PlayerMovement playerMovement;
         private int partsDestroyed;
 
         private ParticleSystem.EmissionModule emission;
@@ -36,8 +38,9 @@ namespace GJam2020.Avatar
             constructEmission = constructParticleS.emission;
             constructEmission.enabled = false;
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
+            playerMovement.MovementCompleted += CheckIfGameOver;
         }
-
+        
         [ContextMenu("DestroyBodyPart")]
         public void DestroyBodyPart()
         {
@@ -55,12 +58,17 @@ namespace GJam2020.Avatar
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
             StartCoroutine(EmmitParticles(emission));
             ++partsDestroyed;
-            if(bodyParts.Length - partsDestroyed == 0)
+           
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
+
+        }
+
+        private void CheckIfGameOver()
+        {
+            if (bodyParts.Length - partsDestroyed == 1 && !LevelManager.Get.AlreadyWin)
             {
                 AvatarGeneralManager.Get.Dead();
             }
-            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
-
         }
 
         private IEnumerator EmmitParticles(ParticleSystem.EmissionModule emissionModule)

@@ -18,8 +18,9 @@ namespace GJam2020.Core
 
         private LevelSettings settings;
         private AudioSourcePlayer _audioSource;
-
         public static LevelManager Get;
+
+        public bool AlreadyWin { get; private set; } = false;
 
         public int LevelNumber
         {
@@ -33,7 +34,14 @@ namespace GJam2020.Core
 
         public LevelSettings NextLevel
         {
-            get { return settings.NextLevel; }
+            get {
+                AlreadyWin = false;
+                return settings.NextLevel;
+            }
+        }
+        public void Win()
+        {
+            AlreadyWin = true;
         }
 
         public void PlayFinishLevel()

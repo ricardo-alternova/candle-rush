@@ -12,7 +12,10 @@ public class EndPrefab : MonoBehaviour
         {
             playerMovement = other.GetComponent<PlayerMovement>();
             if (playerMovement != null)
+            {
+                LevelManager.Get.Win();
                 playerMovement.MovementCompleted += CharacterMovementCompleted;
+            }
         }
     }
 
