@@ -536,7 +536,7 @@ MonoBehaviour:
   _level: 10
   _star: {fileID: 2111072657}
   _button: {fileID: 859015002}
-  levelSettings: {fileID: 0}
+  levelSettings: {fileID: 11400000, guid: 94dec231a2fbda047b2dee9aa9760237, type: 2}
 --- !u!114 &50112207
 MonoBehaviour:
   m_ObjectHideFlags: 0
