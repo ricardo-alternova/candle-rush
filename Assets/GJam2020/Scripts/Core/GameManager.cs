@@ -19,6 +19,7 @@ public class GameData
 
 public class GameManager : MonoBehaviour
 {
+    private const string GameplayScene = "Gameplay";
     public bool IsPlaying;
     public LevelSettings currentLevel;
     public MaterialsSettings materialsSettings;
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     public static string MAIN_MENU_NAME = "MainMenu";
     public static string LEVELS_MENU_NAME = "LevelsMenu";
     public static string GAMEPLAY_NAME = "Gameplay";
+    public LevelSettings[] _levelSettings;
 
     private GameData _gameData;
     private string _nextLevel;
@@ -39,8 +41,6 @@ public class GameManager : MonoBehaviour
         {
             if (Get != this)
             {
-                //Get.ObjectsUnactive = new List<GameObject>();
-                //Get.playerMovement = playerMovement;
                 Destroy(gameObject);
             }
 
@@ -77,12 +77,18 @@ public class GameManager : MonoBehaviour
             _gameData.levelsScore[level - 1] = score;
         }
         SaveGameData();
-        SceneManager.LoadScene("IntersectionScene");
+        ChargeNextLevel();
     }
 
     public void ChargeNextLevel()
     {
-        SceneManager.LoadScene(_nextLevel);
+        if(ObjectsUnactive != null)
+            ObjectsUnactive.Clear();
+
+        if (_nextLevel != null && !_nextLevel.Equals(""))
+            SceneManager.LoadScene(_nextLevel);
+        else
+            SceneManager.LoadScene(GameplayScene);
     }
 
     public int GetLastLevelComplete()
@@ -102,7 +108,6 @@ public class GameManager : MonoBehaviour
     }
     private void LoadGameData()
     {
-        
         XmlSerializer serializer = new XmlSerializer(typeof(GameData));
         string text = PlayerPrefs.GetString("Gamedata");
         if(text.Length == 0)
@@ -116,6 +121,12 @@ public class GameManager : MonoBehaviour
                 _gameData = serializer.Deserialize(reader) as GameData;
             }
         }
+        LoadLevelSettings(_gameData.lastLevelUnLock);
+    }
+
+    private void LoadLevelSettings(int level)
+    {
+        currentLevel = _levelSettings[level];
     }
 
     private void SaveGameData()

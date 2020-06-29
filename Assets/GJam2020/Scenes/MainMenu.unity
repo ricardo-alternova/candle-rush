@@ -240,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPlaying: 0
   currentLevel: {fileID: 0}
+  materialsSettings: {fileID: 0}
   randomMaterial: {fileID: 256158660}
   playerMovement: {fileID: 0}
   ObjectsUnactive: []
@@ -251,11 +252,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256158657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 908.0431, y: 728.71985, z: -286.60532}
+  m_LocalPosition: {x: 928.9845, y: 727.8686, z: -278.82797}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1209402907}
-  m_RootOrder: 3
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &256158660
 MonoBehaviour:
@@ -451,7 +452,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &502006039
 GameObject:
@@ -694,9 +695,8 @@ Transform:
   - {fileID: 1133488828}
   - {fileID: 1398945864}
   - {fileID: 304073931}
-  - {fileID: 256158659}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1398945862
 GameObject:

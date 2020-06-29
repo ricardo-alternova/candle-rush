@@ -55,7 +55,7 @@ public class MenuItem : MonoBehaviour
     public void LoadScene()
     {
         GameManager.Get.currentLevel = levelSettings;
-        SceneManager.LoadScene(GameplayScene);
+        GameManager.Get.ChargeNextLevel();
     }
 
     private void ShowAsUnlock()
