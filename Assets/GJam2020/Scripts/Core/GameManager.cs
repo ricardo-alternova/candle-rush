@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 {
     public bool IsPlaying;
     public LevelSettings currentLevel;
-    private MaterialsSettings materialsSettings;
+    public MaterialsSettings materialsSettings;
     public RandomMaterialConfig randomMaterial;
     public PlayerMovement playerMovement;
     public List<GameObject> ObjectsUnactive=new List<GameObject>();
@@ -49,6 +49,11 @@ public class GameManager : MonoBehaviour
                 Get.playerMovement = playerMovement;
                 Destroy(gameObject);
             }
+        }
+        if (Get.randomMaterial != null)
+        {
+            Get.materialsSettings = Get.randomMaterial.GetMaterialSettings();
+            RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
         }
         ObjectsUnactive = new List<GameObject>();
         LoadGameData();
@@ -92,17 +97,9 @@ public class GameManager : MonoBehaviour
         }
         return 0;
     }
-    public MaterialsSettings GetSettings()
-    {
-        return materialsSettings;
-    }
     private void LoadGameData()
     {
-        if (randomMaterial != null)
-        {
-            materialsSettings = randomMaterial.GetMaterialSettings();
-            RenderSettings.skybox = materialsSettings.SkyboxMaterial;
-        }
+        
         XmlSerializer serializer = new XmlSerializer(typeof(GameData));
         string text = PlayerPrefs.GetString("Gamedata");
         if(text.Length == 0)

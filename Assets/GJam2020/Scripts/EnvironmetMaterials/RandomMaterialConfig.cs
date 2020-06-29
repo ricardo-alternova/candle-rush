@@ -8,6 +8,6 @@ public class RandomMaterialConfig : MonoBehaviour
 
     public MaterialsSettings GetMaterialSettings()
     {
-        return allConfigs[Random.Range(0, allConfigs.Length - 1)];
+        return allConfigs[Random.Range(0, allConfigs.Length - 1)]; ;
     }
 }

@@ -12,22 +12,24 @@ public class MaterialsSettings : ScriptableObject
     }
     public MaterialNameStruc[] materials;
     public Material SkyboxMaterial;
-    private Dictionary<string,Material> materialsDict;
 
     public Material GetMaterial(string name)
     {
-        if (materialsDict==null || materialsDict.Count==0)
+        foreach(MaterialNameStruc material in materials)
         {
-            Initialize();
+            if (material.Name == name)
+            {
+                return material.material;
+            }
         }
-        return materialsDict[name];
+        return null;
     }
-    private void Initialize()
-    {
-        materialsDict = new Dictionary<string, Material>();
-        foreach(MaterialNameStruc material in materials) 
-        {
-            materialsDict[material.Name] = material.material;
-        }
-    }
+    //public void Initialize()
+    //{
+    //    materialsDict = new Dictionary<string, Material>();
+    //    foreach(MaterialNameStruc material in materials) 
+    //    {
+    //        materialsDict[material.Name] = material.material;
+    //    }
+    //}
 }
