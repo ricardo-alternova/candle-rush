@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GGJ2020.Avatar;
+using GJam2020.Avatar;
 
 public class Teleporter : MonoBehaviour
 {
@@ -20,7 +21,8 @@ public class Teleporter : MonoBehaviour
         {
             AvatarPosition.CanTeleporter = false;
             StartCoroutine(AvatarPosition.Teleporter());
-            other.transform.position = MapGenerator.Get.GetPairPosition(_localColor, _localPosition);
+            other.GetComponent<PlayerMovement>().
+                UpdateMovementPosition(MapGenerator.Get.GetPairPosition(_localColor, _localPosition));
         }
     }
 

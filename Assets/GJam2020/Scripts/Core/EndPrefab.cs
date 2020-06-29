@@ -1,10 +1,28 @@
-﻿using UnityEngine;
+﻿using GJam2020.Avatar;
+using GJam2020.Core;
+using UnityEngine;
 
 public class EndPrefab : MonoBehaviour
 {
+    private PlayerMovement playerMovement;
+
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Avatar"))
-            GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Score, LevelManager.Get.NextLevel);
+        if (other.gameObject.layer == LayerMask.NameToLayer("Avatar"))
+        {
+            playerMovement = other.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                LevelManager.Get.Win();
+                playerMovement.MovementCompleted += CharacterMovementCompleted;
+            }
+        }
+    }
+
+    private void CharacterMovementCompleted()
+    {
+        playerMovement.MovementCompleted -= CharacterMovementCompleted;
+
+        LevelManager.Get.PlayFinishLevel();
     }
 }

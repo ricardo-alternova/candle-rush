@@ -1,8 +1,7 @@
-﻿//using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-//using System.IO;
-//using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PairPositions
 {
@@ -12,23 +11,12 @@ public class PairPositions
 
 public class MapGenerator : MonoBehaviour
 {
-    public string FileName;
-    private readonly string folderPath = "Assets/GJam2020/Resources/LevelDesigns/maps/";
-    public GameObject GroundPrefab;
-    public GameObject StartPrefab;
-    public GameObject EndPrefab;
-    public GameObject WallPrefab;
-    public GameObject PiecePrefab;
-    public GameObject Teleporter;
+    public Vector3 StartPosition { get; private set; }
+
     public Transform Ground;
+    public UnityEvent OnSceneCreated;
 
-    public Color holeColor;
-    public  Color groundColor;
-    public Color wallColor;
-    public Color startColor;
-    public Color endColor;
-    public Color pieceColor;
-
+    private LevelSettings settings;
     private List<Vector3> _obstaclesPosition = new List<Vector3>();
 
     private Dictionary<Color, PairPositions> PairPositions = new Dictionary<Color, PairPositions>();
@@ -38,21 +26,22 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
+        settings = GameManager.Get.currentLevel;
         Get = this;
     }
 
-    public void Start()
+    private void Start()
     {
         ReadImage();
     }
 
     public void ReadImage()
     {
-        Texture2D texture = Resources.Load<Texture2D>("LevelDesigns/" + FileName);
+        Texture2D texture = settings.Map;
         GenerateCubesPerPixel(texture.width, texture.height, texture);
+        OnSceneCreated.Invoke();
     }
     
-
     public void GenerateCubesPerPixel(int width, int height, Texture2D data,  int scale = 1)
     {
         Color[] colors = data.GetPixels();
@@ -63,56 +52,35 @@ public class MapGenerator : MonoBehaviour
             for(int c = 0; c < width; c++)
             {
                 Color color = colors[((f * width) + c)];
-                GameObject cube;
-                switch(GetColorType(color))
-                {
-                    case 1:
-                        _obstaclesPosition.Add(new Vector3(cPos, -.5f, fPos));
-                        break;
-                    case 2:
-                        cube = Instantiate(GroundPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -.5f, fPos);
-                        break;
-                    case 3:
-                        _obstaclesPosition.Add(new Vector3(cPos, -.5f, fPos));
-                        cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -.5f, fPos);
-                        cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, .5f, fPos);
-                        cube = Instantiate(WallPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, 1.5f, fPos);
+                GameObject instance;
 
-                        break;
-                    case 4:
-                        cube = Instantiate(StartPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
-                        break;
-                    case 5:
-                        cube = Instantiate(EndPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
-                        break;
-                    case 6:
-                        cube = Instantiate(GroundPrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
-                        cube = Instantiate(PiecePrefab, Ground);
-                        cube.transform.position = new Vector3(cPos, .5f, fPos);
-                        break;
-                    default:
-                        cube = Instantiate(Teleporter, Ground);
-                        cube.transform.position = new Vector3(cPos, -0.5f, fPos);
-                        cube.GetComponent<Teleporter>().SetColor(color);
-                        print(PairPositions);
-                        if(PairPositions.ContainsKey(color)) {
-                            PairPositions[color].Pos2 = new Vector3(cPos, -0.5f, fPos);
-                            print(PairPositions[color]);
-                        }
-                        else
+                ColorPrefabRelation colorPrefab = settings.MapSettings.GetPrefab(color);
+
+                if (colorPrefab != null)
+                {
+                    if (colorPrefab.IsObstacle)
+                        _obstaclesPosition.Add(new Vector3(cPos, -.5f, fPos));
+
+                    if (!colorPrefab.IsEmpty)
+                    {
+                        instance = InstantiateAndLocate(colorPrefab, fPos, cPos);
+
+                        if (colorPrefab.UseGround)
+                            InstantiateAndLocate(settings.MapSettings.Ground, fPos, cPos);
+
+                        if (colorPrefab.UsePairPosition)
+                            SetPairPosition(color, fPos, cPos);
+
+                        switch (colorPrefab.Entity)
                         {
-                            PairPositions[color] = new PairPositions() { Pos1 = new Vector3(cPos, -0.5f, fPos) };
-                            print(PairPositions[color]);
-                            
+                            case MapEntity.startFlag:
+                                StartPosition = new Vector3(cPos, 0f, fPos);
+                                break;
+                            case MapEntity.teleporter:
+                                instance.GetComponent<Teleporter>().SetColor(color);
+                                break;
                         }
-                        break;
+                    }
                 }
 
                 cPos += 1;
@@ -122,26 +90,23 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public List<Vector3> GetObstaclesPosition() {
-        return _obstaclesPosition;
+    private void SetPairPosition(Color color, float fPos, float cPos)
+    {
+        if (PairPositions.ContainsKey(color))
+            PairPositions[color].Pos2 = new Vector3(cPos, -0.5f, fPos);
+        else
+            PairPositions[color] = new PairPositions() { Pos1 = new Vector3(cPos, -0.5f, fPos) };
     }
 
-    private int GetColorType(Color color)
+    private GameObject InstantiateAndLocate(ColorPrefabRelation colorPrefab, float fPos, float cPos)
     {
-        if(color == holeColor)
-            return 1;
-        if(color == groundColor)
-            return 2;
-        if(color == wallColor)
-            return 3;
-        if(color == startColor)
-            return 4;
-        if(color == endColor)
-            return 5;
-        if(color == pieceColor)
-            return 6;
-        print("return 0");
-        return 0;
+        GameObject instance = Instantiate(colorPrefab.Prefab, Ground);
+        instance.transform.position = new Vector3(cPos, colorPrefab.Offset, fPos);
+        return instance;
+    }
+
+    public List<Vector3> GetObstaclesPosition() {
+        return _obstaclesPosition;
     }
 
     public Vector3 GetPairPosition(Color color, Vector3 vector3)

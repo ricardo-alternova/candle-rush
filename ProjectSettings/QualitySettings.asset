@@ -180,8 +180,7 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    excludedTargetPlatforms:
-    - Android
+    excludedTargetPlatforms: []
   - serializedVersion: 2
     name: Ultra
     pixelLightCount: 4
@@ -219,5 +218,6 @@ QualitySettings:
     excludedTargetPlatforms:
     - Android
   m_PerPlatformDefaultQuality:
-    Android: 2
+    Android: 3
     Standalone: 4
+    WebGL: 2

@@ -1,47 +1,73 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuItem : MonoBehaviour
 {
-    public int level;
-    public Sprite colorStar;
-    private int _score;
-    private GameObject _panelActive;
-    private GameObject _panelUnlock;
-    private GameObject _panelUnActive;
+    [SerializeField]
+    private int _level;
+    [SerializeField]
+    private GameObject _star;
+    [SerializeField]
+    private Button _button;
+    [SerializeField]
+    private LevelSettings levelSettings;
 
+    private TextMeshProUGUI _label;
+    private const string GameplayScene = "Gameplay";
+    private int _score;
+    
     private void Start()
     {
-        _panelActive = transform.Find("PanelActive").gameObject;
-        _panelUnlock = transform.Find("PanelUnLock").gameObject;
-        _panelUnActive = transform.Find("PanelUnActive").gameObject;
-        Debug.Log("level" + level);
-        if(level <= GameManager.Get.GetLastLevelComplete() + 1)
+        _button.interactable = false;
+        _star.gameObject.SetActive(false);
+        _label = _button.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        Assert.IsNotNull(_label, "Not textMP component found");
+        _label.color = new Color(1, 1, 1, 0.5f);
+
+        Debug.Log("Level: " + _level);
+        if(_level <= GameManager.Get.GetLastLevelComplete() + 1)
         {
-            Debug.Log("enable" + level);
+            Debug.Log("Enable: " + _level);
             IsEnable();
         }
 
-        if(level <= GameManager.Get.GetLastLevelComplete())
+        if(_level <= GameManager.Get.GetLastLevelComplete())
         {
-            Debug.Log("unlock" + level);
-            _score = GameManager.Get.GetLevelScore(level);
+            Debug.Log("Unlock: " + _level);
             ShowAsUnlock();
         }
+        Init();
+    }
+
+    [ContextMenu("Setup")]
+    private void Init()
+    {
+        _label.text = _level.ToString();
+
+        var button = GetComponentInChildren<Button>();
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => LoadScene());
+    }
+
+    public void LoadScene()
+    {
+        GameManager.Get.currentLevel = levelSettings;
+        GameManager.Get.ChargeNextLevel();
     }
 
     private void ShowAsUnlock()
     {
-        _panelUnlock.SetActive(true);
-        _panelActive.SetActive(false);
-
+        _label.color = Color.white;
+        _button.interactable = true;
+        _star.gameObject.SetActive(true);
     }
 
     private void IsEnable()
     {
-        _panelActive.SetActive(true);
-        _panelUnActive.SetActive(false);
-        _panelUnlock.SetActive(false);
+        _label.color = Color.white;
+        _button.interactable = true;
     }
 }

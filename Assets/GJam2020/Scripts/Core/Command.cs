@@ -12,7 +12,13 @@ namespace GJam2020.Core
         public abstract void Execute(PlayerMovement playerMovement, bool needToBeSaved, Action onCommandComplete, float timeForDisplacement = 1);
 
         //Undo an old command
-        public abstract void Undo(PlayerMovement playerMovement, Action onCommandComplete, float timeForDisplacement = 1);
+        public void Undo(PlayerMovement playerMovement, Action onCommandComplete, float timeForDisplacement = 1)
+        {
+            AvatarGeneralManager.Get.IsReverseCommand();
+            ReverseCommand.Execute(playerMovement, false, () => OnExecutionComplete(onCommandComplete), timeForDisplacement);
+            BodyDestruction.Instance.ReconstructBodyPart();
+            CommandsManager.RemoveLastCommand();
+        }
 
         protected bool isExecuting;
 
@@ -20,7 +26,7 @@ namespace GJam2020.Core
 
         protected void OnExecutionComplete(Action onCommandComplete)
         {
-            UnityEngine.Debug.Log("Command Executed");
+            //UnityEngine.Debug.Log("Command Executed");
             isExecuting = false;
             onCommandComplete();
         }
@@ -46,15 +52,6 @@ namespace GJam2020.Core
             CommandsManager.AddCommand(this);
 
         }
-
-        //Undo an old command
-        public override void Undo(PlayerMovement playerMovement, Action onCommandComplete, float timeForDisplacement = 1)
-        {
-            AvatarGeneralManager.Get.IsReverseCommand();
-            ReverseCommand.Execute(playerMovement, false, () => OnExecutionComplete(onCommandComplete), timeForDisplacement);
-            BodyDestruction.Instance.ReconstructBodyPart();
-            CommandsManager.RemoveLastCommand();
-        }
     }
 
     public class MoveBackward : Command
@@ -70,15 +67,6 @@ namespace GJam2020.Core
             //Save the command
             if (!needToBeSaved || !isValidMovement) return;
             CommandsManager.AddCommand(this);
-        }
-
-        //Undo an old command
-        public override void Undo(PlayerMovement playerMovement, Action onCommandComplete, float timeForDisplacement = 1)
-        {
-            AvatarGeneralManager.Get.IsReverseCommand();
-            ReverseCommand.Execute(playerMovement, false, () =>OnExecutionComplete(onCommandComplete), timeForDisplacement);
-            BodyDestruction.Instance.ReconstructBodyPart();
-            CommandsManager.RemoveLastCommand();
         }
     }
 
@@ -96,15 +84,6 @@ namespace GJam2020.Core
             if (!needToBeSaved || !isValidMovement) return;
             CommandsManager.AddCommand(this);
         }
-
-        //Undo an old command
-        public override void Undo(PlayerMovement playerMovement, Action onCommandComplete, float timeForDisplacement = 1)
-        {
-            AvatarGeneralManager.Get.IsReverseCommand();
-            ReverseCommand.Execute(playerMovement, false,() => OnExecutionComplete(onCommandComplete), timeForDisplacement);
-            BodyDestruction.Instance.ReconstructBodyPart();
-            CommandsManager.RemoveLastCommand();
-        }
     }
 
     public class MoveRight : Command
@@ -120,15 +99,6 @@ namespace GJam2020.Core
             //Save the command
             if (!needToBeSaved || !isValidMovement) return;
             CommandsManager.AddCommand(this);
-        }
-
-        //Undo an old command
-        public override void Undo(PlayerMovement playerMovement, Action onCommandComplete, float timeForDisplacement = 1)
-        {
-            AvatarGeneralManager.Get.IsReverseCommand();
-            ReverseCommand.Execute(playerMovement, false,()=> OnExecutionComplete(onCommandComplete), timeForDisplacement);
-            BodyDestruction.Instance.ReconstructBodyPart();
-            CommandsManager.RemoveLastCommand();
         }
     }
 }

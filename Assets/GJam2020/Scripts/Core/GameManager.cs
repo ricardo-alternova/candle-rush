@@ -19,31 +19,47 @@ public class GameData
 
 public class GameManager : MonoBehaviour
 {
-    private GameData _gameData;
-    public static GameManager Get;
-    private string _nextLevel;
-    public List<GameObject> ObjectsUnactive=new List<GameObject>();
+    private const string GameplayScene = "Gameplay";
+    public bool IsPlaying;
+    public LevelSettings currentLevel;
+    public MaterialsSettings materialsSettings;
+    public RandomMaterialConfig randomMaterial;
     public PlayerMovement playerMovement;
+    public List<GameObject> ObjectsUnactive=new List<GameObject>();
+    public static GameManager Get;
+    public static string MAIN_MENU_NAME = "MainMenu";
+    public static string LEVELS_MENU_NAME = "LevelsMenu";
+    public static string GAMEPLAY_NAME = "Gameplay";
+    public LevelSettings[] _levelSettings;
+
+    private GameData _gameData;
+    private string _nextLevel;
 
     private void Awake()
     {
-        if(Get == null)
+        if (Get != null)
         {
-            Get = this;
-            DontDestroyOnLoad(gameObject);
+            if (Get != this)
+            {
+                Destroy(gameObject);
+            }
 
         }
         else
         {
-            if(Get != this)
+            Get = this;
+            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
+
+
+            if (Get.randomMaterial != null)
             {
-                Get.ObjectsUnactive = new List<GameObject>();
-                Get.playerMovement = playerMovement;
-                Destroy(gameObject);
+                Get.materialsSettings = Get.randomMaterial.GetMaterialSettings();
+                RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
             }
+            ObjectsUnactive = new List<GameObject>();
+            LoadGameData();
         }
-        ObjectsUnactive = new List<GameObject>();
-        LoadGameData();
     }  
 
     public void NewLevelComplete(int level, int score, string nextLevel)
@@ -61,12 +77,18 @@ public class GameManager : MonoBehaviour
             _gameData.levelsScore[level - 1] = score;
         }
         SaveGameData();
-        SceneManager.LoadScene("IntersectionScene");
+        ChargeNextLevel();
     }
 
     public void ChargeNextLevel()
     {
-        SceneManager.LoadScene(_nextLevel);
+        if(ObjectsUnactive != null)
+            ObjectsUnactive.Clear();
+
+        if (_nextLevel != null && !_nextLevel.Equals(""))
+            SceneManager.LoadScene(_nextLevel);
+        else
+            SceneManager.LoadScene(GameplayScene);
     }
 
     public int GetLastLevelComplete()
@@ -84,7 +106,6 @@ public class GameManager : MonoBehaviour
         }
         return 0;
     }
-
     private void LoadGameData()
     {
         XmlSerializer serializer = new XmlSerializer(typeof(GameData));
@@ -100,6 +121,12 @@ public class GameManager : MonoBehaviour
                 _gameData = serializer.Deserialize(reader) as GameData;
             }
         }
+        LoadLevelSettings(_gameData.lastLevelUnLock);
+    }
+
+    private void LoadLevelSettings(int level)
+    {
+        currentLevel = _levelSettings[level];
     }
 
     private void SaveGameData()
@@ -111,12 +138,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetString("Gamedata", sw.ToString());
         }
     }
-
-    public void LoadLevelScene()
-    {
-        SceneManager.LoadScene("LevelsMenu");
-    }    
-
+    
     public void AddElementToRestore(GameObject objeto)
     {
         ObjectsUnactive.Add(objeto);
@@ -124,6 +146,7 @@ public class GameManager : MonoBehaviour
 
     public void Restore()
     {
+        print("Restore");
         if (playerMovement == null)
             playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
         Assert.IsNotNull(playerMovement, "Player movement not found");
@@ -136,5 +159,7 @@ public class GameManager : MonoBehaviour
                 obj.SetActive(true);
             }
         }));
+
+        IsPlaying = true;
     }
 }

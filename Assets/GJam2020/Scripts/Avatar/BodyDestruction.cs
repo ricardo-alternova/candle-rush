@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GJam2020.Core;
+using DG.Tweening;
 
 namespace GJam2020.Avatar
 {
@@ -17,6 +18,8 @@ namespace GJam2020.Avatar
         [Header("Body parts")]
         [SerializeField]
         private SkinnedMeshRenderer[] bodyParts;
+        [SerializeField]
+        private PlayerMovement playerMovement;
         private int partsDestroyed;
 
         private ParticleSystem.EmissionModule emission;
@@ -35,26 +38,37 @@ namespace GJam2020.Avatar
             constructEmission = constructParticleS.emission;
             constructEmission.enabled = false;
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
+            playerMovement.MovementCompleted += CheckIfGameOver;
         }
-
+        
         [ContextMenu("DestroyBodyPart")]
         public void DestroyBodyPart()
+        {
+            DestroyBodyPart(1f);
+        }
+
+        public void DestroyBodyPart(float time)
         {
             if (bodyParts.Length == partsDestroyed && partsDestroyed != 0)
             {
                 Debug.LogWarning("Trying to destroy more body parts than exists");
                 return;
             }
-            SetAlpha(bodyParts[partsDestroyed], 0);
+            SetAlpha(bodyParts[partsDestroyed], 0.2f, time);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
             StartCoroutine(EmmitParticles(emission));
             ++partsDestroyed;
-            if(bodyParts.Length - partsDestroyed == 0)
+           
+            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
+
+        }
+
+        private void CheckIfGameOver()
+        {
+            if (bodyParts.Length - partsDestroyed == 0 && !LevelManager.Get.AlreadyWin)
             {
                 AvatarGeneralManager.Get.Dead();
             }
-            CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
-
         }
 
         private IEnumerator EmmitParticles(ParticleSystem.EmissionModule emissionModule)
@@ -80,7 +94,25 @@ namespace GJam2020.Avatar
             StartCoroutine(EmmitParticles(constructEmission));
 
         }
+        
+        public void ReconstructAllBody()
+        {
+            StartCoroutine(ReconstructAllBodyCoroutine());
+        }
 
+        private IEnumerator ReconstructAllBodyCoroutine()
+        {
+            while(partsDestroyed > 0)
+            {
+                ReconstructBodyPart();
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return null;
+        }
+
+        /// <summary>
+        /// Reset body inmediately.
+        /// </summary>
         [ContextMenu("ResetBodyParts")]
         public void ResetBody()
         {
@@ -89,7 +121,7 @@ namespace GJam2020.Avatar
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
         }
 
-        private void SetAlpha(SkinnedMeshRenderer skinnedMeshRenderer, float alpha)
+        private void SetAlpha(SkinnedMeshRenderer skinnedMeshRenderer, float alpha, float time=0.5f)
         {
             List<Material> materials = new List<Material>();
             skinnedMeshRenderer.GetMaterials(materials);
@@ -98,7 +130,42 @@ namespace GJam2020.Avatar
             {
                 var matColor = mat.GetColor("_Color");
                 matColor.a = alpha;
-                mat.SetColor("_Color", matColor);
+                if (alpha == 1)
+                {
+                    mat.DOKill();
+                    mat.DOColor(matColor, 1);
+                }
+                else
+                {
+                    StartCoroutine(DisableBodyPartMaterial(mat, matColor, time));
+                }
+            }
+        }
+
+        private IEnumerator DisableBodyPartMaterial(Material material, Color color, float time)
+        {
+            Color colorEmission = material.GetColor("_EmissionColor");
+            var timer = Time.time;
+            Color eColor;
+            float emission;
+            while (Time.time - timer < time * 0.25f)
+            {
+                yield return new WaitForFixedUpdate();
+
+                emission = Mathf.SmoothStep(0, 1, (Time.time - timer) / (time * 0.25f));
+                eColor = Color.Lerp(colorEmission, colorEmission * 1000, emission);
+                material.SetColor("_EmissionColor", eColor);
+            }
+            yield return new WaitForSeconds(0.25f);
+            material.DOColor(color, time * 0.5f);
+            timer = Time.time;
+            while (Time.time - timer < time * 0.5f)
+            {
+                yield return new WaitForFixedUpdate();
+
+                emission = Mathf.Lerp(1, 0, (Time.time - timer) / (time * 0.5f));
+                eColor = Color.Lerp(colorEmission, colorEmission * 100, emission);
+                material.SetColor("_EmissionColor", eColor);
             }
         }
     }

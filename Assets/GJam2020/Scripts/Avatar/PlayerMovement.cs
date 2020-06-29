@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -14,11 +14,22 @@ namespace GJam2020.Avatar
 
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private Rigidbody playerRigidbody;
+        public event Action MovementCompleted;
+
+        [SerializeField]
+        private Rigidbody playerRigidbody;
         private Vector3 _initialForward;
+        private Vector3 _initialPosition;
+        private Vector3 _finalPosition;
 
         private void Awake()
         {
+            
+        }
+
+        private void Start()
+        {
+            transform.localPosition = MapGenerator.Get.StartPosition;
             _initialForward = transform.forward;
         }
 
@@ -62,21 +73,38 @@ namespace GJam2020.Avatar
             return isValidMovement;
         }
 
+        public void UpdateMovementPosition(Vector3 newInitialPosition)
+        {
+            var deltaPos = _finalPosition - _initialPosition;
+            _initialPosition = newInitialPosition;
+            _finalPosition = deltaPos + _initialPosition;
+
+            var direction = (_finalPosition - _initialPosition).normalized;
+            playerRigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        }
+
+        public void ResetRotation()
+        {
+            playerRigidbody.rotation = Quaternion.LookRotation(_initialForward, Vector3.up);
+        }
+
         private IEnumerator MovePlayer(Vector3 newPos, Action onMovementComplete, float timeForDisplacement)
         {
-            AvatarGeneralManager.Get.StartMovement();
-            var displacement = newPos - playerRigidbody.position;
-            var distance = displacement.magnitude;
-            var speed = distance / timeForDisplacement;
-            var direction = displacement.normalized;
-            playerRigidbody.rotation = Quaternion.LookRotation(direction,Vector3.up);
-            var initialTime = Time.time;
-            var timeInDisplacement = initialTime;
-            while (timeInDisplacement < initialTime+ timeForDisplacement)
+            AvatarGeneralManager.Get.StartMovement(timeForDisplacement);
+
+            _initialPosition = playerRigidbody.position;
+            _finalPosition = newPos;
+
+            var direction = (_finalPosition - _initialPosition).normalized;
+            playerRigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+
+            float timer = 0;
+            while (true)
             {
-                playerRigidbody.position += Time.deltaTime * speed * direction; 
-                timeInDisplacement += Time.deltaTime;
-                yield return null;
+                playerRigidbody.position = Vector3.Lerp(_initialPosition, _finalPosition, timer / timeForDisplacement);
+                timer += Time.deltaTime;
+                if (timer > timeForDisplacement) break;
+                yield return new WaitForEndOfFrame();
             }
 
             var position = playerRigidbody.position;
@@ -84,12 +112,9 @@ namespace GJam2020.Avatar
                 (position.z + 0.5f));
             playerRigidbody.MovePosition(correctedPos);
             AvatarGeneralManager.Get.EndMovement();
+            if (MovementCompleted != null)
+                MovementCompleted();
             onMovementComplete();
-        }
-
-        public void ResetRotation()
-        {
-            playerRigidbody.rotation = Quaternion.LookRotation(_initialForward, Vector3.up);
         }
     }
 }
