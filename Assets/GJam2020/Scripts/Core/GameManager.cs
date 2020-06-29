@@ -35,28 +35,31 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Get == null)
+        if (Get != null)
         {
-            Get = this;
-            DontDestroyOnLoad(gameObject);
+            if (Get != this)
+            {
+                //Get.ObjectsUnactive = new List<GameObject>();
+                //Get.playerMovement = playerMovement;
+                Destroy(gameObject);
+            }
 
         }
         else
         {
-            if(Get != this)
+            Get = this;
+            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
+
+
+            if (Get.randomMaterial != null)
             {
-                Get.ObjectsUnactive = new List<GameObject>();
-                Get.playerMovement = playerMovement;
-                Destroy(gameObject);
+                Get.materialsSettings = Get.randomMaterial.GetMaterialSettings();
+                RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
             }
+            ObjectsUnactive = new List<GameObject>();
+            LoadGameData();
         }
-        if (Get.randomMaterial != null)
-        {
-            Get.materialsSettings = Get.randomMaterial.GetMaterialSettings();
-            RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
-        }
-        ObjectsUnactive = new List<GameObject>();
-        LoadGameData();
     }  
 
     public void NewLevelComplete(int level, int score, string nextLevel)

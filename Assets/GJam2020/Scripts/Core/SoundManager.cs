@@ -63,7 +63,7 @@ namespace GJam2020.Core
 
         public void EnableSong(bool enable)
         {
-            IsSongEnable = enable;
+            IsSongEnable = true;
             PlayerPrefsMgr.Get().Save<int>("PauseSongsState", enable ? 1 : 0);
             EnableTypeOfSound(enable, _pauseSongsState, _audioSongPlayers);
         }
@@ -97,7 +97,7 @@ namespace GJam2020.Core
         public void Play()
         {
             if (!_isPaused) return;
-            if (IsSongEnable)
+            //if (IsSongEnable)
             {
                 foreach (var pauseState in _pauseSongsState)
                 {

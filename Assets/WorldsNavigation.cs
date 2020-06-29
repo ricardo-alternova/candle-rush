@@ -29,7 +29,7 @@ public class WorldsNavigation : MonoBehaviour
     private void TakeMeToIndex()
     {
         content.DOKill();
-        content.DOAnchorPosX(-worlds[currentIndex].anchoredPosition.x, 1f).SetEase(Ease.InBack);
+        content.DOAnchorPosX(-worlds[currentIndex].anchoredPosition.x, 0.6f).SetEase(Ease.InBack);
         checkButtonStatus();
     }
 
