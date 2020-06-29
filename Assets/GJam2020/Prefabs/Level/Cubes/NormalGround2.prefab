@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &243200270393526342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2719672648686106404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebd1d1beb75abda4b97079224b63343a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialName: cube
 --- !u!1 &6427683915846647271
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,9 +160,15 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a7694d1ef7bcea24f92b40be86a32d15, type: 2}
+      objectReference: {fileID: 2100000, guid: 6f005e67c18b47848a30efb7eb5aea7f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11d9485977acbbe4fb513ebea204a8f0, type: 3}
+--- !u!1 &2719672648686106404 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 11d9485977acbbe4fb513ebea204a8f0,
+    type: 3}
+  m_PrefabInstance: {fileID: 6241948174983409197}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1433673027325855031 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 11d9485977acbbe4fb513ebea204a8f0,

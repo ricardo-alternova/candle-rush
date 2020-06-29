@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9446bd44779bc354887a05ca2af7cd79, type: 3}
+  m_Name: MaterialsOpt5
+  m_EditorClassIdentifier: 
+  materials:
+  - Name: start
+    material: {fileID: 2100000, guid: 95baa577b48092c45b5a40a3a38d7155, type: 2}
+  - Name: end
+    material: {fileID: 2100000, guid: afee8a606e2235349a6a3f975d108042, type: 2}
+  - Name: background
+    material: {fileID: 2100000, guid: 99d431fecb092a64595a687b8ffe1761, type: 2}
+  - Name: cube
+    material: {fileID: 2100000, guid: 5269c2b1eeb86194683951b16f799e47, type: 2}
+  - Name: portal
+    material: {fileID: 2100000, guid: f3e8558f9acb4a04abe79abf0ecdbfc7, type: 2}
+  SkyboxMaterial: {fileID: 2100000, guid: 4eebfe3324877204a91cdfc2f4c46675, type: 2}
