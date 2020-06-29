@@ -65,7 +65,7 @@ namespace GJam2020.Avatar
 
         private void CheckIfGameOver()
         {
-            if (bodyParts.Length - partsDestroyed == 1 && !LevelManager.Get.AlreadyWin)
+            if (bodyParts.Length - partsDestroyed == 0 && !LevelManager.Get.AlreadyWin)
             {
                 AvatarGeneralManager.Get.Dead();
             }
