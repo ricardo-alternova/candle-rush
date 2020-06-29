@@ -218,6 +218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 256158659}
   - component: {fileID: 256158658}
+  - component: {fileID: 256158660}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -239,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPlaying: 0
   currentLevel: {fileID: 0}
+  randomMaterial: {fileID: 256158660}
   playerMovement: {fileID: 0}
   ObjectsUnactive: []
 --- !u!4 &256158659
@@ -255,6 +257,23 @@ Transform:
   m_Father: {fileID: 1209402907}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &256158660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256158657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6454d804cc41b4aafe6552d5b0856d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allConfigs:
+  - {fileID: 11400000, guid: d1cef00c300bda24da5c92dd861097a4, type: 2}
+  - {fileID: 11400000, guid: 473a625c1b120b843b41e8e4911c08df, type: 2}
+  - {fileID: 11400000, guid: 38aa6d811e89f8549965c00bce6a1c12, type: 2}
+  - {fileID: 11400000, guid: 6b633415c3cae79449df187df38f818a, type: 2}
 --- !u!1 &304073927
 GameObject:
   m_ObjectHideFlags: 0

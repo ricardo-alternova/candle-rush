@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1345217544022916382}
   - component: {fileID: 1345217544022916381}
+  - component: {fileID: 2177652750517258081}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -43,5 +44,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 426472c3fe671c64f9d019c215b965af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectsUnactive: []
+  IsPlaying: 0
+  currentLevel: {fileID: 0}
+  randomMaterial: {fileID: 2177652750517258081}
   playerMovement: {fileID: 0}
+  ObjectsUnactive: []
+--- !u!114 &2177652750517258081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345217544022916380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6454d804cc41b4aafe6552d5b0856d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allConfigs:
+  - {fileID: 11400000, guid: d1cef00c300bda24da5c92dd861097a4, type: 2}
+  - {fileID: 11400000, guid: 473a625c1b120b843b41e8e4911c08df, type: 2}
+  - {fileID: 11400000, guid: 38aa6d811e89f8549965c00bce6a1c12, type: 2}
+  - {fileID: 11400000, guid: 6b633415c3cae79449df187df38f818a, type: 2}

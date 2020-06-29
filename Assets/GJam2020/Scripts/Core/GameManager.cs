@@ -98,8 +98,11 @@ public class GameManager : MonoBehaviour
     }
     private void LoadGameData()
     {
-        materialsSettings = randomMaterial.GetMaterialSettings();
-        RenderSettings.skybox = materialsSettings.SkyboxMaterial;
+        if (randomMaterial != null)
+        {
+            materialsSettings = randomMaterial.GetMaterialSettings();
+            RenderSettings.skybox = materialsSettings.SkyboxMaterial;
+        }
         XmlSerializer serializer = new XmlSerializer(typeof(GameData));
         string text = PlayerPrefs.GetString("Gamedata");
         if(text.Length == 0)
