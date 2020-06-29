@@ -60,9 +60,9 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DirX: 0
-    - _DirY: 160
+    - _DirY: 52.7
     - _DstBlend: 0
-    - _Exponent: 9.37
+    - _Exponent: 8.73
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -81,4 +81,4 @@ Material:
     - _Color1: {r: 0.70877755, g: 0, b: 0.9056604, a: 0}
     - _Color2: {r: 0.96862745, g: 0.43137255, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _UpVector: {r: 0, g: -0.9396926, b: 0.3420202, a: 0}
+    - _UpVector: {r: 0, g: 0.6059884, b: 0.7954735, a: 0}

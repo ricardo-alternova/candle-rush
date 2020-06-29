@@ -1,13 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using GJam2020.Core;
+﻿using UnityEngine;
 using GJam2020.Level.UI;
+using UnityEngine.UI;
+using DG.Tweening;
+using System.Collections;
 
 namespace GJam2020.Avatar {
     public class AvatarGeneralManager : MonoBehaviour
     {
+        [SerializeField]
+        private TMPro.TextMeshProUGUI _stepAdd;
         public static AvatarGeneralManager Get;
         private AvatarAnimator _animator;
         private PlayerMovement _movement;
@@ -23,7 +24,7 @@ namespace GJam2020.Avatar {
         }
         public void StartMovement(float timeForDisplacement)
         {
-            if(!_isReverse)
+            if (!_isReverse)
             {
                 _bodyDestruction.DestroyBodyPart(timeForDisplacement);
             }
@@ -41,10 +42,23 @@ namespace GJam2020.Avatar {
         }
         public void CapturePiece(int value)
         {
-            for(int i = 0; i < value; i++)
+            _stepAdd.text = "+" + value;
+            _stepAdd.transform.localPosition = Vector3.zero;
+            _stepAdd.gameObject.SetActive(true);
+            _stepAdd.transform.DOLocalMoveY(150, 1);
+            _stepAdd.material.DOFade(1, 1);
+            StartCoroutine(LabelBehavior());
+
+            for (int i = 0; i < value; i++)
             {
                 _bodyDestruction.ReconstructBodyPart();
             }
+        }
+
+        private IEnumerator LabelBehavior()
+        {
+            yield return new WaitForSeconds(1.5f);
+            _stepAdd.gameObject.SetActive(false);
         }
 
         public void Dead()
