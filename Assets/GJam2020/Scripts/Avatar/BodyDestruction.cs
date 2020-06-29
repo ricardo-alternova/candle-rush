@@ -54,7 +54,7 @@ namespace GJam2020.Avatar
                 Debug.LogWarning("Trying to destroy more body parts than exists");
                 return;
             }
-            SetAlpha(bodyParts[partsDestroyed], 0, time);
+            SetAlpha(bodyParts[partsDestroyed], 0.2f, time);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
             StartCoroutine(EmmitParticles(emission));
             ++partsDestroyed;
@@ -130,9 +130,42 @@ namespace GJam2020.Avatar
             {
                 var matColor = mat.GetColor("_Color");
                 matColor.a = alpha;
-                //mat.SetColor("_Color", matColor);
-                mat.DOKill();
-                mat.DOColor(matColor, 1);
+                if (alpha == 1)
+                {
+                    mat.DOKill();
+                    mat.DOColor(matColor, 1);
+                }
+                else
+                {
+                    StartCoroutine(DisableBodyPartMaterial(mat, matColor, time));
+                }
+            }
+        }
+
+        private IEnumerator DisableBodyPartMaterial(Material material, Color color, float time)
+        {
+            Color colorEmission = material.GetColor("_EmissionColor");
+            var timer = Time.time;
+            Color eColor;
+            float emission;
+            while (Time.time - timer < time * 0.25f)
+            {
+                yield return new WaitForFixedUpdate();
+
+                emission = Mathf.SmoothStep(0, 1, (Time.time - timer) / (time * 0.25f));
+                eColor = Color.Lerp(colorEmission, colorEmission * 1000, emission);
+                material.SetColor("_EmissionColor", eColor);
+            }
+            yield return new WaitForSeconds(0.25f);
+            material.DOColor(color, time * 0.5f);
+            timer = Time.time;
+            while (Time.time - timer < time * 0.5f)
+            {
+                yield return new WaitForFixedUpdate();
+
+                emission = Mathf.Lerp(1, 0, (Time.time - timer) / (time * 0.5f));
+                eColor = Color.Lerp(colorEmission, colorEmission * 100, emission);
+                material.SetColor("_EmissionColor", eColor);
             }
         }
     }
