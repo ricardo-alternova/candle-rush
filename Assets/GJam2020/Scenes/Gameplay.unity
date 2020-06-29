@@ -2060,6 +2060,11 @@ PrefabInstance:
       propertyPath: m_ClearFlags
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2765443754820777732, guid: ac4d4aff01a473a46ba39b27b2721278,
+        type: 3}
+      propertyPath: field of view
+      value: 35
+      objectReference: {fileID: 0}
     - target: {fileID: 2765443754820777729, guid: ac4d4aff01a473a46ba39b27b2721278,
         type: 3}
       propertyPath: offset.x
@@ -2068,12 +2073,17 @@ PrefabInstance:
     - target: {fileID: 2765443754820777729, guid: ac4d4aff01a473a46ba39b27b2721278,
         type: 3}
       propertyPath: offset.y
-      value: 4.66
+      value: 5.72
       objectReference: {fileID: 0}
     - target: {fileID: 2765443754820777729, guid: ac4d4aff01a473a46ba39b27b2721278,
         type: 3}
       propertyPath: _focusOffset.y
-      value: 2.05
+      value: 1.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765443754820777729, guid: ac4d4aff01a473a46ba39b27b2721278,
+        type: 3}
+      propertyPath: offset.z
+      value: -8.39
       objectReference: {fileID: 0}
     - target: {fileID: 88585292, guid: ac4d4aff01a473a46ba39b27b2721278, type: 3}
       propertyPath: m_ShowCustomSorter
@@ -3693,6 +3703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPlaying: 0
   currentLevel: {fileID: 11400000, guid: 50b4d755c2690f94790159ce33b49210, type: 2}
+  materialsSettings: {fileID: 0}
   randomMaterial: {fileID: 1677466990}
   playerMovement: {fileID: 1877077759}
   ObjectsUnactive: []
