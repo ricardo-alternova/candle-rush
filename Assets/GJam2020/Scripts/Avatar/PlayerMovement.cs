@@ -102,9 +102,9 @@ namespace GJam2020.Avatar
             while (true)
             {
                 playerRigidbody.position = Vector3.Lerp(_initialPosition, _finalPosition, timer / timeForDisplacement);
-                timer += Time.deltaTime;
+                timer += Time.fixedDeltaTime;
                 if (timer > timeForDisplacement) break;
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForFixedUpdate();
             }
 
             var position = playerRigidbody.position;
