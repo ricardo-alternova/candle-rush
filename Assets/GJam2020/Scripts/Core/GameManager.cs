@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -86,9 +86,15 @@ public class GameManager : MonoBehaviour
             ObjectsUnactive.Clear();
 
         if (_nextLevel != null && !_nextLevel.Equals(""))
+        {
             SceneManager.LoadScene(_nextLevel);
+        }
         else
+        {
+            _gameData.lastLevelUnLock = 0;
+            SaveGameData();
             SceneManager.LoadScene(GameplayScene);
+        }
     }
 
     public int GetLastLevelComplete()
