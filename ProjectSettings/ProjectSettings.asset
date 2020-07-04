@@ -126,7 +126,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.10
+  bundleVersion: 0.11
   preloadedAssets:
   - {fileID: 0}
   - {fileID: 0}
@@ -176,7 +176,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.Alternova.CandleRush_alpha
   buildNumber: {}
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 17
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
