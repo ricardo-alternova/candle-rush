@@ -32,6 +32,8 @@ public class MenuItem : MonoBehaviour
         {
             Debug.Log("Enable: " + _level);
             IsEnable();
+            if (GameManager.Get.CurrentLevel + 1 == _level)
+                _button.transform.localScale *= 1.3f;
         }
 
         if(_level <= GameManager.Get.GetLastLevelComplete())

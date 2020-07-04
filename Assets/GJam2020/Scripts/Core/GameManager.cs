@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public static string LEVELS_MENU_NAME = "LevelsMenu";
     public static string GAMEPLAY_NAME = "Gameplay";
     public LevelSettings[] _levelSettings;
+    public int CurrentLevel { get { return _gameData.currentLevel; } }
 
     private GameData _gameData;
     private string _nextLevel;
@@ -98,6 +99,14 @@ public class GameManager : MonoBehaviour
 
         if (_nextLevel != null && !_nextLevel.Equals(""))
         {
+            for (int i = 0; i < _levelSettings.Length; i++)
+            {
+                if (currentLevel == _levelSettings[i])
+                {
+                    _gameData.currentLevel = i;
+                    SaveGameData();
+                }
+            }
             SceneManager.LoadScene(_nextLevel);
         }
         else
