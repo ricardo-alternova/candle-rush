@@ -1647,8 +1647,8 @@ MonoBehaviour:
       colorBlindnessType: 0
       colorBlindnessStrength: 1
   m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
+  m_ShowToolkit: 1
+  m_ShowCustomSorter: 1
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
@@ -2004,7 +2004,7 @@ Light:
   serializedVersion: 9
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.77
+  m_Intensity: 0.71
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2060,13 +2060,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398945862}
-  m_LocalRotation: {x: 0.2715086, y: -0.14311942, z: 0.11527912, w: 0.9447278}
+  m_LocalRotation: {x: 0.4355029, y: -0.18773368, z: 0.100411154, w: 0.87464905}
   m_LocalPosition: {x: -10.21, y: 3.8512378, z: -7.777351}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1209402907}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 33.093002, y: -14.363001, z: 9.627001}
+  m_LocalEulerAnglesHint: {x: 53.085003, y: -23.650002, z: 1.1570001}
 --- !u!4 &1424466166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4589429462992219172, guid: 0de425269f7447e459c04978e33f1813,
@@ -2722,7 +2722,7 @@ MonoBehaviour:
   sharedProfile: {fileID: 11400000, guid: f442c0a327545ab47a0bf5491e09265c, type: 2}
   isGlobal: 1
   blendDistance: 0
-  weight: 1
+  weight: 0.892
   priority: 0
 --- !u!4 &8015226101727896313
 Transform:
