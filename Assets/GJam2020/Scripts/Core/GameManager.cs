@@ -15,6 +15,7 @@ public class GameData
 {
     public List<int> levelsScore = new List<int>();
     public int lastLevelUnLock = 0;
+    public int currentLevel = 0;
 }
 
 public class GameManager : MonoBehaviour
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     public static string LEVELS_MENU_NAME = "LevelsMenu";
     public static string GAMEPLAY_NAME = "Gameplay";
     public LevelSettings[] _levelSettings;
+    public int CurrentLevel { get { return _gameData.currentLevel; } }
 
     private GameData _gameData;
     private string _nextLevel;
@@ -51,24 +53,34 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this);
             DontDestroyOnLoad(gameObject);
 
-
-            if (Get.randomMaterial != null)
-            {
-                Get.materialsSettings = Get.randomMaterial.GetMaterialSettings();
-                RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
-            }
+            //SetRandomSkyMat();
+            SceneManager.sceneLoaded += SetRandomSkyMat;
             ObjectsUnactive = new List<GameObject>();
             LoadGameData();
         }
-    }  
+    }
+    private void SetRandomSkyMat()
+    {
+        if (Get.randomMaterial != null)
+        {
+            Get.materialsSettings = Get.randomMaterial.GetRandomMaterialSettings();
+            RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
+        }
+    }
+
+    private void SetRandomSkyMat(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        SetRandomSkyMat();
+    }
 
     public void NewLevelComplete(int level, int score, string nextLevel)
     {
         _nextLevel = nextLevel;
+        _gameData.lastLevelUnLock = Mathf.Max(level, _gameData.lastLevelUnLock);
+        _gameData.currentLevel = level == _levelSettings.Length? 0 : level;
         if(_gameData.levelsScore.Count < level)
         {
             _gameData.levelsScore.Add(score);
-            _gameData.lastLevelUnLock = level;
         }
         else
         {
@@ -87,13 +99,22 @@ public class GameManager : MonoBehaviour
 
         if (_nextLevel != null && !_nextLevel.Equals(""))
         {
+            for (int i = 0; i < _levelSettings.Length; i++)
+            {
+                if (currentLevel == _levelSettings[i])
+                {
+                    _gameData.currentLevel = i;
+                    SaveGameData();
+                }
+            }
             SceneManager.LoadScene(_nextLevel);
         }
         else
         {
-            _gameData.lastLevelUnLock = 0;
-            SaveGameData();
-            SceneManager.LoadScene(GameplayScene);
+            _nextLevel = GAMEPLAY_NAME;
+            currentLevel = _levelSettings[_gameData.currentLevel];
+            //SaveGameData();
+            SceneManager.LoadScene(_nextLevel);
         }
     }
 
@@ -127,12 +148,15 @@ public class GameManager : MonoBehaviour
                 _gameData = serializer.Deserialize(reader) as GameData;
             }
         }
-        LoadLevelSettings(_gameData.lastLevelUnLock);
+        LoadLevelSettings(_gameData.currentLevel);
     }
 
-    private void LoadLevelSettings(int level)
+    private void LoadLevelSettings(int actualLevel)
     {
-        currentLevel = _levelSettings[level];
+        if (actualLevel >= _levelSettings.Length)
+            actualLevel = 0;
+
+        currentLevel = _levelSettings[actualLevel];
     }
 
     private void SaveGameData()

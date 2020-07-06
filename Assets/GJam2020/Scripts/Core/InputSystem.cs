@@ -67,8 +67,12 @@ namespace GJam2020.Core
                 }
 
             }
+#if UNITY_IOS
+            CheckMoveInput(moveValue);
+#else
             CheckMoveInput(moveValue * -1);
-//#else
+#endif
+            //#else
 
             ////moveValue = inputActions.Player.Move. ReadValue<Vector2>();
             //if (Touch.activeTouches.Count > 0) {
@@ -78,7 +82,7 @@ namespace GJam2020.Core
             //    moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
             //    //_debugText.text = moveValue.ToString();
             //}
-//#endif
+            //#endif
         }
 
         private void Start()
