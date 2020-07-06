@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/GJam2020/Scenes/TestMapGenerator.unity
     guid: b83df669800957c43a010bb01136142b
   - enabled: 1
+    path: Assets/GJam2020/Scenes/Gameplay.unity
+    guid: 11a8af9f291e9574ab12fea3f6c2d1b3
+  - enabled: 1
     path: Assets/FacebookSDK/Examples/AppEvents.unity
     guid: 68ab940fa15e34433bff18301686b080
   - enabled: 1
