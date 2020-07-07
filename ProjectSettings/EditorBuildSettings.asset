@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GJam2020/Scenes/MainMenu.unity
     guid: d408d185cc4e50340bef28673dfa3617
-  - enabled: 1
+  - enabled: 0
     path: Assets/GJam2020/Scenes/LevelsMenu.unity
     guid: ed9eb62810622fb488d48cbbd5f0e4e7
   - enabled: 0
