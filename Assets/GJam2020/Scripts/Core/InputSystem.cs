@@ -55,9 +55,14 @@ namespace GJam2020.Core
                     moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
                 }
             }
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                playerMovement.StopWalking();
+            }
+
             if (startDragg)
             {
-                
+
 
                 if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
@@ -65,8 +70,8 @@ namespace GJam2020.Core
                     startDragg = false;
                     meanDrag = Vector2.zero;
                 }
-
             }
+
 #if UNITY_IOS
             CheckMoveInput(moveValue);
 #else
