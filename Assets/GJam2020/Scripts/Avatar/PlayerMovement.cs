@@ -53,6 +53,12 @@ namespace GJam2020.Avatar
                     _animator.speed = 2 - _currentStepTime;
                 }
             }
+
+            if(!_walking && !_movingPlayer)
+            {
+                _animator.speed = 1;
+                AvatarGeneralManager.Get.EndMovement();
+            }
         }
 
         public bool Move(MovementDirection dir, Action onMovementComplete, float timeForDisplacement)
@@ -110,6 +116,7 @@ namespace GJam2020.Avatar
         {
             if (!_movingPlayer)
             {
+                Debug.LogWarning("Stop");
                 _animator.speed = 1;
                 AvatarGeneralManager.Get.EndMovement();
             }
@@ -150,23 +157,24 @@ namespace GJam2020.Avatar
                 if (timer > _currentStepTime) break;
                 yield return new WaitForFixedUpdate();
             }
-
-            if (!_walking)
-            {
-                _animator.speed = 1;
-                AvatarGeneralManager.Get.EndMovement();
-            }
-
+            
             var position = playerRigidbody.position;
             var correctedPos = new Vector3((int)(position.x + 0.5f), (int) (position.y + 0.5f), (int)
                 (position.z + 0.5f));
             playerRigidbody.MovePosition(correctedPos);
             
-            _movingPlayer = false;
 
             if (MovementCompleted != null)
                 MovementCompleted();
             onMovementComplete();
+            
+            if (!_walking)
+            {
+                Debug.LogWarning("NotWalking");
+                _animator.speed = 1;
+                AvatarGeneralManager.Get.EndMovement();
+            }
+            _movingPlayer = false;
         }
     }
 }

@@ -237,6 +237,11 @@ PrefabInstance:
       propertyPath: m_InnerSpotAngle
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 50104001326239329, guid: 3a91b024cc5e4594f80d4bcc7af4dd4f,
+        type: 3}
+      propertyPath: MinStepTime
+      value: 0.35
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a91b024cc5e4594f80d4bcc7af4dd4f, type: 3}
 --- !u!1 &104979573
