@@ -40,8 +40,12 @@ namespace GJam2020.Core
         
         private void FixedUpdate()
         {
-//#if UNITY_WEBGL
-            if (Input.touchCount < 1) return;
+            //#if UNITY_WEBGL
+            if (Input.touchCount < 1)
+            {
+                playerMovement.StopWalking();
+                return;
+            } 
 
             if (Input.GetTouch(0).phase == TouchPhase.Moved)
             {
@@ -55,10 +59,6 @@ namespace GJam2020.Core
                     moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
                 }
             }
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                playerMovement.StopWalking();
-            }
 
             if (startDragg)
             {
@@ -71,6 +71,7 @@ namespace GJam2020.Core
                     meanDrag = Vector2.zero;
                 }
             }
+            
 
 #if UNITY_IOS
             CheckMoveInput(moveValue);

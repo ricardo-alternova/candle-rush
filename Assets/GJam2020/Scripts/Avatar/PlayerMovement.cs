@@ -54,10 +54,13 @@ namespace GJam2020.Avatar
                 }
             }
 
-            if(!_walking && !_movingPlayer)
+            if (!_walking)
             {
-                _animator.speed = 1;
-                AvatarGeneralManager.Get.EndMovement();
+                if (!_movingPlayer)
+                {
+                    _animator.speed = 1;
+                    AvatarGeneralManager.Get.EndMovement();
+                }
             }
         }
 
@@ -114,12 +117,13 @@ namespace GJam2020.Avatar
 
         public void StopWalking()
         {
-            if (!_movingPlayer)
-            {
-                Debug.LogWarning("Stop");
-                _animator.speed = 1;
-                AvatarGeneralManager.Get.EndMovement();
-            }
+            //if (!_movingPlayer)
+            //{
+            //    Debug.LogWarning("Stop");
+            //    _animator.speed = 1;
+            //    AvatarGeneralManager.Get.EndMovement();
+            //}
+            Debug.LogWarning("Stop");
             _walking = false;
         }
 
@@ -164,17 +168,24 @@ namespace GJam2020.Avatar
             playerRigidbody.MovePosition(correctedPos);
             
 
+            _movingPlayer = false;
+            //yield return new WaitForEndOfFrame();
+            //if(!_movingPlayer)
+            //    AvatarGeneralManager.Get.EndMovement();
+
+
+            //if (!_walking)
+            //{
+            //    Debug.LogWarning("NotWalking");
+            //    _animator.speed = 1;
+            //    AvatarGeneralManager.Get.EndMovement();
+            //}
+            _movingPlayer = false;
+            Debug.LogWarning("WalkingStopped");
+
             if (MovementCompleted != null)
                 MovementCompleted();
             onMovementComplete();
-            
-            if (!_walking)
-            {
-                Debug.LogWarning("NotWalking");
-                _animator.speed = 1;
-                AvatarGeneralManager.Get.EndMovement();
-            }
-            _movingPlayer = false;
         }
     }
 }
