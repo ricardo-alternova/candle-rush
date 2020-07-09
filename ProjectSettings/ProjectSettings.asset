@@ -176,7 +176,9 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.alternova.candlerush
-  buildNumber: {}
+    iPhone: com.alternova.candlerush
+  buildNumber:
+    iPhone: 2
   AndroidBundleVersionCode: 4
   AndroidMinSdkVersion: 17
   AndroidTargetSdkVersion: 0
