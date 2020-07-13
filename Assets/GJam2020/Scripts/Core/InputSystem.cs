@@ -117,13 +117,29 @@ namespace GJam2020.Core
             direction = moveValue.magnitude != 0 ? moveValue : direction;
 #endif
             if (direction.x != 0) {
-                if (direction.x > 0) DecideAction(_buttonD);
-                if (direction.x < 0) DecideAction(_buttonA);
+                if (direction.x > 0)
+                {
+                    OnMove?.Invoke(Vector2.right);
+                    DecideAction(_buttonD);
+                }
+                if (direction.x < 0)
+                {
+                    OnMove?.Invoke(Vector2.left);
+                    DecideAction(_buttonA);
+                } 
             }
             if (direction.y != 0)
             {
-                if (direction.y > 0) DecideAction(_buttonW);
-                if (direction.y < 0) DecideAction(_buttonS);
+                if (direction.y > 0)
+                {
+                    OnMove?.Invoke(Vector2.up);
+                    DecideAction(_buttonW);
+                }
+                if (direction.y < 0)
+                {
+                    OnMove?.Invoke(Vector2.down);
+                    DecideAction(_buttonS);
+                }
             }
         }
 
