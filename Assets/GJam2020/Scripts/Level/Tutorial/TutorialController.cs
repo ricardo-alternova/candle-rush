@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GJam2020.Core;
 
 namespace GJam2020.Game.Tutorial
 {
@@ -24,8 +25,12 @@ namespace GJam2020.Game.Tutorial
                 child.gameObject.SetActive(false);
             }
 
-            if (_startOnAwake)
-                NextSlide();
+            if (PlayerPrefsMgr.Get().LoadInt("tutorial") != 1)
+            {
+                if (_startOnAwake)
+                    NextSlide();
+            }
+
         }
 
         public void NextSlide()
@@ -36,7 +41,10 @@ namespace GJam2020.Game.Tutorial
         private IEnumerator NextSlideCoroutine()
         {
             if (_currentSlide >= 0)
+            {
+                PlayerPrefsMgr.Get().Save<int>("tutorial", 1);
                 _tutorialSlides[_currentSlide].gameObject.SetActive(false);
+            }
 
             if (_currentSlide + 1 >= _tutorialSlides.Count) yield break;
 

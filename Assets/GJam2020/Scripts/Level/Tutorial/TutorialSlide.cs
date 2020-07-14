@@ -35,7 +35,9 @@ namespace GJam2020.Game.Tutorial
 
         private void OnDisable()
         {
-            InputSystem inputSystem = GameObject.Find("Systems").GetComponent<InputSystem>();
+            var systemsGO = GameObject.Find("Systems");
+            if (systemsGO == null) return;
+            InputSystem inputSystem = systemsGO.GetComponent<InputSystem>();
             Assert.IsNotNull(inputSystem);
             inputSystem.OnMove -= MoveInput;
         }
