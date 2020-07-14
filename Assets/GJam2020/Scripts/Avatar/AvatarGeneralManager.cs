@@ -68,7 +68,7 @@ namespace GJam2020.Avatar {
             _stepAdd.transform.localPosition = Vector3.zero;
 
             _stepAdd.gameObject.SetActive(true);
-            _stepAdd.transform.DOLocalMoveY(150, 1);
+            _stepAdd.transform.DOLocalMoveY(Screen.height * 0.06f, 1);
             _stepAdd.material.DOFade(1, 1);
             yield return new WaitForSeconds(1.5f);
             _stepAdd.gameObject.SetActive(false);
