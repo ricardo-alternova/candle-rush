@@ -26,11 +26,13 @@ namespace GJam2020.Core
 
         public void Save<T>(string key, object value)
         {
-            if (typeof(T) is string)
+            Type typeOfT = typeof(T);
+
+            if (typeOfT == typeof(string))
             {
                 PlayerPrefs.SetString(key, value as string);
             }
-            if (typeof(T) is int)
+            if (typeOfT == typeof(int))
             {
                 PlayerPrefs.SetInt(key, (int)value);
             }

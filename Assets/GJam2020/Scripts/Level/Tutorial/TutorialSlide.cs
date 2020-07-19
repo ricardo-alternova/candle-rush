@@ -10,20 +10,37 @@ namespace GJam2020.Game.Tutorial
         [Tooltip("Completed when input is on this direction")]
         [SerializeField]
         private Vector2 _direction;
+
+        private InputSystem _inputSystem;
+
+        public override void Hide()
+        {
+            if (_inputSystem == null) return;
+            _inputSystem.OnMove -= MoveInput;
+            base.Hide();
+            Invoke("DisableGO", 0.5f);
+        }
         
         private void OnEnable()
         {
-            InputSystem inputSystem = GameObject.Find("Systems").GetComponent<InputSystem>();
-            Assert.IsNotNull(inputSystem);
-
-            inputSystem.OnMove += MoveInput;
-
+            _inputSystem = GameObject.Find("Systems").GetComponent<InputSystem>();
+            Assert.IsNotNull(_inputSystem);
+            
             StartCoroutine(EnableCoroutine());
         }
-
+        
         private IEnumerator EnableCoroutine()
         {
             yield return new WaitForSeconds(_delay);
+            
+            _inputSystem.EnableInputs(
+                _direction == Vector2.left,
+                _direction == Vector2.right,
+                _direction == Vector2.up,
+                _direction == Vector2.down
+                );
+
+            _inputSystem.OnMove += MoveInput;
         }
 
         private void MoveInput(Vector2 direction)
@@ -31,15 +48,6 @@ namespace GJam2020.Game.Tutorial
             if (direction != _direction) return;
 
             GetComponentInParent<TutorialController>().NextSlide();
-        }
-
-        private void OnDisable()
-        {
-            var systemsGO = GameObject.Find("Systems");
-            if (systemsGO == null) return;
-            InputSystem inputSystem = systemsGO.GetComponent<InputSystem>();
-            Assert.IsNotNull(inputSystem);
-            inputSystem.OnMove -= MoveInput;
         }
     }
 }

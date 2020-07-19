@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GJam2020.Core;
+using UnityEngine.Assertions;
 
 namespace GJam2020.Game.Tutorial
 {
@@ -14,9 +15,9 @@ namespace GJam2020.Game.Tutorial
         private float _delay = 1.2f;
         private int _currentSlide = -1;
         private List<BaseTutorialSlide> _tutorialSlides;
+        private InputSystem _inputSystem;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _tutorialSlides = GetComponentsInChildren<BaseTutorialSlide>().ToList();
 
@@ -24,13 +25,16 @@ namespace GJam2020.Game.Tutorial
             {
                 child.gameObject.SetActive(false);
             }
+            _inputSystem = GameObject.Find("Systems").GetComponent<InputSystem>();
 
             if (PlayerPrefsMgr.Get().LoadInt("tutorial") != 1)
             {
                 if (_startOnAwake)
+                {
+                    _inputSystem.EnableInputs(false, false, false, false);
                     NextSlide();
+                }
             }
-
         }
 
         public void NextSlide()
@@ -40,19 +44,30 @@ namespace GJam2020.Game.Tutorial
 
         private IEnumerator NextSlideCoroutine()
         {
+            _inputSystem.EnableInputs(false, false, false, false);
+
             if (_currentSlide >= 0)
             {
-                PlayerPrefsMgr.Get().Save<int>("tutorial", 1);
-                _tutorialSlides[_currentSlide].gameObject.SetActive(false);
+                _tutorialSlides[_currentSlide].Hide();
             }
 
-            if (_currentSlide + 1 >= _tutorialSlides.Count) yield break;
+            if (_currentSlide + 1 >= _tutorialSlides.Count)
+            {
+                Debug.Log("Tutorial finished");
+                PlayerPrefsMgr.Get().Save<int>("tutorial", 1);
+                yield return new WaitForSeconds(0.7f);
+
+                Assert.IsNotNull(_inputSystem);
+                _inputSystem.EnableInputs(true, true, true, true);
+
+                yield break;
+            }
 
             _currentSlide++;
 
             yield return new WaitForSeconds(_delay);
 
-            _tutorialSlides[_currentSlide].gameObject.SetActive(true);
+            _tutorialSlides[_currentSlide].Show();
         }
     }
 }
