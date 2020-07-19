@@ -28,7 +28,7 @@ namespace GJam2020.Avatar
         private float _currentStepTime;
         private float _normalStepTime;
         private float _walkingTimer;
-        private float _timeToAccelerate = 1;
+        private float _timeToAccelerate = 0.85f;
         private float _minTimeForStep = 0.35f;
         private float _startWalkingTime;
         private bool _walking;
@@ -123,7 +123,7 @@ namespace GJam2020.Avatar
             //    _animator.speed = 1;
             //    AvatarGeneralManager.Get.EndMovement();
             //}
-            Debug.LogWarning("Stop");
+            //Debug.LogWarning("Stop");
             _walking = false;
         }
 
