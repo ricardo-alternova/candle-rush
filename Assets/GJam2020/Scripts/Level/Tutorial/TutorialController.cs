@@ -35,6 +35,8 @@ namespace GJam2020.Game.Tutorial
                     NextSlide();
                 }
             }
+            else
+                _inputSystem.EnableInputs(true,true,true,true);
         }
 
         public void NextSlide()

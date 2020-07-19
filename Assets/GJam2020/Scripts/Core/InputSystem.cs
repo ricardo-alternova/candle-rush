@@ -33,6 +33,8 @@ namespace GJam2020.Core
         private void Awake()
         {
             _directionsEnabled = new List<Vector2>();
+            EnableInputs(true, true, true, true);
+
             inputActions = new PlayerInputActions();
             
             inputActions.Player.Move.performed += moveAction => {
