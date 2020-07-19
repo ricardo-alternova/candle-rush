@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using GJam2020.Core;
 using GJam2020.Avatar;
 using UnityEngine.Assertions;
+using GGJ2020.Avatar;
 
 [System.Serializable]
 public class GameData
@@ -188,8 +189,17 @@ public class GameManager : MonoBehaviour
             {
                 obj.SetActive(true);
             }
+            CheckAvatarStartPosition();
         }));
 
         IsPlaying = true;
+    }
+
+    private void CheckAvatarStartPosition()
+    {
+        if ((MapGenerator.Get.StartPosition - AvatarPosition.AVATAR_POSITION).magnitude > 0.2f)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }
