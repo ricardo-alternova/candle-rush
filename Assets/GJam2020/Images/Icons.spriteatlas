@@ -48,13 +48,12 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 1f0f1b6ef1db01848bdebc4ad2b9e5a9, type: 3}
     - {fileID: 2800000, guid: 269f07d2f879cd7449cc2e7a755dc95e, type: 3}
     - {fileID: 2800000, guid: 85e18883ca1fa1745b3f8cf4db9d0289, type: 3}
-    - {fileID: 2800000, guid: de6ff106d7c93ea45bc94bec448e99a5, type: 3}
     - {fileID: 2800000, guid: c1812065cca751f439092db09dc2c9b1, type: 3}
-    totalSpriteSurfaceArea: 1557619
+    totalSpriteSurfaceArea: 1786995
     bindAsDefault: 1
     storedHash:
       serializedVersion: 2
-      Hash: e843e55f0b6fcbe5f48d926195962eab
+      Hash: cc6a7ac9373454345ad4013a35a25e1d
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 6e9391b24d9ee6541bfd82567244c52d, type: 3}
@@ -62,7 +61,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 85e18883ca1fa1745b3f8cf4db9d0289, type: 3}
   - {fileID: 21300000, guid: c1812065cca751f439092db09dc2c9b1, type: 3}
   - {fileID: 21300000, guid: 80eff97522f6a6a4496befb7f4dfb1e6, type: 3}
-  - {fileID: 21300000, guid: de6ff106d7c93ea45bc94bec448e99a5, type: 3}
   - {fileID: 21300000, guid: 0455e229fbe704649b023dc4417e9e31, type: 3}
   - {fileID: 21300000, guid: 1f0f1b6ef1db01848bdebc4ad2b9e5a9, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -71,7 +69,6 @@ SpriteAtlas:
   - StepsIcon
   - CandleRush-Logo
   - Hand
-  - Degradado
   - Home
   - Line
   m_Tag: Icons

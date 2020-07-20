@@ -11,7 +11,7 @@ PlayerSettings:
   defaultScreenOrientation: 0
   targetDevice: 2
   useOnDemandResources: 0
-  accelerometerFrequency: 60
+  accelerometerFrequency: 0
   companyName: Alternova
   productName: CandleRush
   defaultCursor: {fileID: 0}
@@ -126,7 +126,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.15
+  bundleVersion: 0.16
   preloadedAssets:
   - {fileID: 0}
   - {fileID: 0}
@@ -179,7 +179,7 @@ PlayerSettings:
     Android: com.alternova.candlerush
     iPhone: com.alternova.candlerush
   buildNumber:
-    iPhone: 2
+    iPhone: 4
   AndroidBundleVersionCode: 4
   AndroidMinSdkVersion: 17
   AndroidTargetSdkVersion: 0
