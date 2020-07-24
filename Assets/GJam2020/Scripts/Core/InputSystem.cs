@@ -1,4 +1,5 @@
-﻿using GJam2020.Avatar;
+﻿using System.Collections.Generic;
+using GJam2020.Avatar;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ namespace GJam2020.Core
         private Vector2 moveValue;
         private Vector2 meanDrag = Vector2.zero;
         private bool startDragg;
+        private List<Vector2> _directionsEnabled;
 
         ////To reset the coroutine
         //private Coroutine _replayCoroutine;
@@ -30,6 +32,9 @@ namespace GJam2020.Core
 
         private void Awake()
         {
+            _directionsEnabled = new List<Vector2>();
+            EnableInputs(true, true, true, true);
+
             inputActions = new PlayerInputActions();
             
             inputActions.Player.Move.performed += moveAction => {
@@ -40,8 +45,12 @@ namespace GJam2020.Core
         
         private void FixedUpdate()
         {
-//#if UNITY_WEBGL
-            if (Input.touchCount < 1) return;
+            //#if UNITY_WEBGL
+            if (Input.touchCount < 1)
+            {
+                playerMovement.StopWalking();
+                return;
+            } 
 
             if (Input.GetTouch(0).phase == TouchPhase.Moved)
             {
@@ -55,9 +64,10 @@ namespace GJam2020.Core
                     moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
                 }
             }
+
             if (startDragg)
             {
-                
+
 
                 if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
@@ -65,8 +75,9 @@ namespace GJam2020.Core
                     startDragg = false;
                     meanDrag = Vector2.zero;
                 }
-
             }
+            
+
 #if UNITY_IOS
             CheckMoveInput(moveValue);
 #else
@@ -103,7 +114,22 @@ namespace GJam2020.Core
             _buttonD.Restore();
 
         }
-        //public Text _debugText;
+
+        public void EnableInputs(bool left, bool right, bool up, bool down)
+        {
+            _directionsEnabled.Clear();
+            if (left) _directionsEnabled.Add(Vector2.left);
+            if (right) _directionsEnabled.Add(Vector2.right);
+            if (up) _directionsEnabled.Add(Vector2.up);
+            if (down) _directionsEnabled.Add(Vector2.down);
+        }
+
+        public void OnCommandDone()
+        {
+            _isHandlingCommand = false;
+            //Debug.Log("Command done");
+        }
+        
         private void CheckMoveInput(Vector2 direction)
         {
             if (GameManager.Get.IsPlaying == false) return;
@@ -111,14 +137,41 @@ namespace GJam2020.Core
             direction = moveValue.magnitude != 0 ? moveValue : direction;
 #endif
             if (direction.x != 0) {
-                if (direction.x > 0) DecideAction(_buttonD);
-                if (direction.x < 0) DecideAction(_buttonA);
+                if (direction.x > 0)
+                {
+                    //OnMove?.Invoke(Vector2.right);
+                    //DecideAction(_buttonD);
+                    LaunchInput(_buttonD, Vector2.right);
+                }
+                if (direction.x < 0)
+                {
+                    //OnMove?.Invoke(Vector2.left);
+                    //DecideAction(_buttonA);
+                    LaunchInput(_buttonA, Vector2.left);
+                } 
             }
             if (direction.y != 0)
             {
-                if (direction.y > 0) DecideAction(_buttonW);
-                if (direction.y < 0) DecideAction(_buttonS);
+                if (direction.y > 0)
+                {
+                    //OnMove?.Invoke(Vector2.up);
+                    //DecideAction(_buttonW);
+                    LaunchInput(_buttonW, Vector2.up);
+                }
+                if (direction.y < 0)
+                {
+                    //OnMove?.Invoke(Vector2.down);
+                    //DecideAction(_buttonS);
+                    LaunchInput(_buttonS, Vector2.down);
+                }
             }
+        }
+
+        private void LaunchInput(Command command, Vector2 direction)
+        {
+            if (!_directionsEnabled.Contains(direction)) return;
+            OnMove?.Invoke(direction);
+            DecideAction(command);
         }
 
         private void DecideAction(Command command)
@@ -143,67 +196,65 @@ namespace GJam2020.Core
 
 
         //Check if we press a key, if so do what the key is binded to 
-        public void HandleInput()
-        {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                _isHandlingCommand = true;
-                if (CommandsManager.IsLastCommandReverse(_buttonW))
-                    CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
-                else
-                    _buttonW.Execute(playerMovement, true, OnCommandDone);
-            }
-            else if (Input.GetKeyDown(KeyCode.S))
-            {
-                _isHandlingCommand = true;
-                if (CommandsManager.IsLastCommandReverse(_buttonS))
-                    CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
-                else
-                    _buttonS.Execute(playerMovement, true, OnCommandDone);
-            }
-            else if (Input.GetKeyDown(KeyCode.A))
-            {
-                _isHandlingCommand = true;
-                if (CommandsManager.IsLastCommandReverse(_buttonA))
-                    CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
-                else
-                    _buttonA.Execute(playerMovement, true, OnCommandDone);
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                _isHandlingCommand = true;
-                if (CommandsManager.IsLastCommandReverse(_buttonD))
-                    CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
-                else
-                    _buttonD.Execute(playerMovement, true, OnCommandDone);
-            }
+        //public void HandleInput()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.W))
+        //    {
+        //        _isHandlingCommand = true;
+        //        if (CommandsManager.IsLastCommandReverse(_buttonW))
+        //            CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
+        //        else
+        //            _buttonW.Execute(playerMovement, true, OnCommandDone);
+        //    }
+        //    else if (Input.GetKeyDown(KeyCode.S))
+        //    {
+        //        _isHandlingCommand = true;
+        //        if (CommandsManager.IsLastCommandReverse(_buttonS))
+        //            CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
+        //        else
+        //            _buttonS.Execute(playerMovement, true, OnCommandDone);
+        //    }
+        //    else if (Input.GetKeyDown(KeyCode.A))
+        //    {
+        //        _isHandlingCommand = true;
+        //        if (CommandsManager.IsLastCommandReverse(_buttonA))
+        //            CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
+        //        else
+        //            _buttonA.Execute(playerMovement, true, OnCommandDone);
+        //    }
+        //    else if (Input.GetKeyDown(KeyCode.D))
+        //    {
+        //        _isHandlingCommand = true;
+        //        if (CommandsManager.IsLastCommandReverse(_buttonD))
+        //            CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
+        //        else
+        //            _buttonD.Execute(playerMovement, true, OnCommandDone);
+        //    }
 
-            //if (Input.GetKeyDown(KeyCode.R))
-            //{
-            //    CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
-            //}
-        }
+        //    //if (Input.GetKeyDown(KeyCode.R))
+        //    //{
+        //    //    CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
+        //    //}
+        //}
 
         private void CommandPressed(Command command)
         {
             _isHandlingCommand = true;
             if (CommandsManager.IsLastCommandReverse(command))
+            {
+                AvatarGeneralManager.Get.StepBack();
                 CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
+            }
             else
                 command.Execute(playerMovement, true, OnCommandDone);
         }
-
-        public void OnCommandDone()
-        {
-            _isHandlingCommand = false;
-            //Debug.Log("Command done");
-        }
-
+        
         private void OnEnable()
         {
             inputActions.Enable();
             EnhancedTouchSupport.Enable();
         }
+
         private void OnDisable()
         {
             inputActions.Disable();

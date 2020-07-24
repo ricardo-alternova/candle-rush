@@ -42,12 +42,9 @@ namespace GJam2020.Avatar {
         }
         public void CapturePiece(int value)
         {
-            _stepAdd.text = "+" + value;
-            _stepAdd.transform.localPosition = Vector3.zero;
-            _stepAdd.gameObject.SetActive(true);
-            _stepAdd.transform.DOLocalMoveY(150, 1);
-            _stepAdd.material.DOFade(1, 1);
-            StartCoroutine(LabelBehavior());
+            if (_plusStepCoroutine != null) StopCoroutine(_plusStepCoroutine);
+
+            _plusStepCoroutine = StartCoroutine(LabelBehavior(value));
 
             for (int i = 0; i < value; i++)
             {
@@ -55,8 +52,24 @@ namespace GJam2020.Avatar {
             }
         }
 
-        private IEnumerator LabelBehavior()
+        private Coroutine _plusStepCoroutine;
+
+        public void StepBack()
         {
+            if (_plusStepCoroutine != null) StopCoroutine(_plusStepCoroutine);
+
+            _plusStepCoroutine = StartCoroutine(LabelBehavior(1));
+        }
+
+        private IEnumerator LabelBehavior(int value)
+        {
+            _stepAdd.transform.DOKill();
+            _stepAdd.text = "+" + value;
+            _stepAdd.transform.localPosition = Vector3.zero;
+
+            _stepAdd.gameObject.SetActive(true);
+            _stepAdd.transform.DOLocalMoveY(Screen.height * 0.06f, 1);
+            _stepAdd.material.DOFade(1, 1);
             yield return new WaitForSeconds(1.5f);
             _stepAdd.gameObject.SetActive(false);
         }
