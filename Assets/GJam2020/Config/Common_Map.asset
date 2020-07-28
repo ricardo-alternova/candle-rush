@@ -77,3 +77,21 @@ MonoBehaviour:
     isEmpty: 0
     useGround: 1
     usePairPosition: 0
+  - color: {r: 1, g: 0.9803922, b: 0, a: 1}
+    entity: 8
+    prefab: {fileID: 6798766444560273929, guid: 71ab243b428b1994f95ed0bfd29e4f20,
+      type: 3}
+    offset: 0.5
+    isObstacle: 1
+    isEmpty: 0
+    useGround: 1
+    usePairPosition: 0
+  - color: {r: 1, g: 0.98823535, b: 0.40000004, a: 1}
+    entity: 9
+    prefab: {fileID: 2460186757385621942, guid: 0726ab7948951184896a6e83a6e6c564,
+      type: 3}
+    offset: 0.5
+    isObstacle: 0
+    isEmpty: 0
+    useGround: 1
+    usePairPosition: 0
