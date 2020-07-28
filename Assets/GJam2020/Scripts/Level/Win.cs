@@ -14,12 +14,21 @@ namespace GGJ2020.Levels
         private Vector3 _particlesOffset;
         [SerializeField]
         private CinemachineVirtualCamera _CMvirtualCam;
+        [SerializeField]
+        private AudioClip _winFx;
+        [SerializeField]
+        private AudioClip _winSong;
+        [SerializeField]
+        private AudioSource _FxAudioSource;
+        [SerializeField]
+        private AudioSource _SongAudioSource;
 
 
         // Start is called before the first frame update
         void Start()
         {
-
+            _FxAudioSource.clip = _winFx;
+            _SongAudioSource.clip = _winSong;
         }
 
         [ContextMenu("Play")]
@@ -30,6 +39,9 @@ namespace GGJ2020.Levels
             _particleSystem.gameObject.SetActive(true);
             var emission = _particleSystem.emission;
             emission.enabled = true;
+
+            _FxAudioSource.Play();
+            _SongAudioSource.Play();
         }
     }
 }

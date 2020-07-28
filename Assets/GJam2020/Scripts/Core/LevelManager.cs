@@ -59,7 +59,6 @@ namespace GJam2020.Core
             playerMovement.ResetRotation();
 
             _MapSongAudioPlayer.Stop(0.5f);
-            _audioSource.Play(_winningSound);
             _winController.Play();
 
             yield return new WaitForSeconds(_winningTime);
