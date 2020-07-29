@@ -14,6 +14,8 @@ public class LevelSettings : ScriptableObject
     private MapGeneratorSettings mapSettings;
     [SerializeField]
     private LevelSettings nextLevel;
+    [SerializeField]
+    private AudioClip soundBackground;
 
     public int Number { get => number; }
     public Texture2D Map { get => map; }
@@ -21,4 +23,5 @@ public class LevelSettings : ScriptableObject
     public LevelSettings NextLevel { get => nextLevel; }
     public Vector3 StartLocation { get => startLocation; }
     public MapGeneratorSettings MapSettings { get => mapSettings; }
+    public AudioClip SoundBackground { get => soundBackground; }
 }
