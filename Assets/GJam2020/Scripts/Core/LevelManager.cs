@@ -18,6 +18,9 @@ namespace GJam2020.Core
 
         private LevelSettings settings;
         private AudioSourcePlayer _audioSource;
+
+        private float timePlaying=0f;
+        private bool inGame;
         public static LevelManager Get;
 
         public bool AlreadyWin { get; private set; } = false;
@@ -27,10 +30,7 @@ namespace GJam2020.Core
             get { return settings.Number; }
         }
 
-        public int Score
-        {
-            get { return settings.Score; }
-        }
+        public int Stars { get; private set; } = 1;
 
         public LevelSettings NextLevel
         {
@@ -41,7 +41,27 @@ namespace GJam2020.Core
         }
         public void Win()
         {
+            inGame = false;
             AlreadyWin = true;
+            Stars = settings.GetStarts(timePlaying);
+        }
+
+        public void StartTime()
+        {
+            if (!inGame)
+            {
+                timePlaying = 0f;
+                inGame = true;
+            }
+        }
+
+        private void Update()
+        {
+            if (inGame)
+            {
+                timePlaying += Time.deltaTime;
+                CanvasData.Get.SetTime(timePlaying);
+            }
         }
 
         public void PlayFinishLevel()
@@ -61,11 +81,6 @@ namespace GJam2020.Core
             yield return new WaitForSeconds(_winningTime);
 
             LevelMenuMgr.Get().OpenWin();
-            //GameManager.Get.currentLevel = NextLevel;
-            //if (GameManager.Get.currentLevel == null)
-            //    GameManager.Get.NewLevelComplete(LevelNumber, Score, "MainMenu");
-            //else
-            //    GameManager.Get.NewLevelComplete(LevelNumber, Score, "Gameplay");
         }
 
         private void Awake()

@@ -16,9 +16,9 @@ namespace GJam2020.Level.UI
         {
             GameManager.Get.currentLevel = LevelManager.Get.NextLevel;
             if (GameManager.Get.currentLevel == null)
-                GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Score, GameManager.MAIN_MENU_NAME);
+                GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Stars, GameManager.MAIN_MENU_NAME);
             else
-                GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Score, GameManager.GAMEPLAY_NAME);
+                GameManager.Get.NewLevelComplete(LevelManager.Get.LevelNumber, LevelManager.Get.Stars, GameManager.GAMEPLAY_NAME);
         }
 
         public void GoHome()

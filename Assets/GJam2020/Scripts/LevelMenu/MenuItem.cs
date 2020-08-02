@@ -8,10 +8,12 @@ public class MenuItem : MonoBehaviour
 {
     public int level;
     [SerializeField]
-    private GameObject _star;
+    private GameObject[] _stars;
     [SerializeField]
     private Button _button;
-    
+    [SerializeField]
+    private Sprite starWonSprite;
+
     public LevelSettings levelSettings;
 
     private TextMeshProUGUI _label;
@@ -21,7 +23,10 @@ public class MenuItem : MonoBehaviour
     private void Start()
     {
         _button.interactable = false;
-        _star.gameObject.SetActive(false);
+        foreach (GameObject star in _stars)
+        {
+            star.gameObject.SetActive(false);
+        }
         _label = _button.gameObject.GetComponentInChildren<TextMeshProUGUI>();
         Assert.IsNotNull(_label, "Not textMP component found");
         _label.color = new Color(1, 1, 1, 0.5f);
@@ -63,7 +68,14 @@ public class MenuItem : MonoBehaviour
     {
         _label.color = Color.white;
         _button.interactable = true;
-        _star.gameObject.SetActive(true);
+        int starstNumber = GameManager.Get.GetLevelScore(level);
+        for(int i = 0; i < _stars.Length; i++)
+        {
+            _stars[i].SetActive(true);
+            if (i < starstNumber)
+                _stars[i].GetComponent<Image>().sprite = starWonSprite;
+        }
+        
     }
 
     private void IsEnable()

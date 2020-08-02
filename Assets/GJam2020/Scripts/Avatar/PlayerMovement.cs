@@ -77,7 +77,7 @@ namespace GJam2020.Avatar
             _walking = true;
 
             if (LevelManager.Get.AlreadyWin) return false;
-
+            LevelManager.Get.StartTime();
             var futurePos = Vector3.zero;
             var isValidMovement = true;
 

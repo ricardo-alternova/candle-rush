@@ -86,9 +86,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            print(level);
-            print(_gameData.levelsScore.Count);
-            _gameData.levelsScore[level - 1] = score;
+            
+            if(_gameData.levelsScore[level-1]<score)
+                _gameData.levelsScore[level - 1] = score;
         }
         SaveGameData();
         ChargeNextLevel();
@@ -110,8 +110,6 @@ public class GameManager : MonoBehaviour
         _gameData.currentLevel = currentLevel.Number;
         SaveGameData();
         SceneManager.LoadScene(_nextLevel);
-
-
     }
 
     public int GetLastLevelComplete()
