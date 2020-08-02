@@ -109,6 +109,25 @@ public class MapGenerator : MonoBehaviour
         return _obstaclesPosition;
     }
 
+    public void RemoveObstacle(Vector3 obstaclePos)
+    {
+        Vector3[] obstacles = _obstaclesPosition.ToArray();
+        int c = 0;
+        _obstaclesPosition.Clear();
+        foreach (var item in obstacles)
+        {
+            if (item.x != obstaclePos.x || item.z!= obstaclePos.z)
+            {
+                _obstaclesPosition.Add(item);
+                c++;
+            }
+        }
+        if (c == obstacles.Length)
+        {
+            Debug.LogWarning("Obstacle to remove not found");
+        }
+    }
+
     public Vector3 GetPairPosition(Color color, Vector3 vector3)
     {
         if(PairPositions.ContainsKey(color)) {

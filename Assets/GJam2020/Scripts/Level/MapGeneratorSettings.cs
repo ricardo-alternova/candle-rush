@@ -11,7 +11,8 @@ public enum MapEntity
     startFlag = 5,
     extraLife = 6, 
     teleporter = 7,
-    iceCube = 8,
+    door = 8,
+    key = 9
 }
 
 
