@@ -12,7 +12,8 @@ public enum MapEntity
     extraLife = 6, 
     teleporter = 7,
     door = 8,
-    key = 9
+    key = 9,
+    iceCube = 10
 }
 
 
