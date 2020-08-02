@@ -1,4 +1,5 @@
-﻿using GJam2020.Avatar;
+﻿using GGJ2020.Levels;
+using GJam2020.Avatar;
 using GJam2020.Level.UI;
 using System.Collections;
 using UnityEngine;
@@ -15,6 +16,8 @@ namespace GJam2020.Core
         private AudioClip _mapSong;
         [SerializeField]
         private AudioSourcePlayer _MapSongAudioPlayer;
+        [SerializeField]
+        private Win _winController;
 
         private LevelSettings settings;
         private AudioSourcePlayer _audioSource;
@@ -56,7 +59,7 @@ namespace GJam2020.Core
             playerMovement.ResetRotation();
 
             _MapSongAudioPlayer.Stop(0.5f);
-            _audioSource.Play(_winningSound);
+            _winController.Play();
 
             yield return new WaitForSeconds(_winningTime);
 
