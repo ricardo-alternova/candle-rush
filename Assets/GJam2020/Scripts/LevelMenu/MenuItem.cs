@@ -6,14 +6,13 @@ using UnityEngine.UI;
 
 public class MenuItem : MonoBehaviour
 {
-    [SerializeField]
-    private int _level;
+    public int level;
     [SerializeField]
     private GameObject _star;
     [SerializeField]
     private Button _button;
-    [SerializeField]
-    private LevelSettings levelSettings;
+    
+    public LevelSettings levelSettings;
 
     private TextMeshProUGUI _label;
     private const string GameplayScene = "Gameplay";
@@ -27,18 +26,18 @@ public class MenuItem : MonoBehaviour
         Assert.IsNotNull(_label, "Not textMP component found");
         _label.color = new Color(1, 1, 1, 0.5f);
 
-        Debug.Log("Level: " + _level);
-        if(_level <= GameManager.Get.GetLastLevelComplete() + 1)
+        Debug.Log("Level: " + level);
+        if(level <= GameManager.Get.GetLastLevelComplete() + 1)
         {
-            Debug.Log("Enable: " + _level);
+            Debug.Log("Enable: " + level);
             IsEnable();
-            if (GameManager.Get.CurrentLevel + 1 == _level)
+            if (GameManager.Get.CurrentLevel == level)
                 _button.transform.localScale *= 1.3f;
         }
 
-        if(_level <= GameManager.Get.GetLastLevelComplete())
+        if(level <= GameManager.Get.GetLastLevelComplete())
         {
-            Debug.Log("Unlock: " + _level);
+            Debug.Log("Unlock: " + level);
             ShowAsUnlock();
         }
         Init();
@@ -47,7 +46,7 @@ public class MenuItem : MonoBehaviour
     [ContextMenu("Setup")]
     private void Init()
     {
-        _label.text = _level.ToString();
+        _label.text = level.ToString();
 
         var button = GetComponentInChildren<Button>();
         button.onClick.RemoveAllListeners();
