@@ -8,8 +8,13 @@ public class LevelSettings : ScriptableObject
     private Texture2D map;
     [SerializeField]
     private Vector3 startLocation;
+
     [SerializeField]
-    private int score;
+    private int maxTime3Stars;
+
+    [SerializeField]
+    private int maxTime2Stars;
+
     [SerializeField]
     private MapGeneratorSettings mapSettings;
     [SerializeField]
@@ -17,7 +22,20 @@ public class LevelSettings : ScriptableObject
 
     public int Number { get => number; }
     public Texture2D Map { get => map; }
-    public int Score { get => score; }
+    public int GetStarts(float time) {
+        if (time <= maxTime3Stars)
+        {
+            return 3;
+        }
+        if (time <= maxTime2Stars)
+        {
+            return 2;
+        }
+        else
+        {
+            return 1;
+        }
+    }
     public LevelSettings NextLevel { get => nextLevel; }
     public Vector3 StartLocation { get => startLocation; }
     public MapGeneratorSettings MapSettings { get => mapSettings; }

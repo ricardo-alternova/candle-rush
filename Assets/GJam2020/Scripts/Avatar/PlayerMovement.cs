@@ -26,6 +26,7 @@ namespace GJam2020.Avatar
         private Vector3 _finalPosition;
 
         private float _currentStepTime;
+        private float _actualTimeForDisplacement;
         private float _normalStepTime;
         private float _walkingTimer;
         private float _timeToAccelerate = 0.85f;
@@ -33,6 +34,9 @@ namespace GJam2020.Avatar
         private float _startWalkingTime;
         private bool _walking;
         private bool _movingPlayer;
+        private MovementDirection _lastMovementDirection;
+        private bool _pauseMovement;
+
 
         private void Start()
         {
@@ -41,10 +45,10 @@ namespace GJam2020.Avatar
             Assert.IsNotNull(_animator);
             _initialForward = transform.forward;
         }
-        
+
         private void Update()
-        {
-            if(_walking)
+        {           
+            if (_walking)
             {
                 _walkingTimer = Time.time - _startWalkingTime;
                 if (_walkingTimer > _normalStepTime)
@@ -64,8 +68,10 @@ namespace GJam2020.Avatar
             }
         }
 
+       
         public bool Move(MovementDirection dir, Action onMovementComplete, float timeForDisplacement)
         {
+            _actualTimeForDisplacement = timeForDisplacement;
             if (!_walking)
             {
                 _animator.speed = 1;
@@ -77,26 +83,41 @@ namespace GJam2020.Avatar
             _walking = true;
 
             if (LevelManager.Get.AlreadyWin) return false;
+            LevelManager.Get.StartTime();
+            var futurePos = Vector3.zero;            
+            _lastMovementDirection = dir;
+            futurePos = GetFuturePosBasedOnDirection(playerRigidbody.position,dir);
+            var isValidMovement = IsValidMovement(futurePos);
+            if (isValidMovement)
+                StartCoroutine(MovePlayer(futurePos, onMovementComplete, _currentStepTime));
+            else
+            {
+                AvatarGeneralManager.Get.EndMovement();
+                onMovementComplete();
+            }
+            return isValidMovement;
+        }
 
-            var futurePos = Vector3.zero;
-            var isValidMovement = true;
-
+        public Vector3 GetFuturePosBasedOnDirection(Vector3 from,MovementDirection dir)
+        {
             switch (dir)
             {
                 case MovementDirection.Forward:
-                    futurePos = playerRigidbody.position + Vector3.forward;
-                    break;
+                    return from + Vector3.forward;
                 case MovementDirection.Backward:
-                    futurePos = playerRigidbody.position + Vector3.back;
-                    break;
+                    return from + Vector3.back;
                 case MovementDirection.Left:
-                    futurePos = playerRigidbody.position + Vector3.left;
-                    break;
+                    return from + Vector3.left;
                 case MovementDirection.Right:
-                    futurePos = playerRigidbody.position + Vector3.right;
-                    break;
+                    return from + Vector3.right;
+                default:
+                    return Vector3.zero;
             }
+        }
 
+        public bool IsValidMovement(Vector3 futurePos)
+        {
+            var isValidMovement = true;
             foreach (var obstaclePosition in MapGenerator.Get.GetObstaclesPosition())
             {
                 var tempObstaclePosition = new Vector3(obstaclePosition.x, 0, obstaclePosition.z);
@@ -104,13 +125,6 @@ namespace GJam2020.Avatar
                 {
                     isValidMovement = false;
                 }
-            }
-            if(isValidMovement)
-                StartCoroutine(MovePlayer(futurePos, onMovementComplete, _currentStepTime));
-            else
-            {
-                AvatarGeneralManager.Get.EndMovement();
-                onMovementComplete();
             }
             return isValidMovement;
         }
@@ -127,6 +141,11 @@ namespace GJam2020.Avatar
             _walking = false;
         }
 
+        public MovementDirection GetLastMovementDirection()
+        {
+            return _lastMovementDirection;
+        }
+
         public void UpdateMovementPosition(Vector3 newInitialPosition)
         {
             var deltaPos = _finalPosition - _initialPosition;
@@ -141,7 +160,34 @@ namespace GJam2020.Avatar
         {
             playerRigidbody.rotation = Quaternion.LookRotation(_initialForward, Vector3.up);
         }
-        
+
+        //public void ChangeFinalPosition()
+        //{
+        //    _finalPosition = newFinal;
+        //}
+
+        public void SetSlideAnimation(bool slide, Vector3 newFinal)
+        {
+            _pauseMovement = slide;
+            if (slide)
+            {
+                _finalPosition = newFinal;
+                _currentStepTime += (_actualTimeForDisplacement/2);
+                Debug.LogWarning("SlideAnimation");
+            }
+            else
+            {
+                //_currentStepTime = _currentStepTime / 2;
+                Debug.LogWarning("WalkAnimation");
+            }
+            //_pauseMovement = pause;
+        }
+
+        public Vector3 GetFinalPosition()
+        {
+            return _finalPosition;
+        }
+
         private IEnumerator MovePlayer(Vector3 newPos, Action onMovementComplete, float timeForDisplacement)
         {
             _movingPlayer = true;

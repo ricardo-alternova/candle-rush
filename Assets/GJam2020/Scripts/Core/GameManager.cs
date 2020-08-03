@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 {
     private const string GameplayScene = "Gameplay";
     public bool IsPlaying;
+    public LevelSettings firstLevel;
     public LevelSettings currentLevel;
     public MaterialsSettings materialsSettings;
     public RandomMaterialConfig randomMaterial;
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
     public static string MAIN_MENU_NAME = "MainMenu";
     public static string LEVELS_MENU_NAME = "LevelsMenu";
     public static string GAMEPLAY_NAME = "Gameplay";
-    public LevelSettings[] _levelSettings;
+    private LevelSettings[] _levelSettings;
     public int CurrentLevel { get { return _gameData.currentLevel; } }
 
     private GameData _gameData;
@@ -78,16 +79,16 @@ public class GameManager : MonoBehaviour
     {
         _nextLevel = nextLevel;
         _gameData.lastLevelUnLock = Mathf.Max(level, _gameData.lastLevelUnLock);
-        _gameData.currentLevel = level == _levelSettings.Length? 0 : level;
+        _gameData.currentLevel = level;
         if(_gameData.levelsScore.Count < level)
         {
             _gameData.levelsScore.Add(score);
         }
         else
         {
-            print(level);
-            print(_gameData.levelsScore.Count);
-            _gameData.levelsScore[level - 1] = score;
+            
+            if(_gameData.levelsScore[level-1]<score)
+                _gameData.levelsScore[level - 1] = score;
         }
         SaveGameData();
         ChargeNextLevel();
@@ -95,28 +96,20 @@ public class GameManager : MonoBehaviour
 
     public void ChargeNextLevel()
     {
-        if(ObjectsUnactive != null)
+        if (ObjectsUnactive != null)
             ObjectsUnactive.Clear();
 
-        if (_nextLevel != null && !_nextLevel.Equals(""))
-        {
-            for (int i = 0; i < _levelSettings.Length; i++)
-            {
-                if (currentLevel == _levelSettings[i])
-                {
-                    _gameData.currentLevel = i;
-                    SaveGameData();
-                }
-            }
-            SceneManager.LoadScene(_nextLevel);
-        }
-        else
+        if (!(_nextLevel != null && !_nextLevel.Equals("")))
         {
             _nextLevel = GAMEPLAY_NAME;
-            currentLevel = _levelSettings[_gameData.currentLevel];
-            //SaveGameData();
-            SceneManager.LoadScene(_nextLevel);
         }
+        if (currentLevel == null)
+        {
+            LoadLevelSettings(_gameData.currentLevel);
+        }
+        _gameData.currentLevel = currentLevel.Number;
+        SaveGameData();
+        SceneManager.LoadScene(_nextLevel);
     }
 
     public int GetLastLevelComplete()
@@ -154,10 +147,15 @@ public class GameManager : MonoBehaviour
 
     private void LoadLevelSettings(int actualLevel)
     {
-        if (actualLevel >= _levelSettings.Length)
-            actualLevel = 0;
-
-        currentLevel = _levelSettings[actualLevel];
+        LevelSettings aux = firstLevel;
+        while (aux != null && aux.Number != actualLevel)
+        {
+            aux = aux.NextLevel;
+        }
+        if (aux != null)
+            currentLevel = aux;
+        else
+            currentLevel = firstLevel;
     }
 
     private void SaveGameData()
