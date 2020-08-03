@@ -30,6 +30,7 @@ namespace GJam2020.Core {
             Time.text = time + "";
         }
 
+        
         //public void Dead()
         //{
         //    panelDead.SetActive(true);

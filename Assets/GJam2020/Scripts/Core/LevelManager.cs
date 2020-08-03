@@ -47,6 +47,7 @@ namespace GJam2020.Core
             inGame = false;
             AlreadyWin = true;
             Stars = settings.GetStarts(timePlaying);
+            
         }
 
         public void StartTime()
@@ -82,8 +83,7 @@ namespace GJam2020.Core
             _winController.Play();
 
             yield return new WaitForSeconds(_winningTime);
-
-            LevelMenuMgr.Get().OpenWin();
+            LevelMenuMgr.Get().OpenWin(Stars);
         }
 
         private void Awake()

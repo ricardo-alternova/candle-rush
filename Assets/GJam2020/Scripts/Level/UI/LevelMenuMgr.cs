@@ -36,10 +36,11 @@ namespace GJam2020.Level.UI
             GameManager.Get.IsPlaying = false;
             _gameOverMenu.SetActive(true);
         }
-        public void OpenWin()
+        public void OpenWin(int stars)
         {
             GameManager.Get.IsPlaying = false;
             _winMenu.SetActive(true);
+            _winMenu.GetComponent<WinMenu>().SetStarsNumber(stars);
         }
         public void OpenPause()
         {
