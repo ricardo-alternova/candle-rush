@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using GJam2020.Level.UI;
-using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
 
@@ -14,6 +13,7 @@ namespace GJam2020.Avatar {
         private PlayerMovement _movement;
         private BodyDestruction _bodyDestruction;
         private bool _isReverse = false;
+        public AnimationState AnimationState { get; private set; }
 
         private void Start()
         {
@@ -22,6 +22,7 @@ namespace GJam2020.Avatar {
             _movement = GetComponent<PlayerMovement>();
             _bodyDestruction = GetComponent<BodyDestruction>();
         }
+
         public void StartMovement(float timeForDisplacement)
         {
             if (!_isReverse)
@@ -29,17 +30,26 @@ namespace GJam2020.Avatar {
                 _bodyDestruction.DestroyBodyPart(timeForDisplacement);
             }
             _isReverse = false;
-            _animator.Walking(true);
 
+            SetStatus(AnimationState.WALKING);
         }
+
         public void IsReverseCommand()
         {
             _isReverse = true;
         }
-        public void EndMovement()
+
+        public void StopWalking()
         {
-            _animator.Walking(false);
+            SetStatus(AnimationState.IDLE);
         }
+
+        public void SetStatus(AnimationState animationState)
+        {
+            AnimationState = animationState;
+            _animator.SetState(animationState);
+        }
+
         public void CapturePiece(int value)
         {
             if (_plusStepCoroutine != null) StopCoroutine(_plusStepCoroutine);
@@ -61,6 +71,16 @@ namespace GJam2020.Avatar {
             _plusStepCoroutine = StartCoroutine(LabelBehavior(1));
         }
 
+        public void Dead()
+        {
+            LevelMenuMgr.Get().OpenGameOver();
+        }
+
+        public void Restore()
+        {
+            
+        }
+
         private IEnumerator LabelBehavior(int value)
         {
             _stepAdd.transform.DOKill();
@@ -72,16 +92,6 @@ namespace GJam2020.Avatar {
             _stepAdd.material.DOFade(1, 1);
             yield return new WaitForSeconds(1.5f);
             _stepAdd.gameObject.SetActive(false);
-        }
-
-        public void Dead()
-        {
-            LevelMenuMgr.Get().OpenGameOver();
-        }
-
-        public void Restore()
-        {
-            
         }
     }
 }

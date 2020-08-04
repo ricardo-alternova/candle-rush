@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GJam2020.Avatar;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -14,6 +15,8 @@ namespace GJam2020.Core
         //The different keys we need
         private Command _buttonW, _buttonS, _buttonA, _buttonD;
 
+        public UnityEvent OnInputReleased;
+
         public delegate void MoveCallback(Vector2 direction);
         public event MoveCallback OnMove;
         
@@ -22,6 +25,7 @@ namespace GJam2020.Core
         private Vector2 meanDrag = Vector2.zero;
         private bool startDragg;
         private List<Vector2> _directionsEnabled;
+        private bool _pressing;
 
         ////To reset the coroutine
         //private Coroutine _replayCoroutine;
@@ -127,43 +131,46 @@ namespace GJam2020.Core
         public void OnCommandDone()
         {
             _isHandlingCommand = false;
-            //Debug.Log("Command done");
         }
         
         private void CheckMoveInput(Vector2 direction)
         {
+            
             if (GameManager.Get.IsPlaying == false) return;
 #if UNITY_ANDROID
             direction = moveValue.magnitude != 0 ? moveValue : direction;
 #endif
+            if(_pressing && direction.magnitude == 0)
+            {
+                OnInputReleased.Invoke();
+            }
+
             if (direction.x != 0) {
                 if (direction.x > 0)
                 {
-                    //OnMove?.Invoke(Vector2.right);
-                    //DecideAction(_buttonD);
                     LaunchInput(_buttonD, Vector2.right);
                 }
                 if (direction.x < 0)
                 {
-                    //OnMove?.Invoke(Vector2.left);
-                    //DecideAction(_buttonA);
                     LaunchInput(_buttonA, Vector2.left);
-                } 
+                }
+                _pressing = true;
             }
-            if (direction.y != 0)
+            else if (direction.y != 0)
             {
                 if (direction.y > 0)
                 {
-                    //OnMove?.Invoke(Vector2.up);
-                    //DecideAction(_buttonW);
                     LaunchInput(_buttonW, Vector2.up);
                 }
                 if (direction.y < 0)
                 {
-                    //OnMove?.Invoke(Vector2.down);
-                    //DecideAction(_buttonS);
                     LaunchInput(_buttonS, Vector2.down);
                 }
+                _pressing = true;
+            }
+            else
+            {
+                _pressing = false;
             }
         }
 
@@ -182,7 +189,6 @@ namespace GJam2020.Core
             {
                 if (!_isHandlingCommand)
                     CommandPressed(command);
-                    //HandleInput();
             }
             else
             {
@@ -193,8 +199,7 @@ namespace GJam2020.Core
                 //HandleInput();
             }
         }
-
-
+        
         //Check if we press a key, if so do what the key is binded to 
         //public void HandleInput()
         //{
