@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AvatarAnimator : MonoBehaviour
 {
@@ -10,7 +8,12 @@ public class AvatarAnimator : MonoBehaviour
     {
         anim = GetComponent<Animator>();
     }
-    public void Walking(bool walking) {
-        anim.SetInteger("State", walking?1:0);
+
+    public void SetState(AnimationState state)
+    {
+        Debug.Log("Changing to state: " + state);
+        anim.SetInteger("State", (int)state);
     }
 }
+
+public enum AnimationState { IDLE, WALKING, CELEBRATING}

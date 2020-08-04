@@ -9,6 +9,7 @@ namespace GJam2020.Core {
     {
         
         public Text NumberOfPieces;
+        public Text Time;
         public GameObject panelDead;
 
         public static CanvasData Get;
@@ -23,6 +24,13 @@ namespace GJam2020.Core {
             NumberOfPieces.text = pieces + "";
         }
 
+        public void SetTime(float time)
+        {
+            time = Mathf.Floor(time);
+            Time.text = time + "";
+        }
+
+        
         //public void Dead()
         //{
         //    panelDead.SetActive(true);
