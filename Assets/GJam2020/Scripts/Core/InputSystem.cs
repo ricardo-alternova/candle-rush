@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using GJam2020.Avatar;
 using UnityEngine;
 using UnityEngine.Events;
@@ -71,8 +71,6 @@ namespace GJam2020.Core
 
             if (startDragg)
             {
-
-
                 if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
                     moveValue = Vector2.zero;
@@ -80,12 +78,18 @@ namespace GJam2020.Core
                     meanDrag = Vector2.zero;
                 }
             }
-            
+
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                CheckMoveInput(Vector2.zero);
+                playerMovement.StopWalking();
+            }
+            else
 
 #if UNITY_IOS
             CheckMoveInput(moveValue);
 #else
-            CheckMoveInput(moveValue * -1);
+                CheckMoveInput(moveValue * -1);
 #endif
             //#else
 
@@ -142,7 +146,10 @@ namespace GJam2020.Core
 #endif
             if(_pressing && direction.magnitude == 0)
             {
+                _pressing = false;
+
                 OnInputReleased.Invoke();
+                return;
             }
 
             if (direction.x != 0) {
@@ -167,10 +174,6 @@ namespace GJam2020.Core
                     LaunchInput(_buttonS, Vector2.down);
                 }
                 _pressing = true;
-            }
-            else
-            {
-                _pressing = false;
             }
         }
 
