@@ -126,8 +126,9 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.16
+  bundleVersion: 0.18
   preloadedAssets:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -273,7 +274,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: '{inproject}: Builds/user.keystore'
+  AndroidKeystoreName: D:/Unity/gamejam2020/Builds/user.keystore
   AndroidKeyaliasName: candlerush_01
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
