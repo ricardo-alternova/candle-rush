@@ -9,8 +9,16 @@ public class WorldsNavigation : MonoBehaviour
 {
     [SerializeField]
     private RectTransform content;
-    [SerializeField]
+
     private List<RectTransform> worlds;
+
+    [SerializeField]
+    private GameObject panelPrefab;
+    [SerializeField]
+    private GameObject levelPrefab;
+    [SerializeField]
+    private LevelSettings firstLevel;
+
     [SerializeField]
     private Button nextButton;
     [SerializeField]
@@ -20,10 +28,33 @@ public class WorldsNavigation : MonoBehaviour
 
     private void Start()
     {
+        BuildLevelButtons();
         nextButton.onClick.AddListener(TakeMeToNext);
         lastButton.onClick.AddListener(TakeMeToLast);
         checkButtonStatus();
         TakeMeToIndex();
+    }
+
+    private void BuildLevelButtons()
+    {
+        worlds = new List<RectTransform>();
+        LevelSettings auxSettings = firstLevel;
+        Transform panelAux = null;
+        int indexLevel = 0;
+        while (auxSettings != null)
+        {
+            if (indexLevel % 6 == 0)
+            {
+                panelAux = Instantiate(panelPrefab, content).transform;
+                worlds.Add(panelAux.GetComponent<RectTransform>());
+            }
+            GameObject levelButton = Instantiate(levelPrefab, panelAux);
+            MenuItem menuItem = levelButton.GetComponent<MenuItem>();
+            menuItem.level = indexLevel + 1;
+            menuItem.levelSettings = auxSettings;
+            auxSettings = auxSettings.NextLevel;
+            indexLevel++;
+        }
     }
 
     private void TakeMeToIndex()

@@ -8,6 +8,8 @@ namespace GJam2020.Level.UI
         [SerializeField]
         private GameObject _optionsButton;
         [SerializeField]
+        private GameObject _pauseButton;
+        [SerializeField]
         private GameObject _optionsMenu;
         [SerializeField]
         private GameObject _pauseMenu;
@@ -36,10 +38,14 @@ namespace GJam2020.Level.UI
             GameManager.Get.IsPlaying = false;
             _gameOverMenu.SetActive(true);
         }
-        public void OpenWin()
+        public void OpenWin(int stars)
         {
+            _optionsButton.SetActive(false);
+            _pauseButton.SetActive(false);
+
             GameManager.Get.IsPlaying = false;
             _winMenu.SetActive(true);
+            _winMenu.GetComponent<WinMenu>().PlayStars(stars);
         }
         public void OpenPause()
         {

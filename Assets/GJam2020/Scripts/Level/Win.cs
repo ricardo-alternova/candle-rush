@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using GGJ2020.Avatar;
+using GJam2020.Avatar;
 using UnityEngine;
 
 namespace GGJ2020.Levels
@@ -42,6 +43,14 @@ namespace GGJ2020.Levels
 
             _FxAudioSource.Play();
             _SongAudioSource.Play();
+
+            AvatarGeneralManager.Get.GetComponent<AvatarAnimator>().SetState(AnimationState.CELEBRATING);
+            Invoke("ChangeToIdleAnimation", 1);
+        }
+
+        private void ChangeToIdleAnimation()
+        {
+            AvatarGeneralManager.Get.GetComponent<AvatarAnimator>().SetState(AnimationState.IDLE);
         }
     }
 }
