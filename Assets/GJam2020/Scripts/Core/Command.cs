@@ -17,6 +17,7 @@ namespace GJam2020.Core
             AvatarGeneralManager.Get.IsReverseCommand();
             ReverseCommand.Execute(playerMovement, false, () => OnExecutionComplete(onCommandComplete), timeForDisplacement);
             BodyDestruction.Instance.ReconstructBodyPart();
+            SoundsMovementManager.Get.MovementStarted(true);
             CommandsManager.RemoveLastCommand();
         }
 
@@ -49,6 +50,7 @@ namespace GJam2020.Core
 
             //Save the command
             if (!needToBeSaved || !isValidMovement) return;
+            SoundsMovementManager.Get.MovementStarted(false);
             CommandsManager.AddCommand(this);
 
         }
@@ -66,6 +68,7 @@ namespace GJam2020.Core
             
             //Save the command
             if (!needToBeSaved || !isValidMovement) return;
+            SoundsMovementManager.Get.MovementStarted(false);
             CommandsManager.AddCommand(this);
         }
     }
@@ -82,6 +85,7 @@ namespace GJam2020.Core
 
             //Save the command
             if (!needToBeSaved || !isValidMovement) return;
+            SoundsMovementManager.Get.MovementStarted(false);
             CommandsManager.AddCommand(this);
         }
     }
@@ -98,6 +102,7 @@ namespace GJam2020.Core
 
             //Save the command
             if (!needToBeSaved || !isValidMovement) return;
+            SoundsMovementManager.Get.MovementStarted(false);
             CommandsManager.AddCommand(this);
         }
     }
