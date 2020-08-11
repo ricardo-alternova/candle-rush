@@ -4042,6 +4042,7 @@ MonoBehaviour:
   uiGroup: {fileID: 3349283966894055601, guid: 2facb233ee246ba4dbfb3e8764ad4e37, type: 2}
   songGroup: {fileID: 9145214381128422003, guid: 2facb233ee246ba4dbfb3e8764ad4e37,
     type: 2}
+  fxPlayer: {fileID: 779255391}
 --- !u!114 &648655670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4608,7 +4609,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552ca035816752d4c81f118ea3b23b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fxPlayer: {fileID: 779255391}
   movementClip: {fileID: 8300000, guid: 9cf3364aaba21b741bb345b24333d43e, type: 3}
   lowPartsMovementClip: {fileID: 8300000, guid: 32ef87cf20174fc46a6d3899262843fe,
     type: 3}

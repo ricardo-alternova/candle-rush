@@ -56,7 +56,12 @@ namespace GJam2020.Core
                 }
             }
         }
-        
+
+        public void PlayOneShot(AudioClip clip)
+        {
+            _audioSource.PlayOneShot(clip);
+        }
+
         public void Play(AudioClip clip, bool loop = false, float delay = 0, float FadeTime = 0)
         {
             StartCoroutine(PlaySoundCoroutine(clip, loop, delay, FadeTime));

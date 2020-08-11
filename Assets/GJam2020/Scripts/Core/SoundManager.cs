@@ -18,9 +18,14 @@ namespace GJam2020.Core
         [SerializeField]
         private AudioMixerGroup songGroup;
 
+        [SerializeField]
+        private AudioSourcePlayer fxPlayer;
+
         private bool _isPaused;
         private static SoundManager _instance;
         private AudioMixer audioMixer;
+
+        public AudioSourcePlayer FxPlayer { get => fxPlayer; }
 
         private void Awake()
         {
