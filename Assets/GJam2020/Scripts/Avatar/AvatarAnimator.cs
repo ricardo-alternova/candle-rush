@@ -16,4 +16,11 @@ public class AvatarAnimator : MonoBehaviour
     }
 }
 
-public enum AnimationState { IDLE, WALKING, CELEBRATING}
+public enum AnimationState {
+    IDLE,
+    WALKING,
+    CELEBRATING,
+    FALL_SLEEP,
+    SLIP_OFF,
+    GAME_OVER
+    }
