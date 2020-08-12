@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] private int linkIndex;
+    [SerializeField] public int linkIndex;
+    [SerializeField] public Transform keyBone;
+    [HideInInspector] public bool rotate;
 
     private void Start()
     {
@@ -16,7 +18,7 @@ public class Door : MonoBehaviour
         Transform parent = transform.GetComponentsInParent<Transform>()[1];
         Transform[] blocks = parent.GetComponentsInChildren<Transform>();
         List<Vector3> nearBlocks = new List<Vector3>();
-        bool rotate = false;
+        rotate = true;
         foreach (var item in blocks)
         {
             float distance = Vector3.Distance(new Vector3(item.position.x, 0, item.position.z), new Vector3(transform.position.x, 0, transform.position.z));
@@ -29,7 +31,7 @@ public class Door : MonoBehaviour
         {
             if (item.x != transform.position.x )
             {
-                rotate = true;
+                rotate = false;
             }
         }
         if (rotate)
@@ -38,17 +40,11 @@ public class Door : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
         Key[] keys = parent.GetComponentsInChildren<Key>();
-        foreach (var item in keys)
-        {
-            item.TakeKey += Open;
-        }
     }
-    public void Open(int index)
+    public void Open()
     {
-        if (index == linkIndex)
-        {
-            MapGenerator.Get.RemoveObstacle(transform.position);
-            transform.position += transform.right;
-        }
+        MapGenerator.Get.RemoveObstacle(transform.position);
+        GetComponentInChildren<Animator>().SetTrigger("Open");
+        GetComponentInChildren<SkinnedMeshRenderer>().material.SetFloat("_Open", 0.2f);
     }
 }
