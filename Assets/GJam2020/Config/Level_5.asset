@@ -18,4 +18,3 @@ MonoBehaviour:
   score: 200
   mapSettings: {fileID: 11400000, guid: 1c65f51c962ac534b8631b63992953c9, type: 2}
   nextLevel: {fileID: 11400000, guid: db435da58cda057468894ba3c21247aa, type: 2}
-  soundBackground: {fileID: 8300000, guid: fa169d3b7989ea84cb6511775881ded3, type: 3}

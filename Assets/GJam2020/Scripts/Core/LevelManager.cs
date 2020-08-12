@@ -13,11 +13,14 @@ namespace GJam2020.Core
         [SerializeField]
         private AudioClip _winningSound;
         [SerializeField]
+        private AudioClip _mapSong;
+        [SerializeField]
         private AudioSourcePlayer _MapSongAudioPlayer;
         [SerializeField]
         private Win _winController;
 
         private LevelSettings settings;
+        private AudioSourcePlayer _audioSource;
 
         private float timePlaying=0f;
         private bool inGame;
@@ -90,7 +93,8 @@ namespace GJam2020.Core
 
         private void Start()
         {
-            _MapSongAudioPlayer.Play(settings.SoundBackground, loop: true, delay: 0, FadeTime: 1.5f);
+            _audioSource = GetComponent<AudioSourcePlayer>();
+            _MapSongAudioPlayer.Play(_mapSong, loop: true, delay: 0, FadeTime: 1.5f);
             Get = this;
             GameManager.Get.IsPlaying = true;
         }

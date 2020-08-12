@@ -9693,7 +9693,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 460b1d8249eb67249a4e9c7b34af6aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportClip: {fileID: 8300000, guid: 39bc4e48294df874e922bcf6e6c1a970, type: 3}
 --- !u!136 &3100809897120081202
 CapsuleCollider:
   m_ObjectHideFlags: 0

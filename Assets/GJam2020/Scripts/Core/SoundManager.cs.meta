@@ -3,13 +3,7 @@ guid: bda5902efea6e7e48b8d2aa3c2ff87d3
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - fxGroup: {fileID: 6419121189532078129, guid: 2facb233ee246ba4dbfb3e8764ad4e37,
-      type: 2}
-  - uiGroup: {fileID: 3349283966894055601, guid: 2facb233ee246ba4dbfb3e8764ad4e37,
-      type: 2}
-  - songGroup: {fileID: 9145214381128422003, guid: 2facb233ee246ba4dbfb3e8764ad4e37,
-      type: 2}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
