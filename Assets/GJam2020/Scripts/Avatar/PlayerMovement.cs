@@ -145,6 +145,7 @@ namespace GJam2020.Avatar
         public void UpdateMovementPosition(Vector3 newInitialPosition)
         {
             var deltaPos = _finalPosition - _initialPosition;
+            deltaPos = deltaPos.normalized;
             _initialPosition = newInitialPosition;
             _finalPosition = deltaPos + _initialPosition;
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[CreateAssetMenu(fileName = "new Map Config", menuName = "LevelConfig")]
 public class LevelSettings : ScriptableObject
 {
     [SerializeField]
