@@ -93,5 +93,18 @@ namespace GJam2020.Avatar {
             yield return new WaitForSeconds(1.5f);
             _stepAdd.gameObject.SetActive(false);
         }
+
+        public void SetCurrentGround(MapEntity type)
+        {
+            switch (type)
+            {
+                case MapEntity.ground:
+                    _animator.IsSlide(false);
+                    break;
+                case MapEntity.iceCube:
+                    _animator.IsSlide(true);
+                    break;
+            }
+        }
     }
 }

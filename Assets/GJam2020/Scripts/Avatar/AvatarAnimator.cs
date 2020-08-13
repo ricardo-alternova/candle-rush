@@ -14,6 +14,11 @@ public class AvatarAnimator : MonoBehaviour
         Debug.Log("Changing to state: " + state);
         anim.SetInteger("State", (int)state);
     }
+
+    public void IsSlide(bool Slide)
+    {
+        anim.SetBool("slide", Slide);
+    }
 }
 
 public enum AnimationState {
