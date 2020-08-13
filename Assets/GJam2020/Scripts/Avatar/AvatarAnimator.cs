@@ -10,7 +10,13 @@ public class AvatarAnimator : MonoBehaviour
     {
         anim = GetComponent<Animator>();
     }
+
     public void Walking(bool walking) {
         anim.SetInteger("State", walking?1:0);
+    }
+
+    public void IsSlide(bool Slide)
+    {
+        anim.SetBool("Slide", Slide);
     }
 }

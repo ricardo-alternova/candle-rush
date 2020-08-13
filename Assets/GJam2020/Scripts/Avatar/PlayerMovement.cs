@@ -1,3 +1,4 @@
+using GGJ2020.Levels;
 using GJam2020.Core;
 using System;
 using System.Collections;
@@ -24,7 +25,7 @@ namespace GJam2020.Avatar
         private Vector3 _initialForward;
         private Vector3 _initialPosition;
         private Vector3 _finalPosition;
-
+        
         private float _currentStepTime;
         private float _actualTimeForDisplacement;
         private float _normalStepTime;
@@ -35,7 +36,6 @@ namespace GJam2020.Avatar
         private bool _walking;
         private bool _movingPlayer;
         private MovementDirection _lastMovementDirection;
-        private bool _pauseMovement;
 
 
         private void Start()
@@ -131,13 +131,6 @@ namespace GJam2020.Avatar
 
         public void StopWalking()
         {
-            //if (!_movingPlayer)
-            //{
-            //    Debug.LogWarning("Stop");
-            //    _animator.speed = 1;
-            //    AvatarGeneralManager.Get.EndMovement();
-            //}
-            //Debug.LogWarning("Stop");
             _walking = false;
         }
 
@@ -162,26 +155,10 @@ namespace GJam2020.Avatar
             playerRigidbody.rotation = Quaternion.LookRotation(_initialForward, Vector3.up);
         }
 
-        //public void ChangeFinalPosition()
-        //{
-        //    _finalPosition = newFinal;
-        //}
-
-        public void SetSlideAnimation(bool slide, Vector3 newFinal)
+        public void SetNewFinalPosition(Vector3 newFinal)
         {
-            _pauseMovement = slide;
-            if (slide)
-            {
-                _finalPosition = newFinal;
-                _currentStepTime += (_actualTimeForDisplacement/2);
-                Debug.LogWarning("SlideAnimation");
-            }
-            else
-            {
-                //_currentStepTime = _currentStepTime / 2;
-                Debug.LogWarning("WalkAnimation");
-            }
-            //_pauseMovement = pause;
+            _finalPosition = newFinal;
+            _currentStepTime += (_actualTimeForDisplacement/2);
         }
 
         public Vector3 GetFinalPosition()
