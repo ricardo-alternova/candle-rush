@@ -18,6 +18,8 @@ namespace GJam2020.Core
         private AudioSourcePlayer _MapSongAudioPlayer;
         [SerializeField]
         private Win _winController;
+        [SerializeField]
+        private GameOverCtrl _gameOverCtrl;
 
         private LevelSettings settings;
         private AudioSourcePlayer _audioSource;
@@ -42,12 +44,23 @@ namespace GJam2020.Core
                 return settings.NextLevel;
             }
         }
+
         public void Win()
         {
             inGame = false;
             AlreadyWin = true;
             Stars = settings.GetStarts(timePlaying);
-            
+        }
+
+        public void GameOver()
+        {
+            _MapSongAudioPlayer.Stop(0.5f);
+            _gameOverCtrl.Play();
+        }
+
+        public void ResetGame()
+        {
+            _MapSongAudioPlayer.Play(_mapSong, true, 0, 0.5f);
         }
 
         public void StartTime()

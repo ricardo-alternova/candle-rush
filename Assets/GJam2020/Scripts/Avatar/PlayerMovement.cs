@@ -49,7 +49,6 @@ namespace GJam2020.Avatar
 
         private void InputReleased()
         {
-            Debug.Log("Input released");
             _inputPressed = false;
             if(!_walking)
                 AvatarGeneralManager.Get.SetStatus(AnimationState.IDLE);
