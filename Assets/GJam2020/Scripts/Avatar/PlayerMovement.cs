@@ -158,19 +158,10 @@ namespace GJam2020.Avatar
             playerRigidbody.rotation = Quaternion.LookRotation(_initialForward, Vector3.up);
         }
 
-        public void SetSlideAnimation(bool slide, Vector3 newFinal)
+        public void SetNewFinalPosition(Vector3 newFinal)
         {
-            _pauseMovement = slide;
-            if (slide)
-            {
-                _finalPosition = newFinal;
-                _currentStepTime += (_actualTimeForDisplacement/2);
-                Debug.LogWarning("SlideAnimation");
-            }
-            else
-            {
-                Debug.LogWarning("WalkAnimation");
-            }
+            _finalPosition = newFinal;
+            _currentStepTime += (_actualTimeForDisplacement/2);
         }
 
         public Vector3 GetFinalPosition()
