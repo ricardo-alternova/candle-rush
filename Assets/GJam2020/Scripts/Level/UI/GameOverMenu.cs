@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using GGJ2020.Levels;
+using GJam2020.Core;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace GJam2020.Level.UI
@@ -32,6 +34,8 @@ namespace GJam2020.Level.UI
         {
             print("restore");
             GameManager.Get.Restore();
+            GameOverCtrl.Get().Reset();
+            LevelManager.Get.ResetGame();
             gameObject.SetActive(false);
         }
 

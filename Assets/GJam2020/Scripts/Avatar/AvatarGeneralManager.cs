@@ -2,6 +2,7 @@
 using GJam2020.Level.UI;
 using DG.Tweening;
 using System.Collections;
+using GJam2020.Core;
 
 namespace GJam2020.Avatar {
     public class AvatarGeneralManager : MonoBehaviour
@@ -73,7 +74,9 @@ namespace GJam2020.Avatar {
 
         public void Dead()
         {
+            SetStatus(AnimationState.GAME_OVER);
             LevelMenuMgr.Get().OpenGameOver();
+            LevelManager.Get.GameOver();
         }
 
         public void Restore()

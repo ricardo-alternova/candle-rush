@@ -11,7 +11,6 @@ public class AvatarAnimator : MonoBehaviour
 
     public void SetState(AnimationState state)
     {
-        Debug.Log("Changing to state: " + state);
         anim.SetInteger("State", (int)state);
     }
 
