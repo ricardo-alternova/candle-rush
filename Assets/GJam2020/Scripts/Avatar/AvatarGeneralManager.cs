@@ -7,14 +7,17 @@ using GJam2020.Core;
 namespace GJam2020.Avatar {
     public class AvatarGeneralManager : MonoBehaviour
     {
+        public static AvatarGeneralManager Get;
+        public AnimationState AnimationState { get; private set; }
+
         [SerializeField]
         private TMPro.TextMeshProUGUI _stepAdd;
-        public static AvatarGeneralManager Get;
         private AvatarAnimator _animator;
         private PlayerMovement _movement;
         private BodyDestruction _bodyDestruction;
         private bool _isReverse = false;
-        public AnimationState AnimationState { get; private set; }
+        private Coroutine _plusStepCoroutine;
+
 
         private void Start()
         {
@@ -63,8 +66,6 @@ namespace GJam2020.Avatar {
             }
         }
 
-        private Coroutine _plusStepCoroutine;
-
         public void StepBack()
         {
             if (_plusStepCoroutine != null) StopCoroutine(_plusStepCoroutine);
@@ -77,11 +78,6 @@ namespace GJam2020.Avatar {
             SetStatus(AnimationState.GAME_OVER);
             LevelMenuMgr.Get().OpenGameOver();
             LevelManager.Get.GameOver();
-        }
-
-        public void Restore()
-        {
-            
         }
 
         private IEnumerator LabelBehavior(int value)

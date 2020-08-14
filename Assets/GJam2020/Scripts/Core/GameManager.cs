@@ -1,15 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using System.IO;
 using System.Xml.Serialization;
-
 using UnityEngine.SceneManagement;
 using GJam2020.Core;
 using GJam2020.Avatar;
 using UnityEngine.Assertions;
 using GGJ2020.Avatar;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class GameData
@@ -21,7 +19,6 @@ public class GameData
 
 public class GameManager : MonoBehaviour
 {
-    private const string GameplayScene = "Gameplay";
     public bool IsPlaying;
     public LevelSettings firstLevel;
     public LevelSettings currentLevel;
@@ -33,9 +30,11 @@ public class GameManager : MonoBehaviour
     public static string MAIN_MENU_NAME = "MainMenu";
     public static string LEVELS_MENU_NAME = "LevelsMenu";
     public static string GAMEPLAY_NAME = "Gameplay";
-    private LevelSettings[] _levelSettings;
     public int CurrentLevel { get { return _gameData.currentLevel; } }
+    public UnityEvent StartGame;
 
+    private const string GameplayScene = "Gameplay";
+    private LevelSettings[] _levelSettings;
     private GameData _gameData;
     private string _nextLevel;
 
@@ -57,6 +56,7 @@ public class GameManager : MonoBehaviour
 
             //SetRandomSkyMat();
             SceneManager.sceneLoaded += SetRandomSkyMat;
+            SceneManager.sceneLoaded += OnSceneLoaded;
             ObjectsUnactive = new List<GameObject>();
             LoadGameData();
         }
@@ -127,6 +127,13 @@ public class GameManager : MonoBehaviour
         }
         return 0;
     }
+
+    private  void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Equals("Gameplay"))
+            StartGame.Invoke();
+    }
+
     private void LoadGameData()
     {
         XmlSerializer serializer = new XmlSerializer(typeof(GameData));
@@ -173,6 +180,11 @@ public class GameManager : MonoBehaviour
         ObjectsUnactive.Add(objeto);
     }
 
+    public void RemoveelementToRestore()
+    {
+
+    }
+
     public void Restore()
     {
         print("Restore");
@@ -180,17 +192,19 @@ public class GameManager : MonoBehaviour
             playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
         Assert.IsNotNull(playerMovement, "Player movement not found");
 
-        
+        IsPlaying = false;
+
         CommandsManager.Instance.StartRewindCommands(playerMovement, (() => { 
             Debug.Log("Rewind finished");
+            IsPlaying = true;
+            StartGame.Invoke();
             foreach (GameObject obj in ObjectsUnactive)
             {
                 obj.SetActive(true);
             }
             CheckAvatarStartPosition();
-        }));
-
-        IsPlaying = true;
+            })
+        );
     }
 
     private void CheckAvatarStartPosition()
