@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Xml.Serialization;
-using UnityEngine.SceneManagement;
 using GJam2020.Core;
 using GJam2020.Avatar;
-using UnityEngine.Assertions;
 using GGJ2020.Avatar;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using UnityEngine.Assertions;
 
 [System.Serializable]
 public class GameData
@@ -60,19 +60,6 @@ public class GameManager : MonoBehaviour
             ObjectsUnactive = new List<GameObject>();
             LoadGameData();
         }
-    }
-    private void SetRandomSkyMat()
-    {
-        if (Get.randomMaterial != null)
-        {
-            Get.materialsSettings = Get.randomMaterial.GetRandomMaterialSettings();
-            RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
-        }
-    }
-
-    private void SetRandomSkyMat(Scene scene, LoadSceneMode loadSceneMode)
-    {
-        SetRandomSkyMat();
     }
 
     public void NewLevelComplete(int level, int score, string nextLevel)
@@ -127,8 +114,54 @@ public class GameManager : MonoBehaviour
         }
         return 0;
     }
+    
+    public void AddElementToRestore(GameObject elementGO)
+    {
+        ObjectsUnactive.Add(elementGO);
+    }
 
-    private  void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    public void RemoveelementToRestore(GameObject elementGO)
+    {
+        ObjectsUnactive.Remove(elementGO);
+    }
+
+    public void Restore()
+    {
+        print("Restore");
+        if (playerMovement == null)
+            playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
+        Assert.IsNotNull(playerMovement, "Player movement not found");
+
+        IsPlaying = false;
+
+        CommandsManager.Instance.StartRewindCommands(playerMovement, (() => { 
+            Debug.Log("Rewind finished");
+            IsPlaying = true;
+            StartGame.Invoke();
+            foreach (GameObject obj in ObjectsUnactive)
+            {
+                obj.SetActive(true);
+            }
+            CheckAvatarStartPosition();
+            })
+        );
+    }
+
+    private void SetRandomSkyMat()
+    {
+        if (Get.randomMaterial != null)
+        {
+            Get.materialsSettings = Get.randomMaterial.GetRandomMaterialSettings();
+            RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
+        }
+    }
+
+    private void SetRandomSkyMat(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        SetRandomSkyMat();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name.Equals("Gameplay"))
             StartGame.Invoke();
@@ -174,43 +207,13 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetString("Gamedata", sw.ToString());
         }
     }
-    
-    public void AddElementToRestore(GameObject objeto)
-    {
-        ObjectsUnactive.Add(objeto);
-    }
-
-    public void RemoveelementToRestore()
-    {
-
-    }
-
-    public void Restore()
-    {
-        print("Restore");
-        if (playerMovement == null)
-            playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
-        Assert.IsNotNull(playerMovement, "Player movement not found");
-
-        IsPlaying = false;
-
-        CommandsManager.Instance.StartRewindCommands(playerMovement, (() => { 
-            Debug.Log("Rewind finished");
-            IsPlaying = true;
-            StartGame.Invoke();
-            foreach (GameObject obj in ObjectsUnactive)
-            {
-                obj.SetActive(true);
-            }
-            CheckAvatarStartPosition();
-            })
-        );
-    }
 
     private void CheckAvatarStartPosition()
     {
-        if ((MapGenerator.Get.StartPosition - AvatarPosition.AVATAR_POSITION).magnitude > 0.2f)
+        var difference = (MapGenerator.Get.StartPosition - AvatarPosition.AVATAR_POSITION).magnitude;
+        if (difference > 0.4f)
         {
+            Debug.LogWarning("Scene reloaded because avatar was to far from start position: " + difference);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
