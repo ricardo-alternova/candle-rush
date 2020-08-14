@@ -25,7 +25,6 @@ namespace GJam2020.Core
         private AudioSourcePlayer _audioSource;
 
         private float timePlaying=0f;
-        private bool inGame;
         public static LevelManager Get;
 
         public bool AlreadyWin { get; private set; } = false;
@@ -47,7 +46,6 @@ namespace GJam2020.Core
 
         public void Win()
         {
-            inGame = false;
             AlreadyWin = true;
             Stars = settings.GetStarts(timePlaying);
         }
@@ -61,24 +59,6 @@ namespace GJam2020.Core
         public void ResetGame()
         {
             _MapSongAudioPlayer.Play(_mapSong, true, 0, 0.5f);
-        }
-
-        public void StartTime()
-        {
-            if (!inGame)
-            {
-                timePlaying = 0f;
-                inGame = true;
-            }
-        }
-
-        private void Update()
-        {
-            if (inGame)
-            {
-                timePlaying += Time.deltaTime;
-                CanvasData.Get.SetTime(timePlaying);
-            }
         }
 
         public void PlayFinishLevel()

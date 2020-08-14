@@ -1,22 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using GJam2020.Avatar;
 
 namespace GJam2020.Core {
     public class CanvasData : MonoBehaviour
     {
-        
         public Text NumberOfPieces;
-        public Text Time;
-        public GameObject panelDead;
+        public Text TimeLabel;
 
         public static CanvasData Get;
+
+        private float timer;
 
         private void Awake()
         {
             Get = this;
+
+            GameManager.Get.StartGame.AddListener(() => ResetTimer());
+        }
+
+        private void Update()
+        {
+            if (!GameManager.Get.IsPlaying) return;
+
+            timer += Time.deltaTime;
+            SetTime(timer);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Get.StartGame.RemoveListener(() => ResetTimer());
         }
 
         public void SetNumberOfPieces(int pieces)
@@ -27,20 +39,12 @@ namespace GJam2020.Core {
         public void SetTime(float time)
         {
             time = Mathf.Floor(time);
-            Time.text = time + "";
+            TimeLabel.text = time + "";
         }
 
-        
-        //public void Dead()
-        //{
-        //    panelDead.SetActive(true);
-        //}
-
-        //public void Restore()
-        //{
-        //    print("restore");
-        //    panelDead.SetActive(false);
-        //    GameManager.Get.Restore();
-        //}
+        public void ResetTimer()
+        {
+            timer = 0;
+        }
     }
 }
