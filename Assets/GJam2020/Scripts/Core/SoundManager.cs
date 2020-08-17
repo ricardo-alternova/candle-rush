@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 namespace GJam2020.Core
 {
@@ -24,11 +26,14 @@ namespace GJam2020.Core
         private bool _isPaused;
         private static SoundManager _instance;
         private AudioMixer audioMixer;
+        private Camera mainCamera;
 
         public AudioSourcePlayer FxPlayer { get => fxPlayer; }
 
         private void Awake()
         {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
             if (_instance != null)
             {
                 if (_instance != this)
@@ -40,11 +45,22 @@ namespace GJam2020.Core
             audioMixer = songGroup.audioMixer;
         }
 
+        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            mainCamera = Camera.main;
+        }
+
         private void Start()
         {
             EnableFx(PlayerPrefsMgr.Get().LoadInt("PauseFxState") == 0 ? false : true);
             EnableUI(PlayerPrefsMgr.Get().LoadInt("PauseUIState") == 0 ? false : true);
             EnableSong(PlayerPrefsMgr.Get().LoadInt("PauseSongsState") == 0 ? false : true);
+        }
+
+        private void Update()
+        {
+            if (mainCamera)
+                fxPlayer.transform.position = mainCamera.transform.position;
         }
 
         public static SoundManager Get() { return _instance; }
