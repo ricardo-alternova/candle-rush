@@ -12,8 +12,7 @@ namespace GJam2020.Core
         private float _winningTime = 3;
         [SerializeField]
         private AudioClip _winningSound;
-        [SerializeField]
-        private AudioClip _mapSong;
+        
         [SerializeField]
         private AudioSourcePlayer _MapSongAudioPlayer;
         [SerializeField]
@@ -58,7 +57,7 @@ namespace GJam2020.Core
 
         public void ResetGame()
         {
-            _MapSongAudioPlayer.Play(_mapSong, true, 0, 0.5f);
+            _MapSongAudioPlayer.Play(settings.SoundBackground, true, 0, 0.5f);
         }
 
         public void PlayFinishLevel()
@@ -87,7 +86,7 @@ namespace GJam2020.Core
         private void Start()
         {
             _audioSource = GetComponent<AudioSourcePlayer>();
-            _MapSongAudioPlayer.Play(_mapSong, loop: true, delay: 0, FadeTime: 1.5f);
+            _MapSongAudioPlayer.Play(settings.SoundBackground, loop: true, delay: 0, FadeTime: 1.5f);
             Get = this;
             GameManager.Get.IsPlaying = true;
         }

@@ -25,6 +25,11 @@ namespace GJam2020.Avatar
         private ParticleSystem.EmissionModule emission;
         private ParticleSystem.EmissionModule constructEmission;
 
+        public int RemainingParts
+        {
+            get { return bodyParts.Length - partsDestroyed; }
+        }
+
         private void Awake()
         {
             Instance = this;
