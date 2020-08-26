@@ -25,12 +25,7 @@ namespace GJam2020.Core
         {
             if (_playOnAwake)
                 Play(Clip, _audioSource.loop, 1.5f);
-            SoundManager.Get().AddAudioPlayer(this);
-        }
-
-        private void OnDestroy()
-        {
-            SoundManager.Get().RemoveAudioPlauer(this);
+            _audioSource.outputAudioMixerGroup = SoundManager.Get().GetMixerGroup(_soundType);
         }
 
         public void Pause()
@@ -61,7 +56,12 @@ namespace GJam2020.Core
                 }
             }
         }
-        
+
+        public void PlayOneShot(AudioClip clip)
+        {
+            _audioSource.PlayOneShot(clip);
+        }
+
         public void Play(AudioClip clip, bool loop = false, float delay = 0, float FadeTime = 0)
         {
             StartCoroutine(PlaySoundCoroutine(clip, loop, delay, FadeTime));

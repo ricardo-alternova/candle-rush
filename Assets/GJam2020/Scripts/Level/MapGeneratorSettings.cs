@@ -10,7 +10,10 @@ public enum MapEntity
     endFlag = 4,
     startFlag = 5,
     extraLife = 6, 
-    teleporter = 7
+    teleporter = 7,
+    door = 8,
+    key = 9,
+    iceCube = 10
 }
 
 

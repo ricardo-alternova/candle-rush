@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
 using GJam2020.Level.UI;
-using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
+using GJam2020.Core;
 
 namespace GJam2020.Avatar {
     public class AvatarGeneralManager : MonoBehaviour
     {
+        public static AvatarGeneralManager Get;
+        public AnimationState AnimationState { get; private set; }
+
         [SerializeField]
         private TMPro.TextMeshProUGUI _stepAdd;
-        public static AvatarGeneralManager Get;
         private AvatarAnimator _animator;
         private PlayerMovement _movement;
         private BodyDestruction _bodyDestruction;
         private bool _isReverse = false;
+        private Coroutine _plusStepCoroutine;
+
 
         private void Start()
         {
@@ -22,6 +26,7 @@ namespace GJam2020.Avatar {
             _movement = GetComponent<PlayerMovement>();
             _bodyDestruction = GetComponent<BodyDestruction>();
         }
+
         public void StartMovement(float timeForDisplacement)
         {
             if (!_isReverse)
@@ -29,17 +34,26 @@ namespace GJam2020.Avatar {
                 _bodyDestruction.DestroyBodyPart(timeForDisplacement);
             }
             _isReverse = false;
-            _animator.Walking(true);
 
+            SetStatus(AnimationState.WALKING);
         }
+
         public void IsReverseCommand()
         {
             _isReverse = true;
         }
-        public void EndMovement()
+
+        public void StopWalking()
         {
-            _animator.Walking(false);
+            SetStatus(AnimationState.IDLE);
         }
+
+        public void SetStatus(AnimationState animationState)
+        {
+            AnimationState = animationState;
+            _animator.SetState(animationState);
+        }
+
         public void CapturePiece(int value)
         {
             if (_plusStepCoroutine != null) StopCoroutine(_plusStepCoroutine);
@@ -52,13 +66,18 @@ namespace GJam2020.Avatar {
             }
         }
 
-        private Coroutine _plusStepCoroutine;
-
         public void StepBack()
         {
             if (_plusStepCoroutine != null) StopCoroutine(_plusStepCoroutine);
 
             _plusStepCoroutine = StartCoroutine(LabelBehavior(1));
+        }
+
+        public void Dead()
+        {
+            SetStatus(AnimationState.GAME_OVER);
+            LevelMenuMgr.Get().OpenGameOver();
+            LevelManager.Get.GameOver();
         }
 
         private IEnumerator LabelBehavior(int value)
@@ -74,14 +93,17 @@ namespace GJam2020.Avatar {
             _stepAdd.gameObject.SetActive(false);
         }
 
-        public void Dead()
+        public void SetCurrentGround(MapEntity type)
         {
-            LevelMenuMgr.Get().OpenGameOver();
-        }
-
-        public void Restore()
-        {
-            
+            switch (type)
+            {
+                case MapEntity.ground:
+                    _animator.IsSlide(false);
+                    break;
+                case MapEntity.iceCube:
+                    _animator.IsSlide(true);
+                    break;
+            }
         }
     }
 }

@@ -1,15 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
 using System.IO;
 using System.Xml.Serialization;
-
-using UnityEngine.SceneManagement;
 using GJam2020.Core;
 using GJam2020.Avatar;
-using UnityEngine.Assertions;
 using GGJ2020.Avatar;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+using UnityEngine.Assertions;
 
 [System.Serializable]
 public class GameData
@@ -21,8 +19,8 @@ public class GameData
 
 public class GameManager : MonoBehaviour
 {
-    private const string GameplayScene = "Gameplay";
     public bool IsPlaying;
+    public LevelSettings firstLevel;
     public LevelSettings currentLevel;
     public MaterialsSettings materialsSettings;
     public RandomMaterialConfig randomMaterial;
@@ -32,9 +30,11 @@ public class GameManager : MonoBehaviour
     public static string MAIN_MENU_NAME = "MainMenu";
     public static string LEVELS_MENU_NAME = "LevelsMenu";
     public static string GAMEPLAY_NAME = "Gameplay";
-    public LevelSettings[] _levelSettings;
     public int CurrentLevel { get { return _gameData.currentLevel; } }
+    public UnityEvent StartGame;
 
+    private const string GameplayScene = "Gameplay";
+    private LevelSettings[] _levelSettings;
     private GameData _gameData;
     private string _nextLevel;
 
@@ -56,38 +56,26 @@ public class GameManager : MonoBehaviour
 
             //SetRandomSkyMat();
             SceneManager.sceneLoaded += SetRandomSkyMat;
+            SceneManager.sceneLoaded += OnSceneLoaded;
             ObjectsUnactive = new List<GameObject>();
             LoadGameData();
         }
-    }
-    private void SetRandomSkyMat()
-    {
-        if (Get.randomMaterial != null)
-        {
-            Get.materialsSettings = Get.randomMaterial.GetRandomMaterialSettings();
-            RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
-        }
-    }
-
-    private void SetRandomSkyMat(Scene scene, LoadSceneMode loadSceneMode)
-    {
-        SetRandomSkyMat();
     }
 
     public void NewLevelComplete(int level, int score, string nextLevel)
     {
         _nextLevel = nextLevel;
         _gameData.lastLevelUnLock = Mathf.Max(level, _gameData.lastLevelUnLock);
-        _gameData.currentLevel = level == _levelSettings.Length? 0 : level;
+        _gameData.currentLevel = level;
         if(_gameData.levelsScore.Count < level)
         {
             _gameData.levelsScore.Add(score);
         }
         else
         {
-            print(level);
-            print(_gameData.levelsScore.Count);
-            _gameData.levelsScore[level - 1] = score;
+            
+            if(_gameData.levelsScore[level-1]<score)
+                _gameData.levelsScore[level - 1] = score;
         }
         SaveGameData();
         ChargeNextLevel();
@@ -95,28 +83,20 @@ public class GameManager : MonoBehaviour
 
     public void ChargeNextLevel()
     {
-        if(ObjectsUnactive != null)
+        if (ObjectsUnactive != null)
             ObjectsUnactive.Clear();
 
-        if (_nextLevel != null && !_nextLevel.Equals(""))
-        {
-            for (int i = 0; i < _levelSettings.Length; i++)
-            {
-                if (currentLevel == _levelSettings[i])
-                {
-                    _gameData.currentLevel = i;
-                    SaveGameData();
-                }
-            }
-            SceneManager.LoadScene(_nextLevel);
-        }
-        else
+        if (!(_nextLevel != null && !_nextLevel.Equals("")))
         {
             _nextLevel = GAMEPLAY_NAME;
-            currentLevel = _levelSettings[_gameData.currentLevel];
-            //SaveGameData();
-            SceneManager.LoadScene(_nextLevel);
         }
+        if (currentLevel == null)
+        {
+            LoadLevelSettings(_gameData.currentLevel);
+        }
+        _gameData.currentLevel = currentLevel.Number;
+        SaveGameData();
+        SceneManager.LoadScene(_nextLevel);
     }
 
     public int GetLastLevelComplete()
@@ -134,6 +114,59 @@ public class GameManager : MonoBehaviour
         }
         return 0;
     }
+    
+    public void AddElementToRestore(GameObject elementGO)
+    {
+        ObjectsUnactive.Add(elementGO);
+    }
+
+    public void RemoveelementToRestore(GameObject elementGO)
+    {
+        ObjectsUnactive.Remove(elementGO);
+    }
+
+    public void Restore()
+    {
+        print("Restore");
+        if (playerMovement == null)
+            playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
+        Assert.IsNotNull(playerMovement, "Player movement not found");
+
+        IsPlaying = false;
+
+        CommandsManager.Instance.StartRewindCommands(playerMovement, (() => { 
+            Debug.Log("Rewind finished");
+            IsPlaying = true;
+            StartGame.Invoke();
+            foreach (GameObject obj in ObjectsUnactive)
+            {
+                obj.SetActive(true);
+            }
+            CheckAvatarStartPosition();
+            })
+        );
+    }
+
+    private void SetRandomSkyMat()
+    {
+        if (Get.randomMaterial != null)
+        {
+            Get.materialsSettings = Get.randomMaterial.GetRandomMaterialSettings();
+            RenderSettings.skybox = Get.materialsSettings.SkyboxMaterial;
+        }
+    }
+
+    private void SetRandomSkyMat(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        SetRandomSkyMat();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Equals("Gameplay"))
+            StartGame.Invoke();
+    }
+
     private void LoadGameData()
     {
         XmlSerializer serializer = new XmlSerializer(typeof(GameData));
@@ -154,10 +187,15 @@ public class GameManager : MonoBehaviour
 
     private void LoadLevelSettings(int actualLevel)
     {
-        if (actualLevel >= _levelSettings.Length)
-            actualLevel = 0;
-
-        currentLevel = _levelSettings[actualLevel];
+        LevelSettings aux = firstLevel;
+        while (aux != null && aux.Number != actualLevel)
+        {
+            aux = aux.NextLevel;
+        }
+        if (aux != null)
+            currentLevel = aux;
+        else
+            currentLevel = firstLevel;
     }
 
     private void SaveGameData()
@@ -169,36 +207,13 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetString("Gamedata", sw.ToString());
         }
     }
-    
-    public void AddElementToRestore(GameObject objeto)
-    {
-        ObjectsUnactive.Add(objeto);
-    }
-
-    public void Restore()
-    {
-        print("Restore");
-        if (playerMovement == null)
-            playerMovement = GameObject.Find("Root/Environment/WaxBoy").GetComponent<PlayerMovement>();
-        Assert.IsNotNull(playerMovement, "Player movement not found");
-
-        
-        CommandsManager.Instance.StartRewindCommands(playerMovement, (() => { 
-            Debug.Log("Rewind finished");
-            foreach (GameObject obj in ObjectsUnactive)
-            {
-                obj.SetActive(true);
-            }
-            CheckAvatarStartPosition();
-        }));
-
-        IsPlaying = true;
-    }
 
     private void CheckAvatarStartPosition()
     {
-        if ((MapGenerator.Get.StartPosition - AvatarPosition.AVATAR_POSITION).magnitude > 0.2f)
+        var difference = (MapGenerator.Get.StartPosition - AvatarPosition.AVATAR_POSITION).magnitude;
+        if (difference > 0.4f)
         {
+            Debug.LogWarning("Scene reloaded because avatar was to far from start position: " + difference);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }

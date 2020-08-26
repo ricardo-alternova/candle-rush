@@ -39,6 +39,7 @@ namespace GJam2020.Game.Tutorial
                 _inputSystem.EnableInputs(true,true,true,true);
         }
 
+        [ContextMenu("NextSlide")]
         public void NextSlide()
         {
             StartCoroutine(NextSlideCoroutine());

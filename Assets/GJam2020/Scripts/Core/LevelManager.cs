@@ -1,4 +1,5 @@
-﻿using GJam2020.Avatar;
+﻿using GGJ2020.Levels;
+using GJam2020.Avatar;
 using GJam2020.Level.UI;
 using System.Collections;
 using UnityEngine;
@@ -11,13 +12,18 @@ namespace GJam2020.Core
         private float _winningTime = 3;
         [SerializeField]
         private AudioClip _winningSound;
-        [SerializeField]
-        private AudioClip _mapSong;
+        
         [SerializeField]
         private AudioSourcePlayer _MapSongAudioPlayer;
+        [SerializeField]
+        private Win _winController;
+        [SerializeField]
+        private GameOverCtrl _gameOverCtrl;
 
         private LevelSettings settings;
         private AudioSourcePlayer _audioSource;
+
+        private float timePlaying=0f;
         public static LevelManager Get;
 
         public bool AlreadyWin { get; private set; } = false;
@@ -27,10 +33,7 @@ namespace GJam2020.Core
             get { return settings.Number; }
         }
 
-        public int Score
-        {
-            get { return settings.Score; }
-        }
+        public int Stars { get; private set; } = 1;
 
         public LevelSettings NextLevel
         {
@@ -39,9 +42,22 @@ namespace GJam2020.Core
                 return settings.NextLevel;
             }
         }
+
         public void Win()
         {
             AlreadyWin = true;
+            Stars = settings.GetStarts(timePlaying);
+        }
+
+        public void GameOver()
+        {
+            _MapSongAudioPlayer.Stop(0.5f);
+            _gameOverCtrl.Play();
+        }
+
+        public void ResetGame()
+        {
+            _MapSongAudioPlayer.Play(settings.SoundBackground, true, 0, 0.5f);
         }
 
         public void PlayFinishLevel()
@@ -56,16 +72,10 @@ namespace GJam2020.Core
             playerMovement.ResetRotation();
 
             _MapSongAudioPlayer.Stop(0.5f);
-            _audioSource.Play(_winningSound);
+            _winController.Play();
 
             yield return new WaitForSeconds(_winningTime);
-
-            LevelMenuMgr.Get().OpenWin();
-            //GameManager.Get.currentLevel = NextLevel;
-            //if (GameManager.Get.currentLevel == null)
-            //    GameManager.Get.NewLevelComplete(LevelNumber, Score, "MainMenu");
-            //else
-            //    GameManager.Get.NewLevelComplete(LevelNumber, Score, "Gameplay");
+            LevelMenuMgr.Get().OpenWin(Stars);
         }
 
         private void Awake()
@@ -76,7 +86,7 @@ namespace GJam2020.Core
         private void Start()
         {
             _audioSource = GetComponent<AudioSourcePlayer>();
-            _MapSongAudioPlayer.Play(_mapSong, loop: true, delay: 0, FadeTime: 1.5f);
+            _MapSongAudioPlayer.Play(settings.SoundBackground, loop: true, delay: 0, FadeTime: 1.5f);
             Get = this;
             GameManager.Get.IsPlaying = true;
         }

@@ -25,6 +25,11 @@ namespace GJam2020.Avatar
         private ParticleSystem.EmissionModule emission;
         private ParticleSystem.EmissionModule constructEmission;
 
+        public int RemainingParts
+        {
+            get { return bodyParts.Length - partsDestroyed; }
+        }
+
         private void Awake()
         {
             Instance = this;
@@ -56,7 +61,7 @@ namespace GJam2020.Avatar
             }
             SetAlpha(bodyParts[partsDestroyed], 0.2f, time);
             Debug.Log("Destroying: " + bodyParts[partsDestroyed].name);
-            StartCoroutine(EmmitParticles(emission));
+            StartCoroutine(EmmitParticles(particleS.gameObject));
             ++partsDestroyed;
            
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
@@ -71,11 +76,19 @@ namespace GJam2020.Avatar
             }
         }
 
-        private IEnumerator EmmitParticles(ParticleSystem.EmissionModule emissionModule)
+        private IEnumerator EmmitParticles(GameObject particleSystem)
         {
-            emissionModule.enabled = true;
-            yield return new WaitForSeconds(0.2f);
-            emissionModule.enabled = false;
+            foreach(var particleS in particleSystem.GetComponentsInChildren<ParticleSystem>())
+            {
+                var emission = particleS.emission;
+                emission.enabled = true;
+            }
+            yield return new WaitForSeconds(0.3f);
+            foreach (var particleS in particleSystem.GetComponentsInChildren<ParticleSystem>())
+            {
+                var emission = particleS.emission;
+                emission.enabled = false;
+            }
         }
 
         [ContextMenu("ConstructBodyPart")]
@@ -91,7 +104,7 @@ namespace GJam2020.Avatar
             SetAlpha(bodyParts[partsDestroyed], 1);
             Debug.Log("Reconstruct body part: " + bodyParts[partsDestroyed].name);
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
-            StartCoroutine(EmmitParticles(constructEmission));
+            StartCoroutine(EmmitParticles(constructParticleS.gameObject));
 
         }
         

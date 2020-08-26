@@ -36,6 +36,11 @@ namespace GJam2020.Avatar
             StartCoroutine(DestroyCoroutine());
         }
 
+        private void OnDestroy()
+        {
+            GameManager.Get.RemoveelementToRestore(gameObject);
+        }
+
         private IEnumerator DestroyCoroutine()
         {
             _audioSource.Play();
