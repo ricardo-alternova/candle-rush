@@ -52,9 +52,9 @@ namespace GJam2020.Core
 
         private void Start()
         {
-            EnableFx(PlayerPrefsMgr.Get().LoadInt("PauseFxState") == 0 ? false : true);
-            EnableUI(PlayerPrefsMgr.Get().LoadInt("PauseUIState") == 0 ? false : true);
-            EnableSong(PlayerPrefsMgr.Get().LoadInt("PauseSongsState") == 0 ? false : true);
+            audioMixer.SetFloat("FxVolume", PlayerPrefsMgr.Get().LoadInt("FxVolume"));
+            audioMixer.SetFloat("UiVolume", PlayerPrefsMgr.Get().LoadInt("UiVolume"));
+            audioMixer.SetFloat("SongVolume", PlayerPrefsMgr.Get().LoadInt("SongVolume"));
         }
 
         private void Update()
@@ -81,6 +81,40 @@ namespace GJam2020.Core
             }
         }
 
+        public int GetVolumePercent(SoundType type)
+        {
+            switch (type)
+            {
+                case SoundType.FX:
+                    return (int)((PlayerPrefsMgr.Get().LoadInt("FxVolume")+80f)*1.25f);
+                case SoundType.UI:
+                    return (int)((PlayerPrefsMgr.Get().LoadInt("UiVolume") + 80f) * 1.25f);
+                case SoundType.SONG:
+                    return (int)((PlayerPrefsMgr.Get().LoadInt("SongVolume") + 80f) * 1.25f);
+            }
+            return 100;
+        }
+
+        public void SetVolumePercent(int percent,SoundType type)
+        {
+            float volume = (-80f + (percent / 1.25f));
+            switch (type)
+            {
+                case SoundType.FX:
+                    PlayerPrefsMgr.Get().Save<int>("FxVolume", (int) volume);
+                    audioMixer.SetFloat("FxVolume",volume);
+                    break;
+                case SoundType.UI:
+                    PlayerPrefsMgr.Get().Save<int>("UiVolume", (int)volume);
+                    audioMixer.SetFloat("UiVolume", volume);
+                    break;
+                case SoundType.SONG:
+                    PlayerPrefsMgr.Get().Save<int>("SongVolume", (int)volume);
+                    audioMixer.SetFloat("SongVolume", volume);
+                    break;
+            }
+        }
+
         public void EnableFx(bool enable)
         {
             IsFxEnabled = enable;
@@ -104,28 +138,22 @@ namespace GJam2020.Core
 
         public void Pause()
         {
-            if (_isPaused) return;
-            _isPaused = true;
+            //if (_isPaused) return;
+            //_isPaused = true;
 
-            if (IsSongEnable)
-                audioMixer.SetFloat("SongVolume", -80);
-            if (IsUIEnabled)
-                audioMixer.SetFloat("UIVolume", -80);
-            if (IsFxEnabled)
-                audioMixer.SetFloat("FXVolume", -80);
+            //audioMixer.SetFloat("SongVolume", -80);
+            ////audioMixer.SetFloat("UIVolume", -80);
+            //audioMixer.SetFloat("FXVolume", -80);
         }
 
         public void Play()
         {
-            if (!_isPaused) return;
-            _isPaused = false;
-
-            if (IsSongEnable)
-                audioMixer.SetFloat("SongVolume", 0);
-            if (IsUIEnabled)
-                audioMixer.SetFloat("UIVolume", 0);
-            if (IsFxEnabled)
-                audioMixer.SetFloat("FXVolume", 0);
+            //if (!_isPaused) return;
+            //_isPaused = false;
+            //int fx = PlayerPrefsMgr.Get().LoadInt("FxVolume");
+            //audioMixer.SetFloat("FxVolume", PlayerPrefsMgr.Get().LoadInt("FxVolume"));
+            //audioMixer.SetFloat("UiVolume", PlayerPrefsMgr.Get().LoadInt("UiVolume"));
+            //audioMixer.SetFloat("SongVolume", PlayerPrefsMgr.Get().LoadInt("SongVolume"));
         }
     }
 }
