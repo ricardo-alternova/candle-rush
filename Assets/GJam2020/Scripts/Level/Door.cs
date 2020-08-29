@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GJam2020.Core;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,10 +8,13 @@ public class Door : MonoBehaviour
     [SerializeField] public int linkIndex;
     [SerializeField] public Transform keyBone;
     [HideInInspector] public bool rotate;
+    [SerializeField] private AudioClip doorClip;
+    private AudioSourcePlayer fxPlayer;
 
     private void Start()
     {
         StartCoroutine(Initialize());
+        fxPlayer = SoundManager.Get().FxPlayer;
     }
 
     private IEnumerator Initialize()
@@ -43,6 +47,7 @@ public class Door : MonoBehaviour
     }
     public void Open()
     {
+        fxPlayer.PlayOneShot(doorClip);
         MapGenerator.Get.RemoveObstacle(transform.position);
         GetComponentInChildren<Animator>().SetTrigger("Open");
         GetComponentInChildren<SkinnedMeshRenderer>().material.SetFloat("_Open", 0.2f);

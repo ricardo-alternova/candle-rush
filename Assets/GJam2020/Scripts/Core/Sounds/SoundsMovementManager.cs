@@ -14,6 +14,7 @@ public class SoundsMovementManager : MonoBehaviour
     private AudioClip reverseMovementClip;
 
     private AudioSourcePlayer fxPlayer;
+    private bool lowSteps = false;
 
     private void Awake()
     {
@@ -23,18 +24,35 @@ public class SoundsMovementManager : MonoBehaviour
     private void Start()
     {
         fxPlayer = SoundManager.Get().FxPlayer;
+        fxPlayer.Stop(lowPartsMovementClip);
     }
 
     public void MovementStarted(bool isReverse)
     {
+        StartStopLowSteps(BodyDestruction.Instance.RemainingParts < 4);
         if (isReverse)
             fxPlayer.PlayOneShot(reverseMovementClip);
         else
         {
-            if (BodyDestruction.Instance.RemainingParts < 5)
-                fxPlayer.PlayOneShot(lowPartsMovementClip);
-            else
-                fxPlayer.PlayOneShot(movementClip);
+            
+            fxPlayer.PlayOneShot(movementClip);
+        }
+    }
+
+    private void StartStopLowSteps(bool Start)
+    {
+        if (Start)
+        {
+            if (!lowSteps)
+            {
+                lowSteps = true;
+                fxPlayer.Play(lowPartsMovementClip, true);
+            }
+        }
+        else
+        {
+            lowSteps = false;
+            fxPlayer.Stop(lowPartsMovementClip);
         }
     }
 }

@@ -67,6 +67,17 @@ namespace GJam2020.Core
             StartCoroutine(PlaySoundCoroutine(clip, loop, delay, FadeTime));
         }
 
+        public void Stop(AudioClip clip)
+        {
+            if (_audioSource.isPlaying)
+            {
+                if (_audioSource.clip == clip)
+                {
+                    _audioSource.Stop();
+                }
+            }
+        }
+
         private IEnumerator PlaySoundCoroutine(AudioClip clip, bool loop = false, float delay = 0, float FadeTime = 0)
         {
             var delayCounter = Time.time;
