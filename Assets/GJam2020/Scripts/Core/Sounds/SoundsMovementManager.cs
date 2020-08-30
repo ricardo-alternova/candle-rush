@@ -26,7 +26,10 @@ public class SoundsMovementManager : MonoBehaviour
         fxPlayer = SoundManager.Get().FxPlayer;
         fxPlayer.Stop(lowPartsMovementClip);
     }
-
+    public void StopSound()
+    {
+        fxPlayer.Stop(lowPartsMovementClip);
+    }
     public void MovementStarted(bool isReverse)
     {
         StartStopLowSteps(BodyDestruction.Instance.RemainingParts < 4);
@@ -52,7 +55,7 @@ public class SoundsMovementManager : MonoBehaviour
         else
         {
             lowSteps = false;
-            fxPlayer.Stop(lowPartsMovementClip);
+            StopSound();
         }
     }
 }
