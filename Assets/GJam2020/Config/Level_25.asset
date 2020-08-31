@@ -19,4 +19,4 @@ MonoBehaviour:
   maxTime2Stars: 0
   mapSettings: {fileID: 11400000, guid: 1c65f51c962ac534b8631b63992953c9, type: 2}
   nextLevel: {fileID: 11400000, guid: 90b5a3547fb95334891e4f2de67d63f9, type: 2}
-  soundBackground: {fileID: 8300000, guid: fa169d3b7989ea84cb6511775881ded3, type: 3}
+  soundBackground: {fileID: 8300000, guid: 436dc464897a48e4cb067759f116a133, type: 3}
