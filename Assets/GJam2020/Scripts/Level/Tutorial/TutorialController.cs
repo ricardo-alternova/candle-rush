@@ -45,6 +45,12 @@ namespace GJam2020.Game.Tutorial
             StartCoroutine(NextSlideCoroutine());
         }
 
+        public void EnableTutorials()
+        {
+            Debug.Log("Tutorial enabled");
+            PlayerPrefsMgr.Get().Save<int>("tutorial", 0);
+        }
+
         private IEnumerator NextSlideCoroutine()
         {
             _inputSystem.EnableInputs(false, false, false, false);
