@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkIndex: 0
   keyBone: {fileID: 6350519929755186547}
+  rotate: 0
+  doorClip: {fileID: 8300000, guid: dec0e7a6e8fb6b44886370cf75626cae, type: 3}
 --- !u!1001 &1960593439810787728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58,11 +60,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: e029ab0f0b7a95f42a96e5db4d4377a0,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: b4c2ae96ea25ae94fbd1509181778f99, type: 2}
     - target: {fileID: -4216859302048453862, guid: e029ab0f0b7a95f42a96e5db4d4377a0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -118,6 +115,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: e029ab0f0b7a95f42a96e5db4d4377a0,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b4c2ae96ea25ae94fbd1509181778f99, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e029ab0f0b7a95f42a96e5db4d4377a0, type: 3}
 --- !u!4 &6795889601152791178 stripped

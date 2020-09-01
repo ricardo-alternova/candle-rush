@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Level_34
   m_EditorClassIdentifier: 
   number: 34
-  map: {fileID: 2800000, guid: 239dd7abf0e3dee4cab866435a8d92e4, type: 3}
+  map: {fileID: 2800000, guid: 3fb4006013baeb7468c4ea43a3da4a90, type: 3}
   startLocation: {x: 1, y: 0, z: 1}
   maxTime3Stars: 0
   maxTime2Stars: 0
   mapSettings: {fileID: 11400000, guid: 1c65f51c962ac534b8631b63992953c9, type: 2}
-  nextLevel: {fileID: 0}
-  soundBackground: {fileID: 8300000, guid: fa169d3b7989ea84cb6511775881ded3, type: 3}
+  nextLevel: {fileID: 11400000, guid: 5f21970641efb9348a0a37fa8b43cae2, type: 2}
+  soundBackground: {fileID: 8300000, guid: 436dc464897a48e4cb067759f116a133, type: 3}

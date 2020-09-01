@@ -74,7 +74,7 @@ MonoBehaviour:
   GROUND_REGULAR_POS: 0
   GROUND_DISPLACED_POS: -4
   layerMask: 0
-  slideTime: 0
+  iceClip: {fileID: 8300000, guid: 01776f47f9d2ab74482c22e6e02d6929, type: 3}
 --- !u!1001 &6241948174983409197
 PrefabInstance:
   m_ObjectHideFlags: 0
