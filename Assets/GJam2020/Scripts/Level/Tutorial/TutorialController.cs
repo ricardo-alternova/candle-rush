@@ -47,8 +47,12 @@ namespace GJam2020.Game.Tutorial
 
         public void EnableTutorials()
         {
-            Debug.Log("Tutorial enabled");
-            PlayerPrefsMgr.Get().Save<int>("tutorial", 0);
+            var enabledState = PlayerPrefsMgr.Get().LoadInt("tutorial");
+            Debug.Log("Tutorial enabled: " + (enabledState == 1).ToString());
+
+            PlayerPrefsMgr.Get().Save<int>("tutorial", enabledState == 0
+                ? 1 
+                : 0);
         }
 
         private IEnumerator NextSlideCoroutine()
