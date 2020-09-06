@@ -102,7 +102,7 @@ namespace GJam2020.Avatar
                 return;
             }
             SetAlpha(bodyParts[partsDestroyed], 1);
-            Debug.Log("Reconstruct body part: " + bodyParts[partsDestroyed].name);
+            //Debug.Log("Reconstruct body part: " + bodyParts[partsDestroyed].name);
             CanvasData.Get.SetNumberOfPieces(bodyParts.Length - partsDestroyed);
             StartCoroutine(EmmitParticles(constructParticleS.gameObject));
 

@@ -33,10 +33,12 @@ public class GameManager : MonoBehaviour
     public int CurrentLevel { get { return _gameData.currentLevel; } }
     public UnityEvent StartGame;
 
-    private const string GameplayScene = "Gameplay";
+    [Tooltip("Set to -1 to enable all levels.")]
+    [SerializeField]
+    private int levelsAvailables = -1;
     private LevelSettings[] _levelSettings;
     private GameData _gameData;
-    private string _nextLevel;
+    private string _nextScene;
 
     private void Awake()
     {
@@ -64,7 +66,7 @@ public class GameManager : MonoBehaviour
 
     public void NewLevelComplete(int level, int score, string nextLevel)
     {
-        _nextLevel = nextLevel;
+        _nextScene = nextLevel;
         _gameData.lastLevelUnLock = Mathf.Max(level, _gameData.lastLevelUnLock);
         _gameData.currentLevel = level;
         if(_gameData.levelsScore.Count < level)
@@ -73,7 +75,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            
             if(_gameData.levelsScore[level-1]<score)
                 _gameData.levelsScore[level - 1] = score;
         }
@@ -86,9 +87,9 @@ public class GameManager : MonoBehaviour
         if (ObjectsUnactive != null)
             ObjectsUnactive.Clear();
 
-        if (!(_nextLevel != null && !_nextLevel.Equals("")))
+        if (!(_nextScene != null && !_nextScene.Equals("")))
         {
-            _nextLevel = GAMEPLAY_NAME;
+            _nextScene = GAMEPLAY_NAME;
         }
         if (currentLevel == null)
         {
@@ -96,7 +97,18 @@ public class GameManager : MonoBehaviour
         }
         _gameData.currentLevel = currentLevel.Number;
         SaveGameData();
-        SceneManager.LoadScene(_nextLevel);
+        Debug.Log("Current: " + _gameData.currentLevel);
+        
+        if(levelsAvailables > -1 && _gameData.currentLevel > levelsAvailables)
+        {
+            currentLevel = firstLevel;
+            _gameData.currentLevel = currentLevel.Number;
+            SaveGameData();
+            Debug.Log("LOAD MAIN MENU");
+            SceneManager.LoadScene(MAIN_MENU_NAME);
+        }
+        else
+            SceneManager.LoadScene(_nextScene);
     }
 
     public int GetLastLevelComplete()
@@ -145,6 +157,17 @@ public class GameManager : MonoBehaviour
             CheckAvatarStartPosition();
             })
         );
+    }
+
+    private int ParseLevel(string levelName)
+    {
+        int level;
+        Debug.Log(levelName);
+        string probableNumber = levelName.Split('_')[1];
+        if (!int.TryParse(probableNumber, out level))
+            return -1;
+        else
+            return level;
     }
 
     private void SetRandomSkyMat()
@@ -205,6 +228,7 @@ public class GameManager : MonoBehaviour
         {
             serializer.Serialize(sw, _gameData);
             PlayerPrefs.SetString("Gamedata", sw.ToString());
+            Debug.Log("Game data saved");
         }
     }
 
