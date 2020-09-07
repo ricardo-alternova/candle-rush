@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class GameData
