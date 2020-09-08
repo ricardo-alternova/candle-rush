@@ -59,6 +59,7 @@ namespace GJam2020.Avatar
             if (_walking)
             {
                 _walkingTimer = Time.time - _startWalkingTime;
+                Debug.Log("------Walking Timer "+ _walkingTimer);
                 if (_walkingTimer > _normalStepTime)
                 {
                     _currentStepTime = Mathf.SmoothStep(_normalStepTime, _minTimeForStep, (_walkingTimer / _timeToAccelerate) - _normalStepTime);
@@ -195,8 +196,8 @@ namespace GJam2020.Avatar
             if(!_inputPressed)
                 AvatarGeneralManager.Get.SetStatus(AnimationState.IDLE);
 
-            if (MovementCompleted != null)
-                MovementCompleted();
+            MovementCompleted?.Invoke();
+            MovementCompleted?.Invoke();
             onMovementComplete();
         }
     }
