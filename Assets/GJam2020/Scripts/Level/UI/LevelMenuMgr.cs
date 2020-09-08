@@ -17,6 +17,8 @@ namespace GJam2020.Level.UI
         private GameObject _gameOverMenu;
         [SerializeField]
         private GameObject _winMenu;
+        [SerializeField]
+        private GameObject _audioPanel;
 
         private static LevelMenuMgr _instance;
 
@@ -57,6 +59,12 @@ namespace GJam2020.Level.UI
         {
             _optionsButton.SetActive(true);
             GameManager.Get.IsPlaying = true;
+        }
+
+        public void OpenCloseAudioPanel(bool open)
+        {
+            _audioPanel.SetActive(open);
+            GameManager.Get.IsPlaying = !open;
         }
     }
 }
