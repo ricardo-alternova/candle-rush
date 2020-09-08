@@ -52,7 +52,7 @@ namespace GJam2020.Core
             //#if UNITY_WEBGL
             if (Input.touchCount < 1)
             {
-                playerMovement.StopWalking();
+                //playerMovement.StopWalking();
                 return;
             } 
 
