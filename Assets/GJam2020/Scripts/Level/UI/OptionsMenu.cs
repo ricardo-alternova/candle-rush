@@ -24,6 +24,7 @@ namespace GJam2020.Level.UI
         public void Close()
         {
             gameObject.SetActive(false);
+            GameManager.Get.IsPlaying = true;
         }
 
         public void EnableSound()
