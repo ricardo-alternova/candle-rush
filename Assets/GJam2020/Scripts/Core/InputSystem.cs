@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
+using static UnityEngine.InputSystem.InputAction;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace GJam2020.Core
 {
     public class InputSystem : MonoBehaviour
     {
+        private enum inputPhase { noMovement, starMovement, moving, endMovement }
         //The box we control with keys
         public PlayerMovement playerMovement;
         //The different keys we need
@@ -27,6 +29,9 @@ namespace GJam2020.Core
         private List<Vector2> _directionsEnabled;
         private bool _pressing;
 
+
+        private inputPhase _inputPhase;
+        Vector2 movement = Vector2.zero;
         ////To reset the coroutine
         //private Coroutine _replayCoroutine;
         ////If we should start the replay
@@ -40,19 +45,51 @@ namespace GJam2020.Core
             EnableInputs(true, true, true, true);
 
             inputActions = new PlayerInputActions();
-            
-            inputActions.Player.Move.performed += moveAction => {
+
+            inputActions.Player.Move.performed += moveAction =>
+            {
                 CheckMoveInput(moveAction.ReadValue<Vector2>());
-                };
+            };
+
+            inputActions.Player.Move.started += Move_started;
+            inputActions.Player.Move.performed += Move_performed;
+            inputActions.Player.Move.canceled += Move_canceled;
         }
 
-        
+        private void Move_canceled(CallbackContext obj)
+        {
+            _inputPhase = inputPhase.endMovement;
+            movement = obj.ReadValue<Vector2>();
+        }
+
+        private void Move_performed(CallbackContext obj)
+        {
+            _inputPhase = inputPhase.moving;
+            movement = obj.ReadValue<Vector2>();
+        }
+
+        private void Move_started(CallbackContext obj)
+        {
+            _inputPhase = inputPhase.starMovement;
+            movement = obj.ReadValue<Vector2>();
+        }
+
         private void FixedUpdate()
         {
+            if (_inputPhase == inputPhase.moving)
+            {
+                startDragg = true;
+                CheckMoveInput(movement);
+            }
+            if (_inputPhase == inputPhase.endMovement)
+            {
+                playerMovement.StopWalking();
+                _inputPhase = inputPhase.noMovement;
+            }
+
             //#if UNITY_WEBGL
             if (Input.touchCount < 1)
             {
-                //playerMovement.StopWalking();
                 return;
             } 
 
@@ -91,17 +128,8 @@ namespace GJam2020.Core
 #else
                 CheckMoveInput(moveValue * -1);
 #endif
-            //#else
+            
 
-            ////moveValue = inputActions.Player.Move. ReadValue<Vector2>();
-            //if (Touch.activeTouches.Count > 0) {
-            //    var touch = Touch.activeTouches[0];
-            //    moveValue = touch.delta;
-            //    moveValue.x = Mathf.Abs(moveValue.x) < 75f ? 0 : moveValue.x;
-            //    moveValue.y = Mathf.Abs(moveValue.y) < 75f ? 0 : moveValue.y;
-            //    //_debugText.text = moveValue.ToString();
-            //}
-            //#endif
         }
 
         private void Start()
