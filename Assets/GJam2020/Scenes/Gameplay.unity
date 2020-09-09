@@ -4172,7 +4172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb7826c2d80257e41a5f9e78e6a6d1c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleFactor: 0.29
+  webScaleFactor: 0.29
+  mobileScaleFactor: 0.5
 --- !u!1 &1042045614
 GameObject:
   m_ObjectHideFlags: 0
