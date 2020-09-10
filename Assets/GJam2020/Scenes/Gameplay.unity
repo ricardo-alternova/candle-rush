@@ -1158,7 +1158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementClip: {fileID: 8300000, guid: 3b50e095decde464b8f82a981382c7c2, type: 3}
-  lowPartsMovementClip: {fileID: 8300000, guid: 85cf34a78f277274a95109bda94f1e6c,
+  lowPartsMovementClip: {fileID: 8300000, guid: 7cf4379df03020b4385fee905f8890e2,
     type: 3}
   reverseMovementClip: {fileID: 8300000, guid: 091e0a249a4b5984c9e1225472f405e6, type: 3}
 --- !u!1 &143896221
@@ -5068,6 +5068,11 @@ PrefabInstance:
     - target: {fileID: 4299964972546606561, guid: 119e87e614acd244c82d2b8c9ad79c92,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299964972574091808, guid: 119e87e614acd244c82d2b8c9ad79c92,
+        type: 3}
+      propertyPath: Priority
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
