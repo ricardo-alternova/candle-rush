@@ -65,6 +65,8 @@ namespace GJam2020.Core
             }
             playerMovement.ResetRotation();
             isRewinding = false;
+            playerMovement.StopWalking();
+            AvatarGeneralManager.Get.SetStatus(AnimationState.IDLE);
             onComplete.Invoke();
         }
     }
