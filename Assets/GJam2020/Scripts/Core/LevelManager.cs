@@ -73,7 +73,7 @@ namespace GJam2020.Core
 
             _MapSongAudioPlayer.Stop(0.5f);
             _winController.Play();
-
+            GameManager.Get.IsPlaying = false;
             yield return new WaitForSeconds(_winningTime);
             LevelMenuMgr.Get().OpenWin(Stars);
         }

@@ -36,6 +36,7 @@ namespace GJam2020.Avatar
         private MovementDirection _lastMovementDirection;
         private bool _pauseMovement;
         private bool _inputPressed;
+        private bool _finalEditedExternally=false;
 
         private void Start()
         {
@@ -60,7 +61,7 @@ namespace GJam2020.Avatar
             {
                 _walkingTimer = Time.time - _startWalkingTime;
                 Debug.Log("------Walking Timer "+ _walkingTimer);
-                if (_walkingTimer > _normalStepTime)
+                if (_walkingTimer > _normalStepTime && !_finalEditedExternally)
                 {
                     _currentStepTime = Mathf.SmoothStep(_normalStepTime, _minTimeForStep, (_walkingTimer / _timeToAccelerate) - _normalStepTime);
                     _animator.speed = 2 - _currentStepTime;
@@ -161,6 +162,7 @@ namespace GJam2020.Avatar
         public void SetNewFinalPosition(Vector3 newFinal)
         {
             _finalPosition = newFinal;
+            _finalEditedExternally = true;
             _currentStepTime += (_actualTimeForDisplacement/2);
         }
 
@@ -197,7 +199,7 @@ namespace GJam2020.Avatar
                 AvatarGeneralManager.Get.SetStatus(AnimationState.IDLE);
 
             MovementCompleted?.Invoke();
-            MovementCompleted?.Invoke();
+            _finalEditedExternally = false;
             onMovementComplete();
         }
     }

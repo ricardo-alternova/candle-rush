@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GJam2020.Core;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace GJam2020.Level.UI
@@ -25,6 +26,7 @@ namespace GJam2020.Level.UI
         {
             gameObject.SetActive(false);
             GameManager.Get.IsPlaying = true;
+            SoundManager.Get().Play();
         }
 
         public void EnableSound()

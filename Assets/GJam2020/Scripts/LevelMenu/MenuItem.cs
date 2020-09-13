@@ -30,7 +30,13 @@ public class MenuItem : MonoBehaviour
         _label = _button.gameObject.GetComponentInChildren<TextMeshProUGUI>();
         Assert.IsNotNull(_label, "Not textMP component found");
         _label.color = new Color(1, 1, 1, 0.5f);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        IsEnable();
+        if (GameManager.Get.CurrentLevel == level)
+            _button.transform.localScale *= 1.3f;
 
+        ShowAsUnlock();
+#else
         Debug.Log("Level: " + level);
         if(level <= GameManager.Get.GetLastLevelComplete() + 1)
         {
@@ -45,6 +51,8 @@ public class MenuItem : MonoBehaviour
             Debug.Log("Unlock: " + level);
             ShowAsUnlock();
         }
+#endif
+
         Init();
     }
 

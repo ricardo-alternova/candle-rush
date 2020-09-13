@@ -86,31 +86,53 @@ namespace GJam2020.Core
             switch (type)
             {
                 case SoundType.FX:
-                    return (int)((PlayerPrefsMgr.Get().LoadInt("FxVolume")+80f)*1.25f);
+                    return (int)(DecibelToLinear(PlayerPrefsMgr.Get().LoadInt("FxVolume"))*100);
                 case SoundType.UI:
-                    return (int)((PlayerPrefsMgr.Get().LoadInt("UiVolume") + 80f) * 1.25f);
+                    return (int)(DecibelToLinear(PlayerPrefsMgr.Get().LoadInt("UiVolume")) * 100);
                 case SoundType.SONG:
-                    return (int)((PlayerPrefsMgr.Get().LoadInt("SongVolume") + 80f) * 1.25f);
+                    return (int)(DecibelToLinear(PlayerPrefsMgr.Get().LoadInt("SongVolume")) * 100);
             }
             return 100;
         }
 
+        private float LinearToDecibel(float linear)
+        {
+            float dB;
+
+            if (linear != 0)
+                dB = 60.0f * Mathf.Log10(linear);
+            else
+                dB = -80.0f;
+
+            return dB;
+        }
+
+        private float DecibelToLinear(float dB)
+        {
+            float linear = Mathf.Pow(10.0f, dB / 60.0f);
+
+            return linear;
+        }
+
         public void SetVolumePercent(int percent,SoundType type)
         {
-            float volume = (-80f + (percent / 1.25f));
+            float volume = LinearToDecibel(percent/100f);
             switch (type)
             {
                 case SoundType.FX:
                     PlayerPrefsMgr.Get().Save<int>("FxVolume", (int) volume);
-                    audioMixer.SetFloat("FxVolume",volume);
+                    if(!_isPaused)
+                        audioMixer.SetFloat("FxVolume",volume);
                     break;
                 case SoundType.UI:
                     PlayerPrefsMgr.Get().Save<int>("UiVolume", (int)volume);
-                    audioMixer.SetFloat("UiVolume", volume);
+                    if (!_isPaused)
+                        audioMixer.SetFloat("UiVolume", volume);
                     break;
                 case SoundType.SONG:
                     PlayerPrefsMgr.Get().Save<int>("SongVolume", (int)volume);
-                    audioMixer.SetFloat("SongVolume", volume);
+                    if (!_isPaused)
+                        audioMixer.SetFloat("SongVolume", volume);
                     break;
             }
         }
@@ -136,24 +158,26 @@ namespace GJam2020.Core
             audioMixer.SetFloat("SongVolume", enable ? 0 : -80);
         }
 
-        public void Pause()
+        public void Pause(bool pauseFx=true,bool pauseMusic=true,bool pauseUi=true)
         {
-            //if (_isPaused) return;
-            //_isPaused = true;
-
-            //audioMixer.SetFloat("SongVolume", -80);
-            ////audioMixer.SetFloat("UIVolume", -80);
-            //audioMixer.SetFloat("FXVolume", -80);
+            if (_isPaused) return;
+            _isPaused = true;
+            if(pauseMusic)
+                audioMixer.SetFloat("SongVolume", -80);
+            if(pauseUi)
+                audioMixer.SetFloat("UiVolume", -80);
+            if(pauseFx)
+                audioMixer.SetFloat("FxVolume", -80);
         }
 
         public void Play()
         {
-            //if (!_isPaused) return;
-            //_isPaused = false;
-            //int fx = PlayerPrefsMgr.Get().LoadInt("FxVolume");
-            //audioMixer.SetFloat("FxVolume", PlayerPrefsMgr.Get().LoadInt("FxVolume"));
-            //audioMixer.SetFloat("UiVolume", PlayerPrefsMgr.Get().LoadInt("UiVolume"));
-            //audioMixer.SetFloat("SongVolume", PlayerPrefsMgr.Get().LoadInt("SongVolume"));
+            if (!_isPaused) return;
+            _isPaused = false;
+            int fx = PlayerPrefsMgr.Get().LoadInt("FxVolume");
+            audioMixer.SetFloat("FxVolume", PlayerPrefsMgr.Get().LoadInt("FxVolume"));
+            audioMixer.SetFloat("UiVolume", PlayerPrefsMgr.Get().LoadInt("UiVolume"));
+            audioMixer.SetFloat("SongVolume", PlayerPrefsMgr.Get().LoadInt("SongVolume"));
         }
     }
 }
