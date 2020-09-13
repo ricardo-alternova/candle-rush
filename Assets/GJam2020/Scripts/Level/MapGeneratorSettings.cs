@@ -25,7 +25,7 @@ public class MapGeneratorSettings : ScriptableObject
     [SerializeField]
     private ColorPrefabRelation teleporter;
     [SerializeField]
-    private List<ColorPrefabRelation> prefabs;
+    public List<ColorPrefabRelation> prefabs;
 
     public ColorPrefabRelation Ground { get => ground; }
 
