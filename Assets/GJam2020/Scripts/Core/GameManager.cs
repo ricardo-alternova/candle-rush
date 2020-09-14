@@ -121,7 +121,8 @@ public class GameManager : MonoBehaviour
 
     public int GetLevelScore(int level)
     {
-        if(level <= _gameData.lastLevelUnLock)
+        if(level <= _gameData.lastLevelUnLock && 
+            level <= _gameData.levelsScore.Count)
         {
             return _gameData.levelsScore[level-1];
         }
