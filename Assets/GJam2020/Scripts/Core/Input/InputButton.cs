@@ -9,7 +9,7 @@ using static UnityEngine.InputSystem.InputAction;
 public class InputButton : MonoBehaviour
 {
     public bool DisableOnClick = false;
-    private bool Asigned=false;
+    public InputType type;
     public enum InputType
     {
         Submit,
@@ -20,13 +20,13 @@ public class InputButton : MonoBehaviour
         Left,
         Right
     }
+
     [SerializeField]
     private UiInput inputActions;
-
-    private InputAction inputAction;    
+    private bool Asigned=false;
     private Button button;
+    private InputAction inputAction;
 
-    public InputType type;
     private void Start()
     {
         inputActions = new UiInput();
@@ -63,19 +63,11 @@ public class InputButton : MonoBehaviour
         }
     }
 
-    private void Action(CallbackContext obj)
-    {
-        if (button.GetComponent<RectTransform>().IsFullyVisibleFrom(Camera.main)){
-            button.SendMessage("Press", true);
-            inputAction.started -= Action;
-            Asigned = false;
-        }
-
-    }
     public void Enable()
     {
         StartCoroutine(IEOnEnable());
     }
+
     private void OnEnable()
     {
         Enable();
@@ -86,6 +78,16 @@ public class InputButton : MonoBehaviour
         Debug.Log(name);
         inputAction.started -= Action;
         Asigned = false;
+    }
+
+    private void Action(CallbackContext obj)
+    {
+        if (button.GetComponent<RectTransform>().IsFullyVisibleFrom(Camera.main)){
+            button.SendMessage("Press", true);
+            inputAction.started -= Action;
+            Asigned = false;
+        }
+
     }
 
     private IEnumerator IEOnEnable()
