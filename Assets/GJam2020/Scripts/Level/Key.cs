@@ -54,7 +54,7 @@ public class Key : MonoBehaviour
     {
         Vector3 target = myDoor.keyBone.position;
         Vector3 targetRot;
-        if (!myDoor.rotate)
+        if (myDoor.rotate)
         {
             if (player.position.z > myDoor.transform.position.z)
             {

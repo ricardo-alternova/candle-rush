@@ -26,7 +26,7 @@ public class Door : MonoBehaviour
         foreach (var item in blocks)
         {
             float distance = Vector3.Distance(new Vector3(item.position.x, 0, item.position.z), new Vector3(transform.position.x, 0, transform.position.z));
-            if (distance <= 1.1f && distance> 0.1f)
+            if (distance <= 1.1f && distance> 0.1f && (item.name == "NormalGround2(Clone)" || item.name == "Teleporter(Clone)" || item.name == "End(Clone)" || item.name == "IceGround(Clone)"))
             {
                 nearBlocks.Add(item.position);
             }
@@ -38,7 +38,7 @@ public class Door : MonoBehaviour
                 rotate = false;
             }
         }
-        if (rotate)
+        if (!rotate)
         {
             transform.localEulerAngles += new Vector3(0, 90, 0);
         }
