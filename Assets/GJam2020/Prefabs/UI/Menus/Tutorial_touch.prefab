@@ -693,6 +693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f8ff033b644ea4b9a9222c18c08497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputType: 2
   _startOnAwake: 1
   _delay: 1.2
 --- !u!1 &6345055041025784633
