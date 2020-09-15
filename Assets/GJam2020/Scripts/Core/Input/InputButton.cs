@@ -82,12 +82,9 @@ public class InputButton : MonoBehaviour
 
     private void Action(CallbackContext obj)
     {
-        if (button.GetComponent<RectTransform>().IsFullyVisibleFrom(Camera.main)){
-            button.SendMessage("Press", true);
-            inputAction.started -= Action;
-            Asigned = false;
-        }
-
+        button.SendMessage("Press", true);
+        inputAction.started -= Action;
+        Asigned = false;
     }
 
     private IEnumerator IEOnEnable()
