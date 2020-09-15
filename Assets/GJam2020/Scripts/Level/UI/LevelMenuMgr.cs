@@ -59,6 +59,7 @@ namespace GJam2020.Level.UI
         public void CloseOptions()
         {
             _optionsButton.SetActive(true);
+            _optionsMenu.SetActive(false);
             GameManager.Get.IsPlaying = true;
         }
 

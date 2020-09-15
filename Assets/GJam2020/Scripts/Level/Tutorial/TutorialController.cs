@@ -69,8 +69,8 @@ namespace GJam2020.Game.Tutorial
 
         private bool MustBeEnabled()
         {
-#if UNITY_WEBGL
             bool mustBeEnabled = true;
+#if UNITY_WEBGL
             Debug.Log("Gamepads: " + Input.GetJoystickNames()[0]);
             if (_inputType == InputType.Touch)
                 mustBeEnabled = false;
