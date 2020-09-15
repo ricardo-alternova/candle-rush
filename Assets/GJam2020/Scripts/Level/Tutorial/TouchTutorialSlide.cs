@@ -35,15 +35,10 @@ namespace GJam2020.Game.Tutorial
         private void Update()
         {
             if (Time.realtimeSinceStartup - startTime < 2) return;
-#if UNITY_EDITOR
-            if (Input.anyKey)
-            {
-                GetComponentInParent<TutorialController>().NextSlide();
-            }
-#endif
-            if (Input.touchCount == 0) return;
 
-            if(Input.GetTouch(0).phase == TouchPhase.Began)
+            if (Input.anyKey || 
+                Input.GetAxis("Horizontal") > 0 ||
+                Input.GetAxis("Vertical") > 0)
             {
                 GetComponentInParent<TutorialController>().NextSlide();
             }
