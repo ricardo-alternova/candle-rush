@@ -10,6 +10,8 @@ namespace GJam2020.Game.Tutorial
     public class TutorialController : MonoBehaviour
     {
         [SerializeField]
+        private InputType _inputType;
+        [SerializeField]
         private bool _startOnAwake;
         [SerializeField]
         private float _delay = 1.2f;
@@ -17,26 +19,36 @@ namespace GJam2020.Game.Tutorial
         private List<BaseTutorialSlide> _tutorialSlides;
         private InputSystem _inputSystem;
 
+        public enum InputType { Keyboard, Gamepad, Touch }
+
         private void Start()
         {
-            _tutorialSlides = GetComponentsInChildren<BaseTutorialSlide>().ToList();
-
-            foreach (var child in _tutorialSlides)
+            if (!MustBeEnabled())
             {
-                child.gameObject.SetActive(false);
-            }
-            _inputSystem = GameObject.Find("Systems").GetComponent<InputSystem>();
-
-            if (PlayerPrefsMgr.Get().LoadInt("tutorial") != 1)
-            {
-                if (_startOnAwake)
-                {
-                    _inputSystem.EnableInputs(false, false, false, false);
-                    NextSlide();
-                }
+                Debug.Log("Input Type: " + _inputType + "; Joysticks: " + Input.GetJoystickNames()[0]);
+                gameObject.SetActive(false);
             }
             else
-                _inputSystem.EnableInputs(true,true,true,true);
+            {
+                _tutorialSlides = GetComponentsInChildren<BaseTutorialSlide>().ToList();
+
+                foreach (var child in _tutorialSlides)
+                {
+                    child.gameObject.SetActive(false);
+                }
+                _inputSystem = GameObject.Find("Systems").GetComponent<InputSystem>();
+
+                if (PlayerPrefsMgr.Get().LoadInt("tutorial") != 1)
+                {
+                    if (_startOnAwake)
+                    {
+                        _inputSystem.EnableInputs(false, false, false, false);
+                        NextSlide();
+                    }
+                }
+                else
+                    _inputSystem.EnableInputs(true, true, true, true);
+            }
         }
 
         [ContextMenu("NextSlide")]
@@ -53,6 +65,48 @@ namespace GJam2020.Game.Tutorial
             PlayerPrefsMgr.Get().Save<int>("tutorial", enabledState == 0
                 ? 1 
                 : 0);
+        }
+
+        private bool MustBeEnabled()
+        {
+#if UNITY_WEBGL
+            bool mustBeEnabled = true;
+            Debug.Log("Gamepads: " + Input.GetJoystickNames()[0]);
+            if (_inputType == InputType.Touch)
+                mustBeEnabled = false;
+
+            if (_inputType == InputType.Gamepad)
+            {
+                if (Input.GetJoystickNames().Length == 0)
+                    mustBeEnabled = false;
+                else if(Input.GetJoystickNames()[0].Equals(""))
+                    mustBeEnabled = false;
+            }
+
+
+            if (_inputType == InputType.Keyboard)
+                if (Input.GetJoystickNames().Length > 0)
+                    if(!Input.GetJoystickNames()[0].Equals(""))
+                    mustBeEnabled = false;
+#elif UNITY_TVOS
+            if (_inputType == InputType.Keyboard)
+                    mustBeEnabled = false;
+
+            if (_inputType == InputType.Touch)
+                mustBeEnabled = false;
+#else
+            if (_inputType == InputType.Touch && Input.GetJoystickNames().Length > 0)
+                if (!Input.GetJoystickNames()[0].Equals(""))
+                    mustBeEnabled = false;
+
+            if (_inputType == InputType.Keyboard)
+                mustBeEnabled = false;
+
+            if (_inputType == InputType.Gamepad)
+                if (Input.GetJoystickNames().Length == 0)
+                    mustBeEnabled = false;
+#endif
+            return mustBeEnabled;
         }
 
         private IEnumerator NextSlideCoroutine()
