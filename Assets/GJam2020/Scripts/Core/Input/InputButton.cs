@@ -8,17 +8,18 @@ using static UnityEngine.InputSystem.InputAction;
 [RequireComponent(typeof(Button))]
 public class InputButton : MonoBehaviour
 {
-    public bool DisableOnClick = false;
     public InputType type;
     public enum InputType
     {
         Submit,
         Start,
         Back,
-        Up,
-        Down,
-        Left,
-        Right
+        UpRs,
+        DownRs,
+        LeftRs,
+        RightRs,
+        RB,
+        LB
     }
 
     [SerializeField]
@@ -42,17 +43,23 @@ public class InputButton : MonoBehaviour
             case InputType.Back:
                 inputAction = inputActions.Ui.Back;
                 break;
-            case InputType.Up:
-                inputAction = inputActions.Ui.Submit;
+            case InputType.UpRs:
+                inputAction = inputActions.Ui.UPRS;
                 break;
-            case InputType.Down:
-                inputAction = inputActions.Ui.Submit;
+            case InputType.DownRs:
+                inputAction = inputActions.Ui.DownRS;
                 break;
-            case InputType.Left:
-                inputAction = inputActions.Ui.Submit;
+            case InputType.LeftRs:
+                inputAction = inputActions.Ui.LeftRS;
                 break;
-            case InputType.Right:
-                inputAction = inputActions.Ui.Right;
+            case InputType.RightRs:
+                inputAction = inputActions.Ui.RightRS;
+                break;
+            case InputType.RB:
+                inputAction = inputActions.Ui.RB;
+                break;
+            case InputType.LB:
+                inputAction = inputActions.Ui.LB;
                 break;
         }
         inputActions.Enable();
@@ -83,8 +90,6 @@ public class InputButton : MonoBehaviour
     private void Action(CallbackContext obj)
     {
         button.SendMessage("Press", true);
-        inputAction.started -= Action;
-        Asigned = false;
     }
 
     private IEnumerator IEOnEnable()

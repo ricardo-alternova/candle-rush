@@ -60,7 +60,6 @@ namespace GJam2020.Avatar
             if (_walking)
             {
                 _walkingTimer = Time.time - _startWalkingTime;
-                Debug.Log("------Walking Timer "+ _walkingTimer);
                 if (_walkingTimer > _normalStepTime && !_finalEditedExternally)
                 {
                     _currentStepTime = Mathf.SmoothStep(_normalStepTime, _minTimeForStep, (_walkingTimer / _timeToAccelerate) - _normalStepTime);
