@@ -25,11 +25,11 @@ namespace GJam2020.Game.Tutorial
         {
             if (!MustBeEnabled())
             {
+                Debug.Log("Input Type: " + _inputType + "; Joysticks: " + Input.GetJoystickNames()[0]);
                 gameObject.SetActive(false);
             }
             else
             {
-
                 _tutorialSlides = GetComponentsInChildren<BaseTutorialSlide>().ToList();
 
                 foreach (var child in _tutorialSlides)
@@ -88,7 +88,12 @@ namespace GJam2020.Game.Tutorial
                 if (Input.GetJoystickNames().Length > 0)
                     if(!Input.GetJoystickNames()[0].Equals(""))
                     mustBeEnabled = false;
+#elif UNITY_TVOS
+            if (_inputType == InputType.Keyboard)
+                    mustBeEnabled = false;
 
+            if (_inputType == InputType.Touch)
+                mustBeEnabled = false;
 #else
             if (_inputType == InputType.Touch && Input.GetJoystickNames().Length > 0)
                 if (!Input.GetJoystickNames()[0].Equals(""))
