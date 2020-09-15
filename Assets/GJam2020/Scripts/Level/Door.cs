@@ -10,6 +10,7 @@ public class Door : MonoBehaviour
     [HideInInspector] public bool rotate;
     [SerializeField] private AudioClip doorClip;
     private AudioSourcePlayer fxPlayer;
+    private bool opened = false;
 
     private void Start()
     {
@@ -47,9 +48,18 @@ public class Door : MonoBehaviour
     }
     public void Open()
     {
+        opened = true;
         fxPlayer.PlayOneShot(doorClip);
         MapGenerator.Get.RemoveObstacle(transform.position);
         GetComponentInChildren<Animator>().SetTrigger("Open");
         GetComponentInChildren<SkinnedMeshRenderer>().material.SetFloat("_Open", 0.2f);
+    }
+    public void Close()
+    {
+        if (!opened) return;
+        opened = false;
+        MapGenerator.Get.AddObstacle(transform.position);
+        GetComponentInChildren<Animator>().SetTrigger("Close");
+        GetComponentInChildren<SkinnedMeshRenderer>().material.SetFloat("_Open", 0f);
     }
 }

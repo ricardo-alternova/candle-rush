@@ -127,6 +127,10 @@ public class MapGenerator : MonoBehaviour
             Debug.LogWarning("Obstacle to remove not found");
         }
     }
+    public void AddObstacle(Vector3 obstaclePos)
+    {
+        _obstaclesPosition.Add(new Vector3(obstaclePos.x, -.5f, obstaclePos.z));
+    }
 
     public Vector3 GetPairPosition(Color color, Vector3 vector3)
     {

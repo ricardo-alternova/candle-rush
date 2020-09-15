@@ -15,9 +15,25 @@ public class Key : MonoBehaviour
 
     private int avatarLayer;
 
+    private Vector3 initPos;
+    private Quaternion initRot;
+    private Transform originalParent;
+
     private void Awake()
     {
         avatarLayer = LayerMask.NameToLayer("Avatar");
+    }
+    private void Start()
+    {
+        initPos = transform.position;
+        initRot = transform.rotation;
+        originalParent = transform.parent;
+
+        GameManager.Get.StartGame.AddListener(RestartKey);
+    }
+    private void OnDestroy()
+    {
+        GameManager.Get.StartGame.RemoveListener(RestartKey);      
     }
 
     private void Update()
@@ -87,5 +103,16 @@ public class Key : MonoBehaviour
         }
         transform.SetParent(myDoor.keyBone);
         myDoor.Open();
+    }
+    public void RestartKey()
+    {
+        StopAllCoroutines();
+        transform.parent = originalParent;
+        transform.position = initPos;
+        transform.rotation = initRot;
+        GetComponent<Collider>().enabled = true;
+        GetComponent<FloatingObjects>().enabled = true;
+        taked = false;
+        myDoor.Close();
     }
 }
