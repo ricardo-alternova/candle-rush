@@ -38,6 +38,7 @@ namespace GJam2020.Level.UI
             GameManager.Get.IsPlaying = false;
             SoundManager.Get().Pause(true, false, false);
             _optionsMenu.SetActive(true);
+            gameObject.SetActive(false);
         }
 
         public void CloseLevelsSelector()

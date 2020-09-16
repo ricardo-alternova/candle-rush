@@ -58,11 +58,13 @@ namespace GJam2020.Level.UI
         public void CloseOptions()
         {
             Time.timeScale = 0;
+            _pauseMenu.SetActive(true);
             _optionsMenu.SetActive(false);
         }
 
         public void OpenCloseAudioPanel(bool open)
         {
+            _pauseMenu.SetActive(!open);
             _audioPanel.SetActive(open);
         }
     }

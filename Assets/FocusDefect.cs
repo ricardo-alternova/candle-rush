@@ -16,21 +16,38 @@ public class FocusDefect : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(goSelected);
         }
         inputActions = new UiInput();
-        inputActions.Ui.RightLS.started += Actions;
-        inputActions.Ui.LeftLS.started += Actions;
-        inputActions.Ui.UpLS.started += Actions;
-        inputActions.Ui.DownLS.started += Actions;
         inputActions.Enable();
+        OnEnable();
     }
 
     private void Actions(CallbackContext obj)
     {
         if (goSelected != null)
         {
-            if (EventSystem.current.currentSelectedGameObject == null)
+            if (EventSystem.current.currentSelectedGameObject == null|| !EventSystem.current.currentSelectedGameObject.transform.IsChildOf(transform))
             {
                 EventSystem.current.SetSelectedGameObject(goSelected);
             }
         }
+    }
+    
+    private void OnEnable()
+    {
+        if (inputActions != null)
+        {
+            inputActions.Ui.RightLS.started += Actions;
+            inputActions.Ui.LeftLS.started += Actions;
+            inputActions.Ui.UpLS.started += Actions;
+            inputActions.Ui.DownLS.started += Actions;
+        }
+        
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Ui.RightLS.started -= Actions;
+        inputActions.Ui.LeftLS.started -= Actions;
+        inputActions.Ui.UpLS.started -= Actions;
+        inputActions.Ui.DownLS.started -= Actions;
     }
 }
