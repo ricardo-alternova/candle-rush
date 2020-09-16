@@ -32,7 +32,7 @@ namespace GJam2020.Level.UI
 
         public void Restore()
         {
-            print("restore");
+            SoundManager.Get().FxPlayer.Restart();
             GameManager.Get.Restore();
             GameOverCtrl.Get().Reset();
             LevelManager.Get.ResetGame();

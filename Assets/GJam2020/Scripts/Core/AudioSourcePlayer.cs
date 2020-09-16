@@ -78,6 +78,11 @@ namespace GJam2020.Core
             }
         }
 
+        public void Restart()
+        {
+            _audioSource.clip = null;
+        }
+
         private IEnumerator PlaySoundCoroutine(AudioClip clip, bool loop = false, float delay = 0, float FadeTime = 0)
         {
             var delayCounter = Time.time;

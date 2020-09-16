@@ -37,6 +37,7 @@ namespace GJam2020.Level.UI
         }
         public void OpenGameOver()
         {
+            SoundManager.Get().FxPlayer.Restart();
             GameManager.Get.IsPlaying = false;
             _gameOverMenu.SetActive(true);
             _pauseButton.SetActive(false);

@@ -31,6 +31,7 @@ namespace GJam2020.Level.UI
         
         private IEnumerator ShowStars(int stars)
         {
+            SoundManager.Get().FxPlayer.Restart();
             foreach (var start in Stars)
                 start.Show();
 
