@@ -121,6 +121,14 @@ public class @UiInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""B"",
+                    ""type"": ""Button"",
+                    ""id"": ""b13518c5-5111-4030-a769-d68ad5791d94"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -343,6 +351,28 @@ public class @UiInput : IInputActionCollection, IDisposable
                     ""action"": ""Down(LS)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd6505bc-c7c0-457b-9a53-2ac09d23da90"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""B"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a6320e7-0e61-4067-9bdc-5c9986606a71"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""B"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -364,6 +394,7 @@ public class @UiInput : IInputActionCollection, IDisposable
         m_Ui_LeftLS = m_Ui.FindAction("Left(LS)", throwIfNotFound: true);
         m_Ui_UpLS = m_Ui.FindAction("Up(LS)", throwIfNotFound: true);
         m_Ui_DownLS = m_Ui.FindAction("Down(LS)", throwIfNotFound: true);
+        m_Ui_B = m_Ui.FindAction("B", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -426,6 +457,7 @@ public class @UiInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Ui_LeftLS;
     private readonly InputAction m_Ui_UpLS;
     private readonly InputAction m_Ui_DownLS;
+    private readonly InputAction m_Ui_B;
     public struct UiActions
     {
         private @UiInput m_Wrapper;
@@ -443,6 +475,7 @@ public class @UiInput : IInputActionCollection, IDisposable
         public InputAction @LeftLS => m_Wrapper.m_Ui_LeftLS;
         public InputAction @UpLS => m_Wrapper.m_Ui_UpLS;
         public InputAction @DownLS => m_Wrapper.m_Ui_DownLS;
+        public InputAction @B => m_Wrapper.m_Ui_B;
         public InputActionMap Get() { return m_Wrapper.m_Ui; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -491,6 +524,9 @@ public class @UiInput : IInputActionCollection, IDisposable
                 @DownLS.started -= m_Wrapper.m_UiActionsCallbackInterface.OnDownLS;
                 @DownLS.performed -= m_Wrapper.m_UiActionsCallbackInterface.OnDownLS;
                 @DownLS.canceled -= m_Wrapper.m_UiActionsCallbackInterface.OnDownLS;
+                @B.started -= m_Wrapper.m_UiActionsCallbackInterface.OnB;
+                @B.performed -= m_Wrapper.m_UiActionsCallbackInterface.OnB;
+                @B.canceled -= m_Wrapper.m_UiActionsCallbackInterface.OnB;
             }
             m_Wrapper.m_UiActionsCallbackInterface = instance;
             if (instance != null)
@@ -534,6 +570,9 @@ public class @UiInput : IInputActionCollection, IDisposable
                 @DownLS.started += instance.OnDownLS;
                 @DownLS.performed += instance.OnDownLS;
                 @DownLS.canceled += instance.OnDownLS;
+                @B.started += instance.OnB;
+                @B.performed += instance.OnB;
+                @B.canceled += instance.OnB;
             }
         }
     }
@@ -553,5 +592,6 @@ public class @UiInput : IInputActionCollection, IDisposable
         void OnLeftLS(InputAction.CallbackContext context);
         void OnUpLS(InputAction.CallbackContext context);
         void OnDownLS(InputAction.CallbackContext context);
+        void OnB(InputAction.CallbackContext context);
     }
 }

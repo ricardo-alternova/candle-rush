@@ -19,7 +19,8 @@ public class InputButton : MonoBehaviour
         LeftRs,
         RightRs,
         RB,
-        LB
+        LB,
+        B
     }
 
     [SerializeField]
@@ -60,6 +61,9 @@ public class InputButton : MonoBehaviour
                 break;
             case InputType.LB:
                 inputAction = inputActions.Ui.LB;
+                break;
+            case InputType.B:
+                inputAction = inputActions.Ui.B;
                 break;
         }
         inputActions.Enable();
