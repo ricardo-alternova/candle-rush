@@ -41,9 +41,6 @@ namespace GJam2020.Level.UI
             }
         }
 
-        public void GoHome()
-        {
-            SceneManager.LoadScene(GameManager.MAIN_MENU_NAME);
-        }
+        
     }
 }
