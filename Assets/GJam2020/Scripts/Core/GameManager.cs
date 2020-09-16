@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
                 obj.SetActive(true);
             }
             CheckAvatarStartPosition();
+            AvatarPosition.Restart();
             })
         );
     }

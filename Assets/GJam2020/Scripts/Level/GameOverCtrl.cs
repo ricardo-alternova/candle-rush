@@ -3,6 +3,7 @@ using Cinemachine;
 using GGJ2020.Avatar;
 using UnityEngine;
 using UnityEngine.UI;
+using GJam2020.Core;
 
 namespace GGJ2020.Levels
 {
@@ -17,8 +18,7 @@ namespace GGJ2020.Levels
         private Vector3 _lightOffset;
         [SerializeField]
         private AudioClip _gameOverClip;
-        [SerializeField]
-        private AudioSource _FxAudioSource;
+        private AudioSourcePlayer _FxAudioSource;
         [SerializeField]
         private Image _background;
         private static GameOverCtrl _instance;
@@ -32,6 +32,7 @@ namespace GGJ2020.Levels
 
         void Start()
         {
+            _FxAudioSource = SoundManager.Get().FxPlayer;
             _directionalLight = GameObject.Find("Directional Light");
         }
 
@@ -39,9 +40,8 @@ namespace GGJ2020.Levels
         public void Play()
         {
             _CMvirtualCam.Priority = 100;
-            _FxAudioSource.clip = _gameOverClip;
             _directionalLight.gameObject.SetActive(false);
-            _FxAudioSource.Play();
+            _FxAudioSource.Play(_gameOverClip);
             _light.SetActive(true);
             _light.transform.position = AvatarPosition.AVATAR_POSITION + _lightOffset;
 
@@ -54,7 +54,7 @@ namespace GGJ2020.Levels
         public void Reset()
         {
             _CMvirtualCam.Priority = 1;
-            _FxAudioSource.Stop();
+            _FxAudioSource.Restart();
             _directionalLight.gameObject.SetActive(true);
             _light.SetActive(false);
 

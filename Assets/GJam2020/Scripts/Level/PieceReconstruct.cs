@@ -1,3 +1,4 @@
+using GJam2020.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace GJam2020.Avatar
     {
         [SerializeField]
         private AudioClip _sound;
-        private AudioSource _audioSource;
+        private AudioSourcePlayer _audioSource;
         public int PieceValue;
         private int avatarLayer;
         private Transform[] _childrensTransform;
@@ -17,9 +18,8 @@ namespace GJam2020.Avatar
 
         private void Start()
         {
-            _audioSource = GetComponent<AudioSource>();
+            _audioSource = SoundManager.Get().FxPlayer;
             Assert.IsNotNull(_audioSource, "AudioSource component not found");
-            _audioSource.clip = _sound;
 
             _childrensTransform = GetComponentsInChildren<Transform>();
             _boxCollider = GetComponent<BoxCollider>();
@@ -43,14 +43,14 @@ namespace GJam2020.Avatar
 
         private IEnumerator DestroyCoroutine()
         {
-            _audioSource.Play();
+            _audioSource.Play(_sound);
             foreach (var child in _childrensTransform)
             {
                 if (child.name == name) continue;
                 child.gameObject.SetActive(false);
             }
             _boxCollider.enabled = false;
-            yield return new WaitWhile(()=> _audioSource.isPlaying);
+            yield return new WaitWhile(()=> _audioSource.IsPlaying);
             gameObject.SetActive(false);
         }
 
