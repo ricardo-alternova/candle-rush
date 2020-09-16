@@ -29,18 +29,14 @@ namespace GJam2020.Level.UI
 
         public static LevelMenuMgr Get() { return _instance; }
 
-        public void OpenOptions()
-        {
-            GameManager.Get.IsPlaying = false;
-            SoundManager.Get().Pause(true,false,false);
-            _optionsMenu.SetActive(true);
-        }
+        
         public void OpenGameOver()
         {
             GameManager.Get.IsPlaying = false;
             _gameOverMenu.SetActive(true);
             _pauseButton.SetActive(false);
         }
+
         public void OpenWin(int stars)
         {
             _optionsButton.SetActive(false);
@@ -50,6 +46,7 @@ namespace GJam2020.Level.UI
             _winMenu.SetActive(true);
             _winMenu.GetComponent<WinMenu>().PlayStars(stars);
         }
+
         public void OpenPause()
         {
             SoundManager.Get().Pause();
@@ -59,15 +56,13 @@ namespace GJam2020.Level.UI
 
         public void CloseOptions()
         {
-            _optionsButton.SetActive(true);
+            Time.timeScale = 0;
             _optionsMenu.SetActive(false);
-            GameManager.Get.IsPlaying = true;
         }
 
         public void OpenCloseAudioPanel(bool open)
         {
             _audioPanel.SetActive(open);
-            GameManager.Get.IsPlaying = !open;
         }
     }
 }

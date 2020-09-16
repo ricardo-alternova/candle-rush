@@ -139,6 +139,11 @@ public class GameManager : MonoBehaviour
         ObjectsUnactive.Remove(elementGO);
     }
 
+    public void ResetCurrentLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void Restore()
     {
         print("Restore");
