@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     public void ChargeOrReload()
     {
-        if (_nextScene.Equals(MAIN_MENU_NAME))
+        if (_nextScene!=null&&_nextScene.Equals(MAIN_MENU_NAME))
         {
             Get.currentLevel = _levelSettings[0];
             _nextScene = GAMEPLAY_NAME;
