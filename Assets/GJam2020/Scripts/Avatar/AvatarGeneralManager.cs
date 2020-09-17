@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
 using GJam2020.Level.UI;
-using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
+using GJam2020.Core;
 
 namespace GJam2020.Avatar {
     public class AvatarGeneralManager : MonoBehaviour
     {
+        public static AvatarGeneralManager Get;
+        public AnimationState AnimationState { get; private set; }
+
         [SerializeField]
         private TMPro.TextMeshProUGUI _stepAdd;
-        public static AvatarGeneralManager Get;
         private AvatarAnimator _animator;
         private PlayerMovement _movement;
         private BodyDestruction _bodyDestruction;
         private bool _isReverse = false;
+        private Coroutine _plusStepCoroutine;
+
 
         private void Start()
         {
@@ -22,6 +26,7 @@ namespace GJam2020.Avatar {
             _movement = GetComponent<PlayerMovement>();
             _bodyDestruction = GetComponent<BodyDestruction>();
         }
+
         public void StartMovement(float timeForDisplacement)
         {
             if (!_isReverse)
@@ -29,25 +34,31 @@ namespace GJam2020.Avatar {
                 _bodyDestruction.DestroyBodyPart(timeForDisplacement);
             }
             _isReverse = false;
-            _animator.Walking(true);
 
+            SetStatus(AnimationState.WALKING);
         }
+
         public void IsReverseCommand()
         {
             _isReverse = true;
         }
-        public void EndMovement()
+
+        public void StopWalking()
         {
-            _animator.Walking(false);
+            SetStatus(AnimationState.IDLE);
         }
+
+        public void SetStatus(AnimationState animationState)
+        {
+            AnimationState = animationState;
+            _animator.SetState(animationState);
+        }
+
         public void CapturePiece(int value)
         {
-            _stepAdd.text = "+" + value;
-            _stepAdd.transform.localPosition = Vector3.zero;
-            _stepAdd.gameObject.SetActive(true);
-            _stepAdd.transform.DOLocalMoveY(150, 1);
-            _stepAdd.material.DOFade(1, 1);
-            StartCoroutine(LabelBehavior());
+            if (_plusStepCoroutine != null) StopCoroutine(_plusStepCoroutine);
+
+            _plusStepCoroutine = StartCoroutine(LabelBehavior(value));
 
             for (int i = 0; i < value; i++)
             {
@@ -55,20 +66,44 @@ namespace GJam2020.Avatar {
             }
         }
 
-        private IEnumerator LabelBehavior()
+        public void StepBack()
         {
-            yield return new WaitForSeconds(1.5f);
-            _stepAdd.gameObject.SetActive(false);
+            if (_plusStepCoroutine != null) StopCoroutine(_plusStepCoroutine);
+
+            _plusStepCoroutine = StartCoroutine(LabelBehavior(1));
         }
 
         public void Dead()
         {
+            SetStatus(AnimationState.GAME_OVER);
             LevelMenuMgr.Get().OpenGameOver();
+            LevelManager.Get.GameOver();
         }
 
-        public void Restore()
+        private IEnumerator LabelBehavior(int value)
         {
-            
+            _stepAdd.transform.DOKill();
+            _stepAdd.text = "+" + value;
+            _stepAdd.transform.localPosition = Vector3.zero;
+
+            _stepAdd.gameObject.SetActive(true);
+            _stepAdd.transform.DOLocalMoveY(Screen.height * 0.06f, 1);
+            _stepAdd.material.DOFade(1, 1);
+            yield return new WaitForSeconds(1.5f);
+            _stepAdd.gameObject.SetActive(false);
+        }
+
+        public void SetCurrentGround(MapEntity type)
+        {
+            switch (type)
+            {
+                case MapEntity.ground:
+                    _animator.IsSlide(false);
+                    break;
+                case MapEntity.iceCube:
+                    _animator.IsSlide(true);
+                    break;
+            }
         }
     }
 }

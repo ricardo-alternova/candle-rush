@@ -26,5 +26,10 @@ namespace GGJ2020.Avatar
             yield return new WaitForSeconds(.5f);
             CanTeleporter = true;
         }
+
+        public static void Restart()
+        {
+            CanTeleporter = true;
+        }
     }
 }

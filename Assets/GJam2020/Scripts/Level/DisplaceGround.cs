@@ -1,10 +1,35 @@
-﻿using UnityEngine;
-using GGJ2020.Avatar;
+﻿using GGJ2020.Avatar;
+using GGJ2020.Levels;
+using GJam2020.Avatar;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace GGJ2020.Levels
 {
+    
     public class DisplaceGround : MonoBehaviour
     {
+        protected PlayerMovement playerMovement;
+
+        protected void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Avatar"))
+            {
+                playerMovement = other.GetComponent<PlayerMovement>();
+                if (playerMovement != null)
+                {
+                    OnPlayerTrigger();
+                }
+            }
+        }
+
+        protected virtual void OnPlayerTrigger()
+        {
+            AvatarGeneralManager.Get.SetCurrentGround(MapEntity.ground);
+        }
+        
+
         public float GROUND_REGULAR_POS = 0;
         public float GROUND_DISPLACED_POS = -4;
         public static float EFFECT_STARTS_AT = 5;

@@ -1,38 +1,77 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using GJam2020.Avatar;
 
 namespace GJam2020.Core {
     public class CanvasData : MonoBehaviour
     {
-        
         public Text NumberOfPieces;
-        public GameObject panelDead;
+        public Text TimeLabel;
+        [SerializeField] private Transform stepsObject;
+        [SerializeField] private AnimationCurve stepCurve;
 
         public static CanvasData Get;
+
+        private float timer;
 
         private void Awake()
         {
             Get = this;
+
+            GameManager.Get.StartGame.AddListener(() => ResetTimer());
+        }
+
+        private void Update()
+        {
+            if (!GameManager.Get.IsPlaying) return;
+
+            timer += Time.deltaTime;
+            SetTime(timer);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Get.StartGame.RemoveListener(() => ResetTimer());
         }
 
         public void SetNumberOfPieces(int pieces)
         {
-            NumberOfPieces.text = pieces + "";
+            if (int.Parse(NumberOfPieces.text) > pieces && pieces < 4)
+            {
+                StartCoroutine(StepAnimation());
+            }
+            NumberOfPieces.text = pieces.ToString();
         }
 
-        //public void Dead()
-        //{
-        //    panelDead.SetActive(true);
-        //}
+        public void SetTime(float time)
+        {
+            time = Mathf.Floor(time);
+            TimeLabel.text = TimeSpan.FromSeconds(time).ToString(@"mm\:ss");
+        }
 
-        //public void Restore()
-        //{
-        //    print("restore");
-        //    panelDead.SetActive(false);
-        //    GameManager.Get.Restore();
-        //}
+        public void ResetTimer()
+        {
+            timer = 0;
+        }
+        private IEnumerator StepAnimation()
+        {
+            float maxTime = 0.6f;
+            float timer = 0;
+            while (timer <= maxTime)
+            {
+                float curveValue = stepCurve.Evaluate(timer / maxTime);
+                stepsObject.localScale = Vector3.one * (curveValue+1);
+                Color _newColor = Color.red * curveValue + Color.white * (1-curveValue);
+                ChangeStepColor(_newColor);
+                timer += Time.deltaTime; 
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        private void ChangeStepColor(Color color)
+        {
+            stepsObject.GetComponentInChildren<Image>().color = color;
+            stepsObject.GetComponentInChildren<Text>().color = color;
+        }
     }
 }

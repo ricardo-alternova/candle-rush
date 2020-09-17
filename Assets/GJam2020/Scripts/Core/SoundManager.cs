@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 namespace GJam2020.Core
 {
@@ -11,171 +14,170 @@ namespace GJam2020.Core
         public bool IsSongEnable = true;
 
         [SerializeField]
-        private AudioSource _fxAudioSource;
-        private List<AudioSourcePlayer> _audioSongPlayers;
-        private List<AudioSourcePlayer> _audioUIPlayers;
-        private List<AudioSourcePlayer> _audioFxPlayers;
-        private Dictionary<AudioSourcePlayer, bool> _pauseSongsState;
-        private Dictionary<AudioSourcePlayer, bool> _pauseUIState;
-        private Dictionary<AudioSourcePlayer, bool> _pauseFxState;
+        private AudioMixerGroup fxGroup;
+        [SerializeField]
+        private AudioMixerGroup uiGroup;
+        [SerializeField]
+        private AudioMixerGroup songGroup;
+
+        [SerializeField]
+        private AudioSourcePlayer fxPlayer;
 
         private bool _isPaused;
         private static SoundManager _instance;
+        private AudioMixer audioMixer;
+        private Camera mainCamera;
 
+        public AudioSourcePlayer FxPlayer { get => fxPlayer; }
 
         private void Awake()
         {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
             if (_instance != null)
             {
                 if (_instance != this)
                     Destroy(gameObject);
             }
             else
-            {
                 _instance = this;
 
-                _audioSongPlayers = new List<AudioSourcePlayer>();
-                _audioUIPlayers = new List<AudioSourcePlayer>();
-                _audioFxPlayers = new List<AudioSourcePlayer>();
-            }
+            audioMixer = songGroup.audioMixer;
+        }
+
+        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            mainCamera = Camera.main;
         }
 
         private void Start()
         {
-            var songEnabled = PlayerPrefsMgr.Get().LoadInt("PauseSongsState");
-            if (songEnabled < 0) EnableSong(true);
-            else IsSongEnable = songEnabled == 1 ? true : false;
+            audioMixer.SetFloat("FxVolume", PlayerPrefsMgr.Get().LoadInt("FxVolume"));
+            audioMixer.SetFloat("UiVolume", PlayerPrefsMgr.Get().LoadInt("UiVolume"));
+            audioMixer.SetFloat("SongVolume", PlayerPrefsMgr.Get().LoadInt("SongVolume"));
+        }
+
+        private void Update()
+        {
+            if (mainCamera)
+                fxPlayer.transform.position = mainCamera.transform.position;
         }
 
         public static SoundManager Get() { return _instance; }
 
+        public AudioMixerGroup GetMixerGroup(SoundType soundType)
+        {
+            switch (soundType)
+            {
+                case SoundType.UI:
+                    return uiGroup;
+                case SoundType.FX:
+                    return fxGroup;
+                case SoundType.SONG:
+                    return songGroup;
+                default:
+                    Debug.Log(soundType.ToString() + " - Not Implemented");
+                    return songGroup;
+            }
+        }
+
+        public int GetVolumePercent(SoundType type)
+        {
+            switch (type)
+            {
+                case SoundType.FX:
+                    return (int)(DecibelToLinear(PlayerPrefsMgr.Get().LoadInt("FxVolume"))*100);
+                case SoundType.UI:
+                    return (int)(DecibelToLinear(PlayerPrefsMgr.Get().LoadInt("UiVolume")) * 100);
+                case SoundType.SONG:
+                    return (int)(DecibelToLinear(PlayerPrefsMgr.Get().LoadInt("SongVolume")) * 100);
+            }
+            return 100;
+        }
+
+        private float LinearToDecibel(float linear)
+        {
+            float dB;
+
+            if (linear != 0)
+                dB = 60.0f * Mathf.Log10(linear);
+            else
+                dB = -80.0f;
+
+            return dB;
+        }
+
+        private float DecibelToLinear(float dB)
+        {
+            float linear = Mathf.Pow(10.0f, dB / 60.0f);
+
+            return linear;
+        }
+
+        public void SetVolumePercent(int percent,SoundType type)
+        {
+            float volume = LinearToDecibel(percent/100f);
+            switch (type)
+            {
+                case SoundType.FX:
+                    PlayerPrefsMgr.Get().Save<int>("FxVolume", (int) volume);
+                    if(!_isPaused)
+                        audioMixer.SetFloat("FxVolume",volume);
+                    break;
+                case SoundType.UI:
+                    PlayerPrefsMgr.Get().Save<int>("UiVolume", (int)volume);
+                    if (!_isPaused)
+                        audioMixer.SetFloat("UiVolume", volume);
+                    break;
+                case SoundType.SONG:
+                    PlayerPrefsMgr.Get().Save<int>("SongVolume", (int)volume);
+                    if (!_isPaused)
+                        audioMixer.SetFloat("SongVolume", volume);
+                    break;
+            }
+        }
+
         public void EnableFx(bool enable)
         {
-            PlayerPrefsMgr.Get().Save<int>("PauseFxState" , enable ? 1 : 0);
-            EnableTypeOfSound(enable, _pauseFxState, _audioFxPlayers);
+            IsFxEnabled = enable;
+            PlayerPrefsMgr.Get().Save<int>("PauseFxState", enable ? 1 : 0);
+            audioMixer.SetFloat("FXVolume", enable ? 0 : -80);
         }
 
         public void EnableUI(bool enable)
         {
+            IsUIEnabled = enable;
             PlayerPrefsMgr.Get().Save<int>("PauseUIState", enable ? 1 : 0);
-            EnableTypeOfSound(enable, _pauseUIState, _audioUIPlayers);
+            audioMixer.SetFloat("UIVolume", enable ? 0 : -80);
         }
 
         public void EnableSong(bool enable)
         {
-            IsSongEnable = true;
+            IsSongEnable = enable;
             PlayerPrefsMgr.Get().Save<int>("PauseSongsState", enable ? 1 : 0);
-            EnableTypeOfSound(enable, _pauseSongsState, _audioSongPlayers);
+            audioMixer.SetFloat("SongVolume", enable ? 0 : -80);
         }
 
-        public void Pause()
+        public void Pause(bool pauseFx=true,bool pauseMusic=true,bool pauseUi=true)
         {
             if (_isPaused) return;
             _isPaused = true;
-
-            _pauseSongsState = new Dictionary<AudioSourcePlayer, bool>();
-            _pauseFxState = new Dictionary<AudioSourcePlayer, bool>();
-            _pauseUIState = new Dictionary<AudioSourcePlayer, bool>();
-
-            foreach (var audioSourcePlayer in _audioSongPlayers)
-            {
-                _pauseSongsState.Add(audioSourcePlayer, audioSourcePlayer.IsPlaying);
-                audioSourcePlayer.Pause();
-            }
-            foreach (var audioSourcePlayer in _audioFxPlayers)
-            {
-                _pauseFxState.Add(audioSourcePlayer, audioSourcePlayer.IsPlaying);
-                audioSourcePlayer.Pause();
-            }
-            foreach (var audioSourcePlayer in _audioUIPlayers)
-            {
-                _pauseUIState.Add(audioSourcePlayer, audioSourcePlayer.IsPlaying);
-                audioSourcePlayer.Pause();
-            }
+            if(pauseMusic)
+                audioMixer.SetFloat("SongVolume", -80);
+            if(pauseUi)
+                audioMixer.SetFloat("UiVolume", -80);
+            if(pauseFx)
+                audioMixer.SetFloat("FxVolume", -80);
         }
 
         public void Play()
         {
             if (!_isPaused) return;
-            //if (IsSongEnable)
-            {
-                foreach (var pauseState in _pauseSongsState)
-                {
-                    if (pauseState.Value == true)
-                        pauseState.Key.Play();
-                }
-            }
-            if (IsFxEnabled)
-            {
-                foreach (var pauseState in _pauseFxState)
-                {
-                    if (pauseState.Value == true)
-                        pauseState.Key.Play();
-                }
-            }
-            if (IsUIEnabled)
-            {
-                foreach (var pauseState in _pauseUIState)
-                {
-                    if (pauseState.Value == true)
-                        pauseState.Key.Play();
-                }
-            }
-
             _isPaused = false;
-        }
-
-        public void AddAudioPlayer(AudioSourcePlayer audioSourcePlayer)
-        {
-            switch (audioSourcePlayer._soundType)
-            {
-                case SoundType.UI:
-                    _audioUIPlayers.Add(audioSourcePlayer);
-                    break;
-                case SoundType.FX:
-                    _audioFxPlayers.Add(audioSourcePlayer);
-                    break;
-                case SoundType.SONG:
-                    _audioSongPlayers.Add(audioSourcePlayer);
-                    break;
-            }
-        }
-
-        public void RemoveAudioPlauer(AudioSourcePlayer audioSourcePlayer)
-        {
-            switch (audioSourcePlayer._soundType)
-            {
-                case SoundType.UI:
-                    _audioUIPlayers.Add(audioSourcePlayer);
-                    break;
-                case SoundType.FX:
-                    _audioFxPlayers.Add(audioSourcePlayer);
-                    break;
-                case SoundType.SONG:
-                    _audioSongPlayers.Add(audioSourcePlayer);
-                    break;
-            }
-        }
-
-        private void EnableTypeOfSound(
-            bool enable,
-            Dictionary<AudioSourcePlayer, bool> audioSourcePauseStates,
-            List<AudioSourcePlayer> audioSourcePlayers)
-        {
-            foreach (var audioSourcePlayer in audioSourcePlayers)
-            {
-                audioSourcePlayer.AllowPlaying = enable;
-                if (enable == false)
-                {
-                    audioSourcePauseStates[audioSourcePlayer] = audioSourcePlayer.IsPlaying;
-                    audioSourcePlayer.Stop();
-                }
-                else
-                {
-                    if (audioSourcePauseStates[audioSourcePlayer] == true)
-                        audioSourcePlayer.Play();
-                }
-            }
+            int fx = PlayerPrefsMgr.Get().LoadInt("FxVolume");
+            audioMixer.SetFloat("FxVolume", PlayerPrefsMgr.Get().LoadInt("FxVolume"));
+            audioMixer.SetFloat("UiVolume", PlayerPrefsMgr.Get().LoadInt("UiVolume"));
+            audioMixer.SetFloat("SongVolume", PlayerPrefsMgr.Get().LoadInt("SongVolume"));
         }
     }
 }
