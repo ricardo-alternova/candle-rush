@@ -28,6 +28,8 @@ namespace GJam2020.Level.UI
         public void GoHome()
         {
             Time.timeScale = 1;
+            SoundManager.Get().Play();
+
             SceneManager.LoadScene(GameManager.MAIN_MENU_NAME);
         }
 
@@ -51,7 +53,8 @@ namespace GJam2020.Level.UI
         public void ResetLevel()
         {
             Time.timeScale = 1;
-
+            SoundManager.Get().Play();
+            _audioSourcePlayer.Play(_playAudioClip);
             GameManager.Get.ResetCurrentLevel();
         }
     }
