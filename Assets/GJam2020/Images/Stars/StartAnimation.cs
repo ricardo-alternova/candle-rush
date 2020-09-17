@@ -9,6 +9,7 @@ public class StartAnimation : MonoBehaviour
     [SerializeField] private Image _inner;
     [SerializeField] private Image _background;
     private AudioSourcePlayer _audioSource;
+    [SerializeField] private AudioClip _starSound;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,7 @@ public class StartAnimation : MonoBehaviour
 
     public void Fill()
     {
-        _audioSource.Play();
+        _audioSource.Play(_starSound);
         _inner.DOFillAmount(1, 0.9f);
         _background.transform.DOPunchScale(
             punch: Vector3.one * 1.1f, 

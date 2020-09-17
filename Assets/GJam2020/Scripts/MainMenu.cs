@@ -18,6 +18,6 @@ public class MainMenu : MonoBehaviour
     private IEnumerator WaitSound()
     {
         yield return new WaitForSeconds(0.4f);
-        GameManager.Get.ChargeNextLevel();
+        GameManager.Get.ChargeOrReload();
     }
 }

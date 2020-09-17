@@ -22,6 +22,8 @@ namespace GJam2020.Level.UI
 
         private static LevelMenuMgr _instance;
 
+        private GameObject _panelActivatorLevels;
+
         private void Awake()
         {
             _instance = this;
@@ -55,17 +57,40 @@ namespace GJam2020.Level.UI
             _pauseMenu.SetActive(true);
         }
 
+
+        public void OpenOptions(GameObject panelActivator)
+        {
+            Time.timeScale = 1;
+            GameManager.Get.IsPlaying = false;
+            SoundManager.Get().Pause(true, false, false);
+            _optionsMenu.SetActive(true);
+            panelActivator.SetActive(false);
+            _panelActivatorLevels = panelActivator;
+        }
+
         public void CloseOptions()
         {
             Time.timeScale = 0;
-            _pauseMenu.SetActive(true);
             _optionsMenu.SetActive(false);
+            if (_panelActivatorLevels != null)
+            {
+                _panelActivatorLevels.SetActive(true);
+            }
         }
 
-        public void OpenCloseAudioPanel(bool open)
+        public void OpenAudioPanel(GameObject panelActivator)
         {
-            _pauseMenu.SetActive(!open);
-            _audioPanel.SetActive(open);
+            panelActivator.SetActive(false);
+            _audioPanel.SetActive(true);
+            _panelActivatorLevels = panelActivator;
+        }
+        public void CloaseAudioPanel()
+        {
+            _audioPanel.SetActive(false);
+            if (_panelActivatorLevels != null)
+            {
+                _panelActivatorLevels.SetActive(true);
+            }
         }
     }
 }
