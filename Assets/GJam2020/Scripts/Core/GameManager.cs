@@ -83,6 +83,16 @@ public class GameManager : MonoBehaviour
         ChargeNextLevel();
     }
 
+    public void ChargeOrReload()
+    {
+        if (_nextScene.Equals(MAIN_MENU_NAME))
+        {
+            Get.currentLevel = _levelSettings[0];
+            _nextScene = GAMEPLAY_NAME;
+        }
+        ChargeNextLevel();
+    }
+
     public void ChargeNextLevel()
     {
         if (ObjectsUnactive != null)

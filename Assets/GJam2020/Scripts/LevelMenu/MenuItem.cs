@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using GJam2020.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -70,6 +71,7 @@ public class MenuItem : MonoBehaviour
     {
         GameManager.Get.currentLevel = levelSettings;
         GameManager.Get.ChargeNextLevel();
+        SoundManager.Get().Play();
     }
 
     private void ShowAsUnlock()
