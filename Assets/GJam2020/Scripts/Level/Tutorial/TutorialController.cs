@@ -25,7 +25,9 @@ namespace GJam2020.Game.Tutorial
         {
             if (!MustBeEnabled())
             {
-                Debug.Log("Input Type: " + _inputType + "; Joysticks: " + Input.GetJoystickNames()[0]);
+                Debug.Log("Input Type: " + _inputType);
+                if(Input.GetJoystickNames().Length > 0)
+                    Debug.Log("Joysticks: " + Input.GetJoystickNames()[0]);
                 gameObject.SetActive(false);
             }
             else
@@ -71,7 +73,8 @@ namespace GJam2020.Game.Tutorial
         {
             bool mustBeEnabled = true;
 #if UNITY_WEBGL
-            Debug.Log("Gamepads: " + Input.GetJoystickNames()[0]);
+            if(Input.GetJoystickNames().Length > 0)
+                Debug.Log("Gamepads: " + Input.GetJoystickNames()[0]);
             if (_inputType == InputType.Touch)
                 mustBeEnabled = false;
 

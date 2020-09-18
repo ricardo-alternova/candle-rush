@@ -36,6 +36,7 @@ namespace GJam2020.Level.UI
             Time.timeScale = 1;
 
             SoundManager.Get().FxPlayer.Restart();
+            SoundManager.Get().Play();
             GameManager.Get.Restore();
             GameOverCtrl.Get().Reset();
             LevelManager.Get.ResetGame();
