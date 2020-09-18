@@ -8,7 +8,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2719672648686106404}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -82,6 +82,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4589429462992219172}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: 11d9485977acbbe4fb513ebea204a8f0,
+        type: 3}
+      propertyPath: m_Name
+      value: NormalGroundCube
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 11d9485977acbbe4fb513ebea204a8f0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -151,11 +156,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.99
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 11d9485977acbbe4fb513ebea204a8f0,
-        type: 3}
-      propertyPath: m_Name
-      value: NormalGroundCube
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 11d9485977acbbe4fb513ebea204a8f0,
         type: 3}
