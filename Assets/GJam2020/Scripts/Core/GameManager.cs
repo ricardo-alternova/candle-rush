@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     public static string GAMEPLAY_NAME = "Gameplay";
     public int CurrentLevel { get { return _gameData.currentLevel; } }
     public UnityEvent StartGame;
+    public bool InvertYAxis;
 
     [Tooltip("Set to -1 to enable all levels.")]
     [SerializeField]
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Get = this;
+            InvertYAxis =bool.Parse(PlayerPrefs.GetString("yAxis","false"));
             DontDestroyOnLoad(this);
             DontDestroyOnLoad(gameObject);
 

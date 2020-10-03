@@ -195,11 +195,11 @@ namespace GJam2020.Core
             {
                 if (direction.y > 0)
                 {
-                    LaunchInput(_buttonW, Vector2.up);
+                    LaunchInput(GameManager.Get.InvertYAxis ? _buttonS: _buttonW, GameManager.Get.InvertYAxis ? Vector2.down: Vector2.up);
                 }
                 if (direction.y < 0)
                 {
-                    LaunchInput(_buttonS, Vector2.down);
+                    LaunchInput(GameManager.Get.InvertYAxis ? _buttonW: _buttonS, GameManager.Get.InvertYAxis? Vector2.up:Vector2.down);
                 }
                 _pressing = true;
             }
