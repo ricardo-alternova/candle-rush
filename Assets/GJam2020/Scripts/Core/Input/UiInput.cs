@@ -178,6 +178,17 @@ public class @UiInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""ed56c83a-0eda-4e76-9e68-8cfea424bca0"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""10f30a14-5b79-4656-9975-faa219d9cb78"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
