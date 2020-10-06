@@ -21,9 +21,11 @@ namespace GJam2020.Avatar
         [SerializeField]
         private Rigidbody playerRigidbody;
         private Animator _animator;
+        private AvatarAnimator _avatarAnimator;
         private Vector3 _initialForward;
         private Vector3 _initialPosition;
         private Vector3 _finalPosition;
+        private Vector3 _deltaPos;
 
         private float _currentStepTime;
         private float _actualTimeForDisplacement;
@@ -42,10 +44,12 @@ namespace GJam2020.Avatar
         {
             transform.localPosition = MapGenerator.Get.StartPosition;
             _animator = GetComponent<Animator>();
+            _avatarAnimator = GetComponent<AvatarAnimator>();
             Assert.IsNotNull(_animator);
             _initialForward = transform.forward;
             GameObject.Find("Systems").
                 GetComponent<InputSystem>().OnInputReleased.AddListener(InputReleased);
+            StartCoroutine(CheckWalkingStatusCoroutine());
         }
 
         private void InputReleased()
@@ -141,7 +145,7 @@ namespace GJam2020.Avatar
         {
             return _lastMovementDirection;
         }
-
+        
         public void UpdateMovementPosition(Vector3 newInitialPosition)
         {
             var deltaPos = _finalPosition - _initialPosition;
@@ -168,6 +172,25 @@ namespace GJam2020.Avatar
         public Vector3 GetFinalPosition()
         {
             return _finalPosition;
+        }
+
+        private IEnumerator CheckWalkingStatusCoroutine()
+        {
+            while (true)
+            {
+                _deltaPos = playerRigidbody.position;
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                _deltaPos = playerRigidbody.position - _deltaPos;
+
+                if (_avatarAnimator.GetState() != AnimationState.WALKING) continue;
+                
+                if(!_inputPressed && !_walking)
+                {
+                    if(_deltaPos.magnitude == 0)
+                        _avatarAnimator.SetState(AnimationState.IDLE);
+                }
+            }
         }
 
         private IEnumerator MovePlayer(Vector3 newPos, Action onMovementComplete, float timeForDisplacement)

@@ -18,6 +18,12 @@ public class AvatarAnimator : MonoBehaviour
     {
         anim.SetBool("slide", Slide);
     }
+
+    public AnimationState GetState()
+    {
+        var state = anim.GetInteger("State");
+        return (AnimationState)state;
+    }
 }
 
 public enum AnimationState {
