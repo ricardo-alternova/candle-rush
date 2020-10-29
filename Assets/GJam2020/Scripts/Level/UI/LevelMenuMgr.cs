@@ -57,6 +57,17 @@ namespace GJam2020.Level.UI
             _pauseMenu.SetActive(true);
         }
 
+        public void Play()
+        {
+            Time.timeScale = 1;
+            SoundManager.Get().Play();
+            GameManager.Get.IsPlaying = true;
+            _pauseMenu.SetActive(false);
+            _optionsMenu.SetActive(false);
+            _audioPanel.SetActive(false);
+            _pauseButton.SetActive(true);
+
+        }
 
         public void OpenOptions(GameObject panelActivator)
         {

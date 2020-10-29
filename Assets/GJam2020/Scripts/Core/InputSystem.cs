@@ -45,15 +45,33 @@ namespace GJam2020.Core
             EnableInputs(true, true, true, true);
 
             inputActions = new PlayerInputActions();
+#if UNITY_WEBGL
+            inputActions.PlayerWeb.Move.performed += moveAction =>
+            {
+                CheckMoveInput(moveAction.ReadValue<Vector2>());
+            };
+            inputActions.PlayerWeb.Move.started += Move_started;
+            inputActions.PlayerWeb.Move.performed += Move_performed;
+            inputActions.PlayerWeb.Move.canceled += Move_canceled;
+#elif UNITY_TVOS
 
+            inputActions.PlayerTVOs.Move.performed += moveAction =>
+            {
+                CheckMoveInput(moveAction.ReadValue<Vector2>());
+            };
+            inputActions.PlayerTVOs.Move.started += Move_started;
+            inputActions.PlayerTVOs.Move.performed += Move_performed;
+            inputActions.PlayerTVOs.Move.canceled += Move_canceled;
+#else
             inputActions.Player.Move.performed += moveAction =>
             {
                 CheckMoveInput(moveAction.ReadValue<Vector2>());
             };
-
             inputActions.Player.Move.started += Move_started;
             inputActions.Player.Move.performed += Move_performed;
             inputActions.Player.Move.canceled += Move_canceled;
+#endif
+
         }
 
         private void Move_canceled(CallbackContext obj)

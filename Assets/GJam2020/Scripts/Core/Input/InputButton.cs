@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GJam2020.Core;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,59 +15,47 @@ public class InputButton : MonoBehaviour
         Submit,
         Start,
         Back,
-        UpRs,
-        DownRs,
-        LeftRs,
-        RightRs,
-        RB,
-        LB,
-        B
+        Up,
+        Down,
+        Right,
+        Left
     }
-
-    [SerializeField]
-    private UiInput inputActions;
+    
+    private UIInputInjecter inputActions;
     private bool Asigned=false;
     private Button button;
     private InputAction inputAction;
 
     private void Start()
     {
-        inputActions = new UiInput();
+        inputActions = CanvasData.Get.inputActions;
+        inputActions.CreateNewUiInput();
         button = GetComponent<Button>();
         switch (type)
         {
             case InputType.Submit:
-                inputAction = inputActions.Ui.Submit;
+                inputAction = inputActions.GetSubmit();
                 break;
             case InputType.Start:
-                inputAction = inputActions.Ui.Start;
+                inputAction = inputActions.GetStart();
                 break;
             case InputType.Back:
-                inputAction = inputActions.Ui.Back;
+                inputAction = inputActions.GetBack();
                 break;
-            case InputType.UpRs:
-                inputAction = inputActions.Ui.UPRS;
+            case InputType.Up:
+                inputAction = inputActions.GetUp();
                 break;
-            case InputType.DownRs:
-                inputAction = inputActions.Ui.DownRS;
+            case InputType.Down:
+                inputAction = inputActions.GetDown();
                 break;
-            case InputType.LeftRs:
-                inputAction = inputActions.Ui.LeftRS;
+            case InputType.Left:
+                inputAction = inputActions.GetLeft();
                 break;
-            case InputType.RightRs:
-                inputAction = inputActions.Ui.RightRS;
-                break;
-            case InputType.RB:
-                inputAction = inputActions.Ui.RB;
-                break;
-            case InputType.LB:
-                inputAction = inputActions.Ui.LB;
-                break;
-            case InputType.B:
-                inputAction = inputActions.Ui.B;
+            case InputType.Right:
+                inputAction = inputActions.GetRight();
                 break;
         }
-        inputActions.Enable();
+        inputActions.EnableInput();
         if (!Asigned)
         {
             inputAction.started += Action;
