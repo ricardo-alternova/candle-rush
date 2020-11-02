@@ -12,7 +12,7 @@ public class FocusDefect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inputActions = CanvasData.Get.inputActions;
+        inputActions = GameManager.Get.inputActions;
         if (goSelected != null)
         {
             EventSystem.current.SetSelectedGameObject(goSelected);

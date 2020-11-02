@@ -13,7 +13,7 @@ public class StartAction : MonoBehaviour
     private bool Asigned = false;
     private void Awake()
     {
-        inputActions = CanvasData.Get.inputActions;
+        inputActions = GameManager.Get.inputActions;
         inputAction = inputActions.GetStart();
         Enable();
         

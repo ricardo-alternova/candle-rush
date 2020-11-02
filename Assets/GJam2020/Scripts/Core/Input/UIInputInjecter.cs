@@ -82,6 +82,7 @@ public class UIInputInjecter : MonoBehaviour
 
     public InputAction GetLeft()
     {
+        CreateNewUiInput();
 #if UNITY_TVOS
         return input.UiTvOs.Left;
 #elif UNITY_WEBGL
@@ -95,6 +96,7 @@ public class UIInputInjecter : MonoBehaviour
 
     public InputAction GetRight()
     {
+        CreateNewUiInput();
 #if UNITY_TVOS
         return input.UiTvOs.Right;
 #elif UNITY_WEBGL
@@ -108,6 +110,7 @@ public class UIInputInjecter : MonoBehaviour
 
     public InputAction GetUp()
     {
+        CreateNewUiInput();
 #if UNITY_TVOS
         return input.UiTvOs.Up;
 #elif UNITY_WEBGL
@@ -121,6 +124,7 @@ public class UIInputInjecter : MonoBehaviour
 
     public InputAction GetDown()
     {
+        CreateNewUiInput();
 #if UNITY_TVOS
         return input.UiTvOs.Down;
 #elif UNITY_WEBGL
@@ -134,6 +138,7 @@ public class UIInputInjecter : MonoBehaviour
 
     public InputAction GetStart()
     {
+        CreateNewUiInput();
 #if UNITY_TVOS
         return input.UiTvOs.Start;
 #elif UNITY_WEBGL
@@ -147,6 +152,7 @@ public class UIInputInjecter : MonoBehaviour
 
     public InputAction GetBack()
     {
+        CreateNewUiInput();
 #if UNITY_TVOS
         return input.UiTvOs.Back;
 #elif UNITY_WEBGL
@@ -160,6 +166,7 @@ public class UIInputInjecter : MonoBehaviour
 
     public InputAction GetSubmit()
     {
+        CreateNewUiInput();
 #if UNITY_TVOS
         return input.UiTvOs.Submit;
 #elif UNITY_WEBGL

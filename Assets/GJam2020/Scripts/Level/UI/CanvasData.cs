@@ -10,7 +10,6 @@ namespace GJam2020.Core {
         public Text TimeLabel;
         [SerializeField] private Transform stepsObject;
         [SerializeField] private AnimationCurve stepCurve;
-        public UIInputInjecter inputActions;
         public static CanvasData Get;
 
         private float timer;

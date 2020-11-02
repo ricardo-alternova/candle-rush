@@ -20,15 +20,9 @@ public class MapGenerator : MonoBehaviour
     private List<Vector3> _obstaclesPosition = new List<Vector3>();
 
     private Dictionary<Color, PairPositions> PairPositions = new Dictionary<Color, PairPositions>();
-
+    public Texture2D texture;
 
     public static MapGenerator Get;
-
-    private void Awake()
-    {
-        settings = GameManager.Get.currentLevel;
-        Get = this;
-    }
 
     private void Start()
     {
@@ -37,7 +31,6 @@ public class MapGenerator : MonoBehaviour
 
     public void ReadImage()
     {
-        Texture2D texture = settings.Map;
         GenerateCubesPerPixel(texture.width, texture.height, texture);
         OnSceneCreated.Invoke();
     }

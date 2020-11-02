@@ -28,7 +28,7 @@ public class InputButton : MonoBehaviour
 
     private void Start()
     {
-        inputActions = CanvasData.Get.inputActions;
+        inputActions = GameManager.Get.inputActions;
         inputActions.CreateNewUiInput();
         button = GetComponent<Button>();
         switch (type)
