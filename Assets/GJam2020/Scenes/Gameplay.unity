@@ -8542,6 +8542,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: Invert vertical
       objectReference: {fileID: 0}
+    - target: {fileID: 6779150814964735003, guid: ea2d9386def8fd649a974201356c61c6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5633117374679019121, guid: ea2d9386def8fd649a974201356c61c6,
         type: 3}
       propertyPath: m_AnchoredPosition.x
