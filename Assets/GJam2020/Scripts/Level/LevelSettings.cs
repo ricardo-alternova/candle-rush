@@ -6,8 +6,6 @@ public class LevelSettings : ScriptableObject
     [SerializeField]
     private int number;
     [SerializeField]
-    private Texture2D map;
-    [SerializeField]
     private Vector3 startLocation;
 
     [SerializeField]
@@ -24,7 +22,7 @@ public class LevelSettings : ScriptableObject
     private AudioClip soundBackground;
 
     public int Number { get => number; }
-    public Texture2D Map { get => map; }
+    public string MapName { get => number.ToString(); }
     public int GetStarts(float time) {
         if (time <= maxTime3Stars)
         {

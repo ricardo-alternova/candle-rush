@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,24 +21,73 @@ public class MapGenerator : MonoBehaviour
     private List<Vector3> _obstaclesPosition = new List<Vector3>();
 
     private Dictionary<Color, PairPositions> PairPositions = new Dictionary<Color, PairPositions>();
-    public Texture2D texture;
 
     public static MapGenerator Get;
+
+    private void Awake()
+    {
+        settings = GameManager.Get.currentLevel;
+        Get = this;
+    }
 
     private void Start()
     {
         ReadImage();
     }
 
+    public Color[] GetColorFromCsv(string name, out int width, out int height)
+    {
+        List<Color> colorList = new List<Color>();
+        string path = "Assets/Resources/{0}.csv";
+        string text = File.ReadAllText(string.Format(path, name));
+        string[] lines = text.Split('\n');
+        width = lines.Length;
+        height = 0;
+        int lineCount = 0;
+        foreach (string line in lines)
+        {
+            
+            string[] colors = line.Split(',');
+            foreach (string color in colors)
+            {
+                height = colors.Length;
+                string[] parts = color.Split('-');
+                if (parts.Length > 0)
+                {
+                    try
+                    {
+                        colorList.Add(new Color(
+                            float.Parse(parts[0]),
+                            float.Parse(parts[1]),
+                            float.Parse(parts[2])
+                            ));
+                    }
+                    catch
+                    {
+                        Debug.Log("line" + lineCount);
+                        Debug.Log(parts[0]);
+                    }
+                }
+
+            }
+            lineCount++;
+        }
+
+        return colorList.ToArray();
+    }
+
     public void ReadImage()
     {
-        GenerateCubesPerPixel(texture.width, texture.height, texture);
+        string fileName= settings.MapName;
+        int height = 0;
+        int width = 0;
+        Color[] colors = GetColorFromCsv(fileName, out width, out height);
+        GenerateCubesPerPixel(width, height, colors);
         OnSceneCreated.Invoke();
     }
     
-    public void GenerateCubesPerPixel(int width, int height, Texture2D data,  int scale = 1)
+    public void GenerateCubesPerPixel(int width, int height, Color[] colors,  int scale = 1)
     {
-        Color[] colors = data.GetPixels();
         float fPos = 0;
         float cPos = 0;
         for(int f = 0; f < height; f++)

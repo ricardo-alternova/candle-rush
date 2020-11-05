@@ -3796,7 +3796,6 @@ GameObject:
   - component: {fileID: 1040982313}
   - component: {fileID: 1040982312}
   - component: {fileID: 1040982316}
-  - component: {fileID: 1040982321}
   - component: {fileID: 1040982317}
   - component: {fileID: 1040982319}
   - component: {fileID: 1040982318}
@@ -3956,7 +3955,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  inputActions: {fileID: 1040982321}
 --- !u!114 &1040982317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4102,18 +4100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   webScaleFactor: 0.29
   mobileScaleFactor: 0.5
---- !u!114 &1040982321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1040982311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be3f1286e015f124e842b5e670ff3202, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1042045614
 GameObject:
   m_ObjectHideFlags: 0
@@ -8555,6 +8541,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: Invert vertical
+      objectReference: {fileID: 0}
+    - target: {fileID: 5633117374679019121, guid: ea2d9386def8fd649a974201356c61c6,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.621994
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5545392815542567335, guid: ea2d9386def8fd649a974201356c61c6, type: 3}

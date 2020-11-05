@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4299964972546606560}
   - component: {fileID: 4299964972546606566}
   - component: {fileID: 4299964972546606567}
+  - component: {fileID: 5649715300134300280}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -53,9 +54,12 @@ MonoBehaviour:
   randomMaterial: {fileID: 4299964972546606566}
   playerMovement: {fileID: 0}
   ObjectsUnactive: []
+  inputActions: {fileID: 5649715300134300280}
   StartGame:
     m_PersistentCalls:
       m_Calls: []
+  InvertYAxis: 0
+  levelsAvailables: -1
 --- !u!114 &4299964972546606566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,6 +87,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 423027c2bba6ca34284ef5a7aea94fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5649715300134300280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4299964972546606563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be3f1286e015f124e842b5e670ff3202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4299964972574092765
