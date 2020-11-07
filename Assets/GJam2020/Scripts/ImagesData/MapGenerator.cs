@@ -38,8 +38,8 @@ public class MapGenerator : MonoBehaviour
     public Color[] GetColorFromCsv(string name, out int width, out int height)
     {
         List<Color> colorList = new List<Color>();
-        string path = "Assets/Resources/{0}.csv";
-        string text = File.ReadAllText(string.Format(path, name));
+        //string path = "Assets/Resources/{0}.csv";
+        var text = Resources.Load<TextAsset>(name).ToString();
         string[] lines = text.Split('\n');
         width = lines.Length;
         height = 0;
