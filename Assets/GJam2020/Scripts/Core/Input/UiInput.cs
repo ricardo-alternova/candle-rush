@@ -65,6 +65,14 @@ public class @UiInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""453f0795-f269-4493-8a47-dc5e2f920b00"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -977,6 +985,7 @@ public class @UiInput : IInputActionCollection, IDisposable
         m_UiTvOs_Left = m_UiTvOs.FindAction("Left", throwIfNotFound: true);
         m_UiTvOs_Up = m_UiTvOs.FindAction("Up", throwIfNotFound: true);
         m_UiTvOs_Down = m_UiTvOs.FindAction("Down", throwIfNotFound: true);
+        m_UiTvOs_Back = m_UiTvOs.FindAction("Back", throwIfNotFound: true);
         // UiWindows/Editor
         m_UiWindowsEditor = asset.FindActionMap("UiWindows/Editor", throwIfNotFound: true);
         m_UiWindowsEditor_Submit = m_UiWindowsEditor.FindAction("Submit", throwIfNotFound: true);
@@ -1059,6 +1068,7 @@ public class @UiInput : IInputActionCollection, IDisposable
     private readonly InputAction m_UiTvOs_Left;
     private readonly InputAction m_UiTvOs_Up;
     private readonly InputAction m_UiTvOs_Down;
+    private readonly InputAction m_UiTvOs_Back;
     public struct UiTvOsActions
     {
         private @UiInput m_Wrapper;
@@ -1069,6 +1079,7 @@ public class @UiInput : IInputActionCollection, IDisposable
         public InputAction @Left => m_Wrapper.m_UiTvOs_Left;
         public InputAction @Up => m_Wrapper.m_UiTvOs_Up;
         public InputAction @Down => m_Wrapper.m_UiTvOs_Down;
+        public InputAction @Back => m_Wrapper.m_UiTvOs_Back;
         public InputActionMap Get() { return m_Wrapper.m_UiTvOs; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1096,6 +1107,9 @@ public class @UiInput : IInputActionCollection, IDisposable
                 @Down.started -= m_Wrapper.m_UiTvOsActionsCallbackInterface.OnDown;
                 @Down.performed -= m_Wrapper.m_UiTvOsActionsCallbackInterface.OnDown;
                 @Down.canceled -= m_Wrapper.m_UiTvOsActionsCallbackInterface.OnDown;
+                @Back.started -= m_Wrapper.m_UiTvOsActionsCallbackInterface.OnBack;
+                @Back.performed -= m_Wrapper.m_UiTvOsActionsCallbackInterface.OnBack;
+                @Back.canceled -= m_Wrapper.m_UiTvOsActionsCallbackInterface.OnBack;
             }
             m_Wrapper.m_UiTvOsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1118,6 +1132,9 @@ public class @UiInput : IInputActionCollection, IDisposable
                 @Down.started += instance.OnDown;
                 @Down.performed += instance.OnDown;
                 @Down.canceled += instance.OnDown;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
             }
         }
     }
@@ -1373,6 +1390,7 @@ public class @UiInput : IInputActionCollection, IDisposable
         void OnLeft(InputAction.CallbackContext context);
         void OnUp(InputAction.CallbackContext context);
         void OnDown(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
     }
     public interface IUiWindowsEditorActions
     {
