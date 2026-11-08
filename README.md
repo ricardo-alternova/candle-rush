@@ -17,11 +17,11 @@ Mecánicas tal como están en el código:
 - Las llaves abren las puertas con el mismo `linkIndex` (`Assets/GJam2020/Scripts/Level/Key.cs`, `Assets/GJam2020/Scripts/Level/Door.cs`).
 - Los teletransportadores van en parejas del mismo color (`Assets/GJam2020/Scripts/Level/Teleporter.cs`, `MapGenerator.GetPairPosition` en `Assets/GJam2020/Scripts/ImagesData/MapGenerator.cs`).
 - El hielo hace deslizar al jugador (`Assets/GJam2020/Scripts/Level/IceCube.cs`).
-- Llegar a la bandera de meta llama a `LevelManager.Win()` (`Assets/GJam2020/Scripts/Core/LevelManager.cs`), que calcula de 1 a 3 estrellas y abre el menú de victoria.
+- Llegar a la bandera de meta hace que `EndPrefab` llame a `LevelManager.Win()` (`Assets/GJam2020/Scripts/Core/LevelManager.cs`), que calcula de 1 a 3 estrellas; al terminar el movimiento, `LevelManager.PlayFinishLevel` abre el menú de victoria (`Assets/GJam2020/Scripts/Level/UI/LevelMenuMgr.cs`).
 
 Las casillas posibles son las del enum `MapEntity` (`Assets/GJam2020/Scripts/Level/MapGeneratorSettings.cs`): hole, ground, wall, endFlag, startFlag, extraLife, teleporter, door, key, iceCube. No hay enemigos, contador de vidas ni puntos; el temporizador existe en el código pero no corre (ver "Carencias conocidas").
 
-Controles (`Assets/GJam2020/Scripts/Core/InputSystem.cs`, `Assets/GJam2020/Input/GJam2020.inputactions`): W/A/S/D, gamepad y deslizamiento táctil (EnhancedTouch). El eje vertical se puede invertir desde la pausa (`Assets/GJam2020/Scripts/Level/UI/PauseMenu.cs`, `GameManager.InvertYAxis`).
+Controles (`Assets/GJam2020/Scripts/Core/InputSystem.cs`, `Assets/GJam2020/Input/GJam2020.inputactions`): W/A/S/D, gamepad y deslizamiento táctil (EnhancedTouch). El código para invertir el eje vertical existe (`Assets/GJam2020/Scripts/Level/UI/PauseMenu.cs`, `GameManager.InvertYAxis`, clave `yAxis`), pero el toggle de la pausa está oculto en Gameplay desde `a8b586e`.
 
 ## Contenido
 
@@ -51,7 +51,7 @@ Flujo:
 
 1. MainMenu: Play llama a `MainMenu.LoadScene` (`Assets/GJam2020/Scripts/MainMenu.cs`), que espera 0,4 s y llama a `GameManager.ChargeOrReload()` (`Assets/GJam2020/Scripts/Core/GameManager.cs`), que carga Gameplay en el nivel guardado.
 2. Gameplay se recarga para cada nivel; `MapGenerator` construye el mapa en `Start` a partir del CSV del nivel.
-3. Victoria: `WinMenu.NextLevel` (`Assets/GJam2020/Scripts/Level/UI/WinMenu.cs`) → `GameManager.NewLevelComplete` guarda y carga el siguiente nivel.
+3. Victoria: `WinMenu.NextLevel` (`Assets/GJam2020/Scripts/Level/UI/WinMenu.cs`) → `GameManager.NewLevelComplete` guarda y carga el siguiente nivel (tras el nivel 50, vuelve a MainMenu).
 4. Derrota: `GameOverMenu.Restore` (`Assets/GJam2020/Scripts/Level/UI/GameOverMenu.cs`) rebobina todos los movimientos (`CommandsManager.StartRewindCommands`) y reinicia; `GoHome` vuelve a MainMenu.
 5. El selector de niveles se abre desde la pausa o el game over (`OpenLevels`) con `Assets/GJam2020/Prefabs/WorldsMenu.prefab` y `Assets/WorldsNavigation.cs`.
 
@@ -130,11 +130,11 @@ Hechos encontrados al leer el código, sin propuesta de solución:
 - **Estrellas siempre 3:** `timePlaying` se declara en 0 y nunca cambia (`Assets/GJam2020/Scripts/Core/LevelManager.cs:26` y `:49`). Solo `Assets/GJam2020/Config/Level_1.asset` tiene umbrales (17 y 25 s); el resto tiene `maxTime3Stars: 0`, y `GetStarts(0)` devuelve 3 (`Assets/GJam2020/Scripts/Level/LevelSettings.cs:26`).
 - **Argumento ignorado:** `MainMenu.LoadScene` no usa su parámetro; el botón le pasa `LevelsMenu` (`Assets/GJam2020/Scenes/MainMenu.unity:926`).
 - **Lector inutilizable en build:** `Assets/GJam2020/Scripts/ImagesData/ReadMapFromCsv.cs` lee `Assets/Resources/24.csv` con `File.ReadAllText`, que no existe en un build; solo lo usa `Assets/GJam2020/Scenes/MapTransform.unity`.
-- **Menús duplicados:** `Assets/GJam2020/Prefabs/UI/Menus/PauseMenu.prefab` y `Assets/GJam2020/Prefabs/UI/Menus/GameOverMenu.prefab` no se usan en ninguna escena; Gameplay usa sus copias `_2`. `Assets/GJam2020/Prefabs/UI/Menus/PauseMenu_2.prefab` sigue mostrando "Invert vertical joystick" después de `a8b586e`.
+- **Menús duplicados:** `Assets/GJam2020/Prefabs/UI/Menus/PauseMenu.prefab` y `Assets/GJam2020/Prefabs/UI/Menus/GameOverMenu.prefab` no se usan en ninguna escena; Gameplay usa sus copias `_2`. `Assets/GJam2020/Prefabs/UI/Menus/PauseMenu_2.prefab` conserva el objeto inactivo `InvertVertical` con su texto en inglés "Invert vertical joystick": es un resto sin uso, no un texto visible.
 - **Textos sin traducir:** "Home" (`Assets/GJam2020/Prefabs/UI/Menus/WinMenu.prefab`, `Assets/GJam2020/Prefabs/UI/Menus/GameOverMenu_2.prefab`), "Options" (`Assets/GJam2020/Prefabs/UI/Menus/OptionsMenu.prefab`); "Recuperaste un paso" fijo en español en `Assets/GJam2020/Prefabs/UI/Menus/Tutorial_Keyboard.prefab`, `Assets/GJam2020/Prefabs/UI/Menus/Tutorial_touch.prefab` y `Assets/GJam2020/Prefabs/UI/Menus/TutorialJoystick.prefab`. MainMenu no tiene frases localizadas. `SaveLanguage: 0` en Gameplay: el idioma elegido no se guarda.
 - **Licencias de recursos:** no hay archivo de licencia ni créditos para las fuentes ni para los efectos `ES_*.wav` y la música.
 - **Pruebas:** una sola, `Assets/GJam2020/Scripts/Editor/TestingPortals.cs` (comprueba que los colores de teletransportador vayan en pares en los PNG); no hay configuración de CI.
-- **Código muerto:** bloque `HandleInput` comentado en `Assets/GJam2020/Scripts/Core/InputSystem.cs:253–295`; `OptionsMenu.EnableSound` cambia un booleano que nada lee (`Assets/GJam2020/Scripts/Level/UI/OptionsMenu.cs:32`).
+- **Código muerto:** bloque `HandleInput` comentado en `Assets/GJam2020/Scripts/Core/InputSystem.cs:253–292`; `OptionsMenu.EnableSound` cambia un booleano que nada lee (`Assets/GJam2020/Scripts/Level/UI/OptionsMenu.cs:32`).
 - **Escenas y datos sin uso:** cuatro escenas fuera del build (tabla de arriba) y `Assets/GJam2020/Config/TestDoor.asset`.
 - **Errata en carpeta:** `Assets/GJam2020/Scripts/EnvironmetMaterials/`.
 
