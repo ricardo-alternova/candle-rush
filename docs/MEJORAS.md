@@ -202,7 +202,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Evidencia:** `GameManager.MAIN_MENU_NAME` y `GAMEPLAY_NAME` son cadenas (`Assets/GJam2020/Scripts/Core/GameManager.cs:33` y `:35`); `Assets/GJam2020/Scripts/Core/InputSystem.cs` tiene ramas `UNITY_WEBGL`, `UNITY_IOS`, `UNITY_ANDROID` y `UNITY_TVOS`, y `Assets/GJam2020/Scripts/Core/Input/UIInputInjecter.cs` siete bloques `UNITY_TVOS`.
 
-**Cambio:** convertir los nombres en constantes comprobadas contra la lista del build, y terminar `IInput` (`Assets/GJam2020/Scripts/Core/Input/IInput.cs`), hoy un esbozo sin uso que solo implementa `TouchInput`, con métodos que lanzan `NotImplementedException`, para mover detrás de ella el código de cada plataforma de `InputSystem.cs`, elegido en un solo sitio.
+**Cambio:** convertir los nombres en constantes comprobadas contra la lista del build, y terminar la interfaz `IInput` (`Assets/GJam2020/Scripts/Core/Input/IInput.cs`), hoy un esbozo sin uso (solo la implementa `TouchInput`, cuyos métodos lanzan `NotImplementedException`), para mover detrás de ella el código de cada plataforma de `InputSystem.cs`, elegido en un solo sitio.
 
 **Por qué:** hoy un cambio de input para una plataforma obliga a leer y compilar mentalmente las otras tres.
 
