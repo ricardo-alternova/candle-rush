@@ -4,7 +4,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 ## Errores y código muerto
 
-### Las estrellas siempre son 3
+### Contar el tiempo de juego para las estrellas
 
 **Evidencia:** `Assets/GJam2020/Scripts/Core/LevelManager.cs:26` declara `timePlaying=0f` y `:49` lo pasa a `GetStarts` sin haberlo cambiado; `Assets/GJam2020/Scripts/Level/LevelSettings.cs:26` devuelve 3 si `time <= maxTime3Stars`.
 
@@ -14,7 +14,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** pequeño
 
-### `MainMenu.LoadScene` ignora su argumento
+### Quitar o usar el argumento de `MainMenu.LoadScene`
 
 **Evidencia:** `Assets/GJam2020/Scripts/MainMenu.cs` no usa `sceneName`; el botón Play le pasa `LevelsMenu` (`Assets/GJam2020/Scenes/MainMenu.unity:926`).
 
@@ -24,17 +24,17 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** pequeño
 
-### `ReadMapFromCsv` lee archivos que no existen en un build
+### Borrar `ReadMapFromCsv`
 
 **Evidencia:** `Assets/GJam2020/Scripts/ImagesData/ReadMapFromCsv.cs:16` usa `File.ReadAllText` sobre `Assets/Resources/{0}.csv` y en `Start` lee siempre el mapa 24; solo lo usa `Assets/GJam2020/Scenes/MapTransform.unity`. `MapGenerator.GetColorFromCsv` (`Assets/GJam2020/Scripts/ImagesData/MapGenerator.cs:38`) ya hace lo mismo con `Resources.Load`.
 
-**Cambio:** borrar `Assets/GJam2020/Scripts/ImagesData/ReadMapFromCsv.cs` y su componente en `Assets/GJam2020/Scenes/MapTransform.unity`; `Assets/GJam2020/Scripts/ImagesData/MapTransform.cs:49` ya escribe los CSV por su cuenta.
+**Cambio:** borrar el script y su componente en `MapTransform.unity`; `Assets/GJam2020/Scripts/ImagesData/MapTransform.cs:49` ya escribe los CSV por su cuenta.
 
 **Por qué:** es una copia del lector real que solo funciona en el editor y confunde sobre cuál es el que usa el juego.
 
 **Tamaño:** pequeño
 
-### Menús de pausa y game over duplicados
+### Borrar los menús de pausa y game over duplicados
 
 **Evidencia:** `Assets/GJam2020/Prefabs/UI/Menus/PauseMenu.prefab` y `Assets/GJam2020/Prefabs/UI/Menus/GameOverMenu.prefab` no aparecen en ninguna escena ni prefab; `Assets/GJam2020/Scenes/Gameplay.unity` usa `PauseMenu_2` y `GameOverMenu_2`.
 
@@ -44,7 +44,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** pequeño
 
-### Restos del toggle de invertir eje
+### Quitar o recuperar el toggle de invertir eje
 
 **Evidencia:** `a8b586e` solo desactiva el objeto en `Assets/GJam2020/Scenes/Gameplay.unity`; `Assets/GJam2020/Prefabs/UI/Menus/PauseMenu_2.prefab:769` sigue teniendo `InvertVertical`, y `Assets/GJam2020/Scripts/Core/GameManager.cs:60` sigue leyendo la clave `yAxis`, que `Assets/GJam2020/Scripts/Core/InputSystem.cs:216` aplica al movimiento vertical.
 
@@ -54,7 +54,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** pequeño
 
-### Bloque `HandleInput` comentado
+### Borrar el bloque `HandleInput` comentado
 
 **Evidencia:** `Assets/GJam2020/Scripts/Core/InputSystem.cs:253–292`.
 
@@ -64,21 +64,21 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** pequeño
 
-### `OptionsMenu.EnableSound` no tiene efecto
+### Borrar o conectar `OptionsMenu.EnableSound`
 
 **Evidencia:** `Assets/GJam2020/Scripts/Level/UI/OptionsMenu.cs:32` alterna `_soundEnable`, que nada más lee.
 
 **Cambio:** borrar el método y el campo, o conectarlo a `SoundManager` y a un botón si el juego debe poder silenciarse.
 
-**Por qué:** es un método público que ningún botón llama y que cambia un booleano que nada lee.
+**Por qué:** parece un interruptor de sonido, pero no silencia nada.
 
 **Tamaño:** pequeño
 
-### Escenas y datos sin uso
+### Borrar escenas y datos sin uso
 
 **Evidencia:** `ProjectSettings/EditorBuildSettings.asset` solo incluye MainMenu y Gameplay; `Assets/GJam2020/Scenes/LevelsMenu.unity`, `Assets/GJam2020/Scenes/IntersectionScene.unity` y `Assets/GJam2020/Scenes/TestMapGenerator.unity` quedan fuera, y `Assets/GJam2020/Config/TestDoor.asset` no está referenciado por ningún asset.
 
-**Cambio:** borrar las tres escenas y `Assets/GJam2020/Config/TestDoor.asset`. `Assets/GJam2020/Scenes/MapTransform.unity` se conserva porque es la herramienta PNG → CSV.
+**Cambio:** borrar las tres escenas y `TestDoor.asset`. `Assets/GJam2020/Scenes/MapTransform.unity` se conserva porque es la herramienta PNG → CSV.
 
 **Por qué:** menos sitios donde buscar al retomar el proyecto.
 
@@ -86,27 +86,27 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 ## Jugabilidad y contenido
 
-### Textos sin traducir y idioma sin guardar
+### Traducir los textos que faltan
 
-**Evidencia:** "Home" en `Assets/GJam2020/Prefabs/UI/Menus/WinMenu.prefab:79` y `Assets/GJam2020/Prefabs/UI/Menus/GameOverMenu_2.prefab:1399`; "Options" en `Assets/GJam2020/Prefabs/UI/Menus/OptionsMenu.prefab:387`; "Recuperaste un paso" en `Assets/GJam2020/Prefabs/UI/Menus/Tutorial_Keyboard.prefab`, `Assets/GJam2020/Prefabs/UI/Menus/Tutorial_touch.prefab` y `Assets/GJam2020/Prefabs/UI/Menus/TutorialJoystick.prefab`; `Assets/GJam2020/Scenes/MainMenu.unity` no usa Lean Localization; `SaveLanguage: 0` en `Assets/GJam2020/Scenes/Gameplay.unity:1841`.
+**Evidencia:** "Home" en `Assets/GJam2020/Prefabs/UI/Menus/WinMenu.prefab:79` y `Assets/GJam2020/Prefabs/UI/Menus/GameOverMenu_2.prefab:1399`; "Options" en `Assets/GJam2020/Prefabs/UI/Menus/OptionsMenu.prefab:387`; `Assets/GJam2020/Scenes/MainMenu.unity` no usa Lean Localization; `SaveLanguage: 0` en `Assets/GJam2020/Scenes/Gameplay.unity:1841`.
 
-**Cambio:** pasar esos textos a frases de Lean en inglés, español y francés, localizar MainMenu y activar `SaveLanguage`.
+**Cambio:** pasar esos textos a frases de Lean en inglés, español y francés, localizar MainMenu y, solo si se añade un selector de idioma, activar `SaveLanguage` (hoy el idioma sigue al del dispositivo).
 
-**Por qué:** un jugador en francés ve hoy botones en inglés y una frase del tutorial en español.
+**Por qué:** un jugador en francés ve hoy botones en inglés.
 
 **Tamaño:** mediano
 
-### Umbrales de estrellas para los niveles 2 a 50
+### Fijar umbrales de estrellas para los niveles 2 a 50
 
 **Evidencia:** solo `Assets/GJam2020/Config/Level_1.asset` tiene umbrales (`maxTime3Stars: 17`, `maxTime2Stars: 25`); los otros 49 tienen `maxTime3Stars: 0`.
 
 **Cambio:** una vez corregido `timePlaying`, jugar cada nivel y fijar sus dos umbrales.
 
-**Por qué:** sin umbrales, arreglar el tiempo deja cualquier nivel a partir del 2 en 1 estrella.
+**Por qué:** en cuanto el tiempo cuente, los niveles 2 a 50 darán siempre 1 estrella, porque sus umbrales son 0.
 
 **Tamaño:** mediano
 
-### Qué pasa después del nivel 50
+### Mostrar un cierre tras el nivel 50
 
 **Evidencia:** `Assets/GJam2020/Config/Level_50.asset` tiene `nextLevel: {fileID: 0}` y `WinMenu.NextLevel` (`Assets/GJam2020/Scripts/Level/UI/WinMenu.cs:21–22`) vuelve entonces a MainMenu.
 
@@ -126,11 +126,11 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** mediano
 
-### Un formato de mapa validado
+### Validar el formato de los mapas
 
 **Evidencia:** las celdas son texto "r-g-b" que `Assets/GJam2020/Scripts/ImagesData/MapGenerator.cs:60` lee con `float.Parse` sin cultura fija; 28 CSV tienen valores decimales como `0.3137255`, y un error de lectura solo deja un `Debug.Log` en el bloque `catch` del mismo método.
 
-**Cambio:** usar identificadores de casilla en lugar de colores (o al menos `CultureInfo.InvariantCulture`) y validar cada mapa en una prueba de editor: tamaño, una salida, una meta, teletransportadores en pares, llaves con su puerta.
+**Cambio:** usar identificadores de casilla en lugar de colores (o al menos `CultureInfo.InvariantCulture`) y validar cada mapa en una prueba de editor: tamaño, una casilla de inicio (`startFlag`) y una meta (`endFlag`), teletransportadores en pares, llaves con su puerta.
 
 **Por qué:** el resultado de `float.Parse` depende de la cultura del dispositivo, y un mapa roto hoy se carga en silencio.
 
@@ -138,17 +138,17 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 ## Salud del proyecto
 
-### Pruebas y CI
+### Añadir pruebas de editor y CI
 
 **Evidencia:** la única prueba es `Assets/GJam2020/Scripts/Editor/TestingPortals.cs`; el repositorio no tiene archivo de CI.
 
 **Cambio:** añadir pruebas de editor para guardar y cargar `GameData`, `LevelSettings.GetStarts` y la cadena de 50 niveles (de `Level_1` a `Level_50`, sin ciclos), y un trabajo de CI que las ejecute en modo batch con la versión de Unity del proyecto.
 
-**Por qué:** hoy nada comprueba que el progreso se guarde y se recupere ni que la cadena de niveles llegue al 50; una prueba que juegue un nivel y lea las estrellas obtenidas habría detectado el error de las estrellas.
+**Por qué:** hoy nada comprueba que el progreso se guarde y se recupere ni que la cadena de niveles llegue al 50.
 
 **Tamaño:** mediano
 
-### Licencias de fuentes y audio
+### Registrar las licencias de fuentes y audio
 
 **Evidencia:** `Assets/GJam2020/Fonts/CFBandofBrothersPERSONAL-Re.ttf`, `Assets/GJam2020/Fonts/Candy Beans.otf`, los efectos `ES_*.wav` de `Assets/GJam2020/Sounds/` y la música de `Assets/GJam2020/Sounds/Music/` no tienen licencia ni créditos en el repositorio.
 
@@ -160,7 +160,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 ### Unificar `master` y `beta-test` y limpiar ramas
 
-**Evidencia:** `beta-test` va 364 commits por delante de `origin/master`, que solo tiene `84fb701` (licencia MIT) que `beta-test` no tiene; `origin/dev` no aporta nada propio; hay 23 ramas `origin/feature/*` y otras tres sueltas.
+**Evidencia:** `origin/master` tiene un solo commit que `beta-test` no tiene, `84fb701` (licencia MIT), y le faltan 364 de `beta-test`; `origin/dev` no aporta nada propio; hay 23 ramas `origin/feature/*` y otras tres sueltas.
 
 **Cambio:** fusionar `beta-test` en `master` (deja en `master` el juego y la licencia, y fija `master` como tronco), y borrar `origin/dev` y las ramas ya fusionadas tras revisar cada una.
 
@@ -178,17 +178,17 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** grande
 
-### Paquetes y módulos que sobran
+### Quitar paquetes y módulos que sobran
 
 **Evidencia:** `Packages/manifest.json` incluye `com.unity.collab-proxy` 1.2.16, Lightweight RP 6.9.2 y 31 módulos `com.unity.modules.*`. El juego usa el pipeline integrado (`ProjectSettings/GraphicsSettings.asset:45` no asigna ninguno) y nada referencia `Assets/GJam2020/LightweightRenderPipelineAsset.asset`.
 
-**Cambio:** quitar `collab-proxy`, Lightweight RP con `Assets/GJam2020/LightweightRenderPipelineAsset.asset`, y los módulos que el juego no use (candidatos: `com.unity.modules.vehicles`, `com.unity.modules.terrain`, `com.unity.modules.vr`), comprobando antes que nada los referencia.
+**Cambio:** quitar `collab-proxy`, Lightweight RP y su asset, y los módulos que el juego no use (candidatos: `com.unity.modules.vehicles`, `com.unity.modules.terrain`, `com.unity.modules.vr`), comprobando antes que nada los referencia.
 
 **Por qué:** menos dependencias que revisar en la actualización de Unity.
 
 **Tamaño:** pequeño
 
-### Datos guardados con versión
+### Versionar los datos guardados
 
 **Evidencia:** `GameManager.LoadGameData` (`Assets/GJam2020/Scripts/Core/GameManager.cs:215`) deserializa la clave `Gamedata` sin campo de versión y sin capturar errores.
 
@@ -198,17 +198,17 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** pequeño
 
-### Escenas por nombre y cadenas de `#if`
+### Validar nombres de escena y agrupar el input por plataforma
 
 **Evidencia:** `GameManager.MAIN_MENU_NAME` y `GAMEPLAY_NAME` son cadenas (`Assets/GJam2020/Scripts/Core/GameManager.cs:33` y `:35`); `Assets/GJam2020/Scripts/Core/InputSystem.cs` tiene ramas `UNITY_WEBGL`, `UNITY_IOS`, `UNITY_ANDROID` y `UNITY_TVOS`, y `Assets/GJam2020/Scripts/Core/Input/UIInputInjecter.cs` siete bloques `UNITY_TVOS`.
 
-**Cambio:** convertir los nombres en constantes comprobadas contra la lista del build, y mover el input de cada plataforma a una implementación de `IInput` (`Assets/GJam2020/Scripts/Core/Input/IInput.cs`) elegida en un solo sitio.
+**Cambio:** convertir los nombres en constantes comprobadas contra la lista del build, y terminar `IInput` (`Assets/GJam2020/Scripts/Core/Input/IInput.cs`), hoy un esbozo sin uso que solo implementa `TouchInput`, con métodos que lanzan `NotImplementedException`, para mover detrás de ella el código de cada plataforma de `InputSystem.cs`, elegido en un solo sitio.
 
 **Por qué:** hoy un cambio de input para una plataforma obliga a leer y compilar mentalmente las otras tres.
 
 **Tamaño:** mediano
 
-### Errata en el nombre de una carpeta
+### Corregir la errata `EnvironmetMaterials`
 
 **Evidencia:** `Assets/GJam2020/Scripts/EnvironmetMaterials/`.
 
@@ -230,7 +230,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Tamaño:** pequeño
 
-### Nota de build por plataforma
+### Escribir una nota de build por plataforma
 
 **Evidencia:** `ProjectSettings/ProjectSettings.asset` tiene ajustes de Android, iOS, tvOS y WebGL, y el archivo de firma de Android apunta a la carpeta Builds, que está en `.gitignore`; no hay instrucciones de build.
 
@@ -246,6 +246,6 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Cambio:** que quien lo sepa anote en el README si el juego está o estuvo en alguna tienda y con qué versión.
 
-**Por qué:** decide si una actualización debe respetar datos guardados y fichas de tienda existentes.
+**Por qué:** de eso depende que una actualización tenga que respetar datos guardados y fichas de tienda existentes.
 
 **Tamaño:** pequeño
