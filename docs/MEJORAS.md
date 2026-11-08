@@ -20,7 +20,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Cambio:** quitar el parámetro (y el argumento del botón) o usarlo de verdad; borrar la línea comentada `SceneManager.LoadScene` y el `Start` vacío.
 
-**Por qué:** quien lee el botón cree que abre `LevelsMenu`, una escena que ni está en el build.
+**Por qué:** quien lee el botón cree que abre `LevelsMenu`, una escena que ni siquiera está en el build.
 
 **Tamaño:** pequeño
 
@@ -28,7 +28,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Evidencia:** `Assets/GJam2020/Scripts/ImagesData/ReadMapFromCsv.cs:16` usa `File.ReadAllText` sobre `Assets/Resources/{0}.csv` y en `Start` lee siempre el mapa 24; solo lo usa `Assets/GJam2020/Scenes/MapTransform.unity`. `MapGenerator.GetColorFromCsv` (`Assets/GJam2020/Scripts/ImagesData/MapGenerator.cs:38`) ya hace lo mismo con `Resources.Load`.
 
-**Cambio:** borrar `Assets/GJam2020/Scripts/ImagesData/ReadMapFromCsv.cs` y su componente en `Assets/GJam2020/Scenes/MapTransform.unity`, o moverlo a `Assets/GJam2020/Scripts/Editor/` si la herramienta lo necesita.
+**Cambio:** borrar `Assets/GJam2020/Scripts/ImagesData/ReadMapFromCsv.cs` y su componente en `Assets/GJam2020/Scenes/MapTransform.unity`; `Assets/GJam2020/Scripts/ImagesData/MapTransform.cs:49` ya escribe los CSV por su cuenta.
 
 **Por qué:** es una copia del lector real que solo funciona en el editor y confunde sobre cuál es el que usa el juego.
 
@@ -68,9 +68,9 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Evidencia:** `Assets/GJam2020/Scripts/Level/UI/OptionsMenu.cs:32` alterna `_soundEnable`, que nada más lee.
 
-**Cambio:** borrar el método y el campo, o conectarlo a `SoundManager` si el botón debe silenciar.
+**Cambio:** borrar el método y el campo, o conectarlo a `SoundManager` y a un botón si el juego debe poder silenciarse.
 
-**Por qué:** un control que no hace nada.
+**Por qué:** es un método público que ningún botón llama y que cambia un booleano que nada lee.
 
 **Tamaño:** pequeño
 
@@ -144,7 +144,7 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Cambio:** añadir pruebas de editor para guardar y cargar `GameData`, `LevelSettings.GetStarts` y la cadena de 50 niveles (de `Level_1` a `Level_50`, sin ciclos), y un trabajo de CI que las ejecute en modo batch con la versión de Unity del proyecto.
 
-**Por qué:** los errores de este documento (estrellas, mapas) habrían saltado con pruebas así.
+**Por qué:** hoy nada comprueba que el progreso se guarde y se recupere ni que la cadena de niveles llegue al 50; una prueba que juegue un nivel y lea las estrellas obtenidas habría detectado el error de las estrellas.
 
 **Tamaño:** mediano
 
@@ -162,17 +162,17 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Evidencia:** `beta-test` va 364 commits por delante de `origin/master`, que solo tiene `84fb701` (licencia MIT) que `beta-test` no tiene; `origin/dev` no aporta nada propio; hay 23 ramas `origin/feature/*` y otras tres sueltas.
 
-**Cambio:** fusionar `beta-test` en `master` (trae la licencia y fija `master` como tronco), y borrar `origin/dev` y las ramas ya fusionadas tras revisar cada una.
+**Cambio:** fusionar `beta-test` en `master` (deja en `master` el juego y la licencia, y fija `master` como tronco), y borrar `origin/dev` y las ramas ya fusionadas tras revisar cada una.
 
-**Por qué:** hoy la rama por defecto del remoto tiene la licencia pero no el juego.
+**Por qué:** hoy la rama por defecto del remoto tiene la licencia y solo una versión inicial del juego.
 
 **Tamaño:** pequeño
 
 ### Actualizar Unity y los paquetes
 
-**Evidencia:** `ProjectSettings/ProjectVersion.txt` (2019.2.11f1); `Packages/manifest.json` con Input System 1.0.0, Cinemachine 2.6.0-preview.8 y Lightweight RP 6.9.2; `ProjectSettings/ProjectSettings.asset:780–781` deja activos el input nuevo y el antiguo.
+**Evidencia:** `ProjectSettings/ProjectVersion.txt` (2019.2.11f1); `Packages/manifest.json` con Input System 1.0.0 y Cinemachine 2.6.0-preview.8; `ProjectSettings/ProjectSettings.asset:780–781` deja activos el input nuevo y el antiguo.
 
-**Cambio:** pasar a una versión LTS actual, Lightweight RP a URP, y Cinemachine e Input System a versiones estables, en una rama propia.
+**Cambio:** pasar a una versión LTS actual, y Cinemachine e Input System a versiones estables, en una rama propia.
 
 **Por qué:** el editor y un paquete preview fijan el proyecto en herramientas antiguas. Riesgo: dos sistemas de input a la vez, un paquete preview, cuatro plataformas con `#if` propios y ningún build comprobado aquí; hace falta probar en Android, iOS, tvOS y WebGL antes de darlo por bueno.
 
@@ -180,9 +180,9 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 ### Paquetes y módulos que sobran
 
-**Evidencia:** `Packages/manifest.json` incluye `com.unity.collab-proxy` 1.2.16 y 31 módulos `com.unity.modules.*`.
+**Evidencia:** `Packages/manifest.json` incluye `com.unity.collab-proxy` 1.2.16, Lightweight RP 6.9.2 y 31 módulos `com.unity.modules.*`. El juego usa el pipeline integrado (`ProjectSettings/GraphicsSettings.asset:45` no asigna ninguno) y nada referencia `Assets/GJam2020/LightweightRenderPipelineAsset.asset`.
 
-**Cambio:** quitar `collab-proxy` y los módulos que el juego no use (candidatos: `com.unity.modules.vehicles`, `com.unity.modules.terrain`, `com.unity.modules.vr`), comprobando antes que nada los referencia.
+**Cambio:** quitar `collab-proxy`, Lightweight RP con `Assets/GJam2020/LightweightRenderPipelineAsset.asset`, y los módulos que el juego no use (candidatos: `com.unity.modules.vehicles`, `com.unity.modules.terrain`, `com.unity.modules.vr`), comprobando antes que nada los referencia.
 
 **Por qué:** menos dependencias que revisar en la actualización de Unity.
 
@@ -192,15 +192,15 @@ Propuestas sobre la rama `beta-test` en `3cc0257`, cada una a partir de un hecho
 
 **Evidencia:** `GameManager.LoadGameData` (`Assets/GJam2020/Scripts/Core/GameManager.cs:215`) deserializa la clave `Gamedata` sin campo de versión y sin capturar errores.
 
-**Cambio:** añadir un número de versión a `GameData`, una migración por versión y un valor por defecto si el XML no se puede leer.
+**Cambio:** añadir un número de versión a `GameData` y un try/catch que use un valor por defecto si el XML no se puede leer; la migración, cuando exista una segunda versión.
 
-**Por qué:** cualquier cambio en `GameData` o un valor corrupto deja al jugador sin poder cargar.
+**Por qué:** `XmlSerializer` tolera campos añadidos o quitados, pero un XML corrupto o un campo con otro tipo lanza una excepción que nada captura (`Assets/GJam2020/Scripts/Core/GameManager.cs:68` y `:132`), y un campo renombrado pierde su valor sin aviso.
 
 **Tamaño:** pequeño
 
 ### Escenas por nombre y cadenas de `#if`
 
-**Evidencia:** `GameManager.MAIN_MENU_NAME` y `GAMEPLAY_NAME` son cadenas (`Assets/GJam2020/Scripts/Core/GameManager.cs:33` y `:35`); `Assets/GJam2020/Scripts/Core/InputSystem.cs` tiene ramas `UNITY_WEBGL`, `UNITY_IOS` y `UNITY_ANDROID`, y `Assets/GJam2020/Scripts/Core/Input/UIInputInjecter.cs` siete bloques `UNITY_TVOS`.
+**Evidencia:** `GameManager.MAIN_MENU_NAME` y `GAMEPLAY_NAME` son cadenas (`Assets/GJam2020/Scripts/Core/GameManager.cs:33` y `:35`); `Assets/GJam2020/Scripts/Core/InputSystem.cs` tiene ramas `UNITY_WEBGL`, `UNITY_IOS`, `UNITY_ANDROID` y `UNITY_TVOS`, y `Assets/GJam2020/Scripts/Core/Input/UIInputInjecter.cs` siete bloques `UNITY_TVOS`.
 
 **Cambio:** convertir los nombres en constantes comprobadas contra la lista del build, y mover el input de cada plataforma a una implementación de `IInput` (`Assets/GJam2020/Scripts/Core/Input/IInput.cs`) elegida en un solo sitio.
 
