@@ -58,7 +58,6 @@ MonoBehaviour:
   StartGame:
     m_PersistentCalls:
       m_Calls: []
-  InvertYAxis: 0
   levelsAvailables: -1
 --- !u!114 &4299964972546606566
 MonoBehaviour:
