@@ -57,6 +57,7 @@ namespace GJam2020.Core
 
         public void ResetGame()
         {
+            timePlaying = 0f;
             _MapSongAudioPlayer.Play(settings.SoundBackground, true, 0, 0.5f);
         }
 
