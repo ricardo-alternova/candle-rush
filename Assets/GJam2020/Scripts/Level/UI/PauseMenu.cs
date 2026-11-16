@@ -11,18 +11,10 @@ namespace GJam2020.Level.UI
         private AudioClip _playAudioClip;
         [SerializeField]
         private GameObject _optionsMenu;
-        [SerializeField]
-        private Toggle invertYAxis;
 
         private void OnEnable()
         {
             Time.timeScale = 0;
-            invertYAxis.isOn = GameManager.Get.InvertYAxis;
-            invertYAxis.onValueChanged.AddListener((value) =>
-            {
-                PlayerPrefs.SetString("yAxis", value.ToString());
-                GameManager.Get.InvertYAxis = value;
-            });
         }
 
         public void Play()
