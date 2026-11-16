@@ -90,5 +90,13 @@ namespace GJam2020.Core
             Get = this;
             GameManager.Get.IsPlaying = true;
         }
+
+        private void Update()
+        {
+            if (GameManager.Get != null && GameManager.Get.IsPlaying)
+            {
+                timePlaying += Time.deltaTime;
+            }
+        }
     }
 }
