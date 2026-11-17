@@ -16,6 +16,9 @@ namespace Tests
 
         private static readonly Color White = new Color(1, 1, 1);
 
+        private MapGeneratorSettings settings;
+        private Color teleporterColor;
+
         public static IEnumerable<int> MapNumbers()
         {
             return Enumerable.Range(1, MapCount);
@@ -45,21 +48,29 @@ namespace Tests
             public IEnumerable<Cell> Cells { get { return Rows.SelectMany(r => r); } }
         }
 
-        private static MapGeneratorSettings LoadSettings()
+        // Groups colors with Unity's approximate Color ==, the same comparison TryResolve uses.
+        // The hash is constant because approximate equality cannot be hashed consistently.
+        private class ColorComparer : IEqualityComparer<Color>
         {
-            MapGeneratorSettings settings = Resources.Load<MapGeneratorSettings>("Common_Map");
+            public bool Equals(Color a, Color b) { return a == b; }
+            public int GetHashCode(Color color) { return 0; }
+        }
+
+        // Common_Map is loaded once for the whole fixture instead of once per test case.
+        [OneTimeSetUp]
+        public void LoadSettings()
+        {
+            settings = Resources.Load<MapGeneratorSettings>("Common_Map");
             Assert.IsNotNull(settings, "Resources/Common_Map could not be loaded");
-            return settings;
+            teleporterColor = TeleporterSpecialColor(settings);
         }
 
         // Same format MapGenerator.GetColorFromCsv reads: rows split by '\n', cells by ',', channels by '-'.
-        private static Map LoadMap(int number)
+        private Map LoadMap(int number)
         {
             TextAsset asset = Resources.Load<TextAsset>(number.ToString(CultureInfo.InvariantCulture));
             Assert.IsNotNull(asset, "Map " + number + ": Resources/" + number + ".csv could not be loaded");
 
-            MapGeneratorSettings settings = LoadSettings();
-            Color teleporterColor = TeleporterSpecialColor(settings);
             Map map = new Map { Number = number };
             string[] lines = asset.text.Split('\n');
             for (int r = 0; r < lines.Length; r++)
@@ -180,9 +191,9 @@ namespace Tests
             Map map = LoadMap(number);
             List<Cell> teleporters = CellsOf(map, MapEntity.teleporter).ToList();
             List<string> broken = teleporters
-                .GroupBy(c => c.Raw)
+                .GroupBy(c => c.Color, new ColorComparer())
                 .Where(g => g.Count() != 2)
-                .Select(g => "color '" + g.Key + "' appears " + g.Count() + " times (" + Listed(g) + ")")
+                .Select(g => "color '" + g.First().Raw + "' appears " + g.Count() + " times (" + Listed(g) + ")")
                 .ToList();
 
             if (teleporters.Count % 2 != 0)
