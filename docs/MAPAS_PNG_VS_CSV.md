@@ -106,7 +106,7 @@ Si un PNG se edita, añade o reordena, hay que repetir este procedimiento; el CS
 
 `Assets/GJam2020/LevelDesigns/Deprecated/` contiene 22 PNG: `25`–`33`, `35`, `Level-1a`, `Level-2a`, `Level-3a`, `Level-3b`, `Level-4a`, `map1-a`, `map2`–`map7`. Se tomó el `guid` de cada uno de sus 22 `.meta` y se buscó en todo `Assets/` y `ProjectSettings/` (excluyendo el propio `.meta`):
 
-**Ninguno está referenciado.** Ninguna escena, prefab, asset ni ajuste de proyecto los usa, y la lista `maps` de `MapTransform.unity` solo apunta a los 50 PNG activos. Tampoco hay código que cargue rutas de `LevelDesigns`.
+**Ninguno está referenciado.** Ninguna escena, prefab, asset ni ajuste de proyecto los usa, y la lista `maps` de `MapTransform.unity` solo apunta a los 50 PNG activos. El único código que lee `LevelDesigns/` es el test de editor `Assets/GJam2020/Scripts/Editor/TestingPortals.cs:31`, que usa `Directory.GetFiles` sobre el nivel superior de la carpeta y no recorre subcarpetas, así que no toca `Deprecated/`.
 
 | Archivo | GUID | Referencias |
 | --- | --- | --- |
