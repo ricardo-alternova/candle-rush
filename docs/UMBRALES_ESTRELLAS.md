@@ -6,13 +6,13 @@
 
 1. **Lectura del mapa.** Cada nivel usa `Assets/Resources/<N>.csv`, donde cada celda es un color `r-g-b`. El color se traduce a entidad con `Assets/Resources/Common_Map.asset` (suelo, agujero, muro, bandera de inicio y de meta, vida extra, teletransportador, puerta, llave, cubo de hielo).
 2. **Camino más corto.** Búsqueda en anchura (BFS) desde la bandera de inicio hasta la de meta, con pasos de una casilla en las cuatro direcciones, igual que `PlayerMovement`. No se puede pisar ninguna celda marcada como obstáculo (agujero, muro, puerta).
-   - Aproximaciones: los teletransportadores se emparejan por orden de lectura y cruzarlos no cuesta pasos extra; una puerta se puede cruzar después de recoger cualquier llave; el deslizamiento sobre hielo no se modela. Los niveles 2 a 10 solo tienen suelo, inicio, meta y vidas extra, así que estas aproximaciones no influyen en ellos. Los niveles 11 a 20 tienen además un par de teletransportadores (en el juego se emparejan por color y todos son del mismo color, así que el emparejamiento es inequívoco); la espera de 0,5 s antes de poder volver a teletransportarse no se modela.
+   - Aproximaciones: los teletransportadores se emparejan por orden de lectura; una puerta se puede cruzar después de recoger cualquier llave; el deslizamiento sobre hielo no se modela. Los niveles 2 a 10 solo tienen suelo, inicio, meta y vidas extra, así que estas aproximaciones no influyen en ellos. Los niveles 11 a 20 tienen además un par de teletransportadores (en el juego se emparejan por color y todos son del mismo color, así que el emparejamiento es inequívoco). Como en el juego (`Teleporter.OnTriggerEnter` → `PlayerMovement.UpdateMovementPosition`), el paso que entra en el teletransportador termina una casilla más allá de su pareja, en la dirección de entrada; ese paso cuenta como uno solo. Los 0,5 s de `AvatarPosition.Teleporter()` son solo el tiempo antes de poder volver a teletransportarse, no una pausa, así que no suman tiempo a un camino que lo cruza una vez y no se modelan.
    - Niveles 21 a 30: los niveles 23, 24 y 25 tienen dos pares de teletransportadores de distinto color (el cian de `Common_Map` y `0.3137255-1-1`, que no está en `Common_Map`; el juego lo trata como teletransportador), y los niveles 28 y 30 usan solo este segundo color. Como en el juego, los teletransportadores se emparejan **por color** (`MapGenerator.PairPositions[color]`). Los niveles 26 a 30 tienen cubos de hielo, y el deslizamiento **sí** se modela: al entrar en una celda de hielo, el jugador avanza una casilla más en la misma dirección si no es un obstáculo (se encadena sobre hielo seguido), con medio paso de tiempo extra (`IceCube` → `SetNewFinalPosition`). Por eso la columna «Pasos» de esos niveles es un equivalente en tiempo y puede tener medios pasos. Con estos dos cambios los niveles 1 a 20 dan exactamente los mismos resultados.
    - Niveles 31 a 40: además, al cruzar un teletransportador el jugador **no queda sobre el teletransportador de salida, sino una casilla más allá**, en la dirección en que entró y dentro del mismo paso (`Teleporter` → `PlayerMovement.UpdateMovementPosition`: posición final = par + dirección). Si esa casilla es un obstáculo o queda fuera del mapa, el estimador no usa ese cruce. A partir de este rango se aplica esta regla; los niveles 11 a 20 se corrigen por separado con la misma regla, y los niveles 21 a 30 de esta tabla se calcularon sin ella. Siguen sin modelarse la espera de 0,5 s antes de volver a teletransportarse y el impulso de salida más allá de esa casilla.
 3. **Calibración.** El nivel 1 (umbral de 3 estrellas actual: 17 s) corresponde a una partida limpia de unos 15,5 s, y su camino más corto mide 11 pasos. Factor: 15,5 / 11 ≈ **1,409 s por paso**. Tiempo estimado T = pasos × 1,409.
 4. **Umbrales.** 3 estrellas = ⌈T × 1,10⌉ s; 2 estrellas = ⌈T × 1,50⌉ s. Se escriben en `maxTime3Stars` y `maxTime2Stars` de `Assets/GJam2020/Config/Level_N.asset`.
 
-Todos los niveles del 2 al 20 tienen camino de inicio a meta; ninguno queda sin resolver. En los niveles 11, 12, 14 y 15 la meta solo se alcanza usando el teletransportador, y en el 13 el teletransportador acorta el camino de 17 a 13 pasos; en el 16 al 20 no cambia la longitud del camino.
+Todos los niveles del 2 al 20 tienen camino de inicio a meta; ninguno queda sin resolver. En los niveles 11, 12, 14 y 15 la meta solo se alcanza usando el teletransportador, y en el 13 el teletransportador acorta el camino de 17 a 14 pasos; en el 16 al 20 no cambia la longitud del camino.
 
 Todos los niveles del 21 al 30 también tienen camino. **El nivel 25 solo se resuelve emparejando los teletransportadores por color:** con el emparejamiento antiguo por orden de lectura (que mezclaba los dos colores) la meta quedaba inalcanzable. En los niveles 26, 27 y 29 el hielo acorta el tiempo estimado (de 18 a 16, de 32 a 23 y de 22 a 20,5 pasos equivalentes).
 
@@ -31,11 +31,11 @@ Todos los niveles del 31 al 40 tienen camino; ninguno queda sin resolver. Con la
 | 8 | 15 | 21,14 | 24 | 32 |
 | 9 | 15 | 21,14 | 24 | 32 |
 | 10 | 20 | 28,18 | 32 | 43 |
-| 11 | 14 | 19,73 | 22 | 30 |
-| 12 | 10 | 14,09 | 16 | 22 |
-| 13 | 13 | 18,32 | 21 | 28 |
-| 14 | 14 | 19,73 | 22 | 30 |
-| 15 | 14 | 19,73 | 22 | 30 |
+| 11 | 13 | 18,32 | 21 | 28 |
+| 12 | 11 | 15,5 | 18 | 24 |
+| 13 | 14 | 19,73 | 22 | 30 |
+| 14 | 13 | 18,32 | 21 | 28 |
+| 15 | 13 | 18,32 | 21 | 28 |
 | 16 | 12 | 16,91 | 19 | 26 |
 | 17 | 14 | 19,73 | 22 | 30 |
 | 18 | 15 | 21,14 | 24 | 32 |
