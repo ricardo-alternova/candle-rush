@@ -27,12 +27,19 @@ Controles (`Assets/GJam2020/Scripts/Core/InputSystem.cs`, `Assets/GJam2020/Input
 
 - **Niveles:** 50 ScriptableObjects `Assets/GJam2020/Config/Level_1.asset` a `Assets/GJam2020/Config/Level_50.asset`, encadenados por `nextLevel` del 1 al 50 (clase `Assets/GJam2020/Scripts/Level/LevelSettings.cs`). `Assets/GJam2020/Config/TestDoor.asset` (`number: 25`, `nextLevel`: Level_1) queda fuera de la cadena.
 - **Mapas:** 50 CSV, `Assets/Resources/1.csv` a `Assets/Resources/50.csv`. Cada celda es un color en texto "r-g-b" que `MapGenerator` convierte en un prefab según `Assets/Resources/Common_Map.asset`.
-- **Diseños fuente:** 50 PNG numerados en `Assets/GJam2020/LevelDesigns/`, más `Assets/GJam2020/LevelDesigns/Deprecated/` y `Assets/GJam2020/LevelDesigns/Other/`. No se comprobó que coincidan con los CSV.
+- **Diseños fuente:** 50 PNG numerados en `Assets/GJam2020/LevelDesigns/`, más `Assets/GJam2020/LevelDesigns/Other/`. Son la fuente de verdad de los mapas (ver "Mapas: PNG y CSV").
 - **Aspecto:** 5 juegos de materiales y cielo (`Assets/GJam2020/Config/ConfigMaterials/`), uno al azar en cada carga de escena (`GameManager.SetRandomSkyMat`).
 - **Idiomas:** inglés (por defecto), español y francés con Lean Localization (`Assets/Lean/Localization/`); las frases están dentro de `Assets/GJam2020/Scenes/Gameplay.unity`.
 - **Mundos:** solo existen como páginas de 6 niveles en el selector (`Assets/WorldsNavigation.cs`); no son contenido aparte.
 - **Paquetes de terceros** (carpetas en `Assets/`): `Assets/Blue Cartoon UI/`, `Assets/Demigiant/` (DOTween), `Assets/Epic Toon FX/`, `Assets/Lean/`, `Assets/Minimalist Free v2.4.2/`, `Assets/TextMesh Pro/`, `Assets/Samples/Input System/1.0.0-preview.5/`.
 - **Fuentes y audio propios del juego:** `Assets/GJam2020/Fonts/Candy Beans.otf`, `Assets/GJam2020/Fonts/CFBandofBrothersPERSONAL-Re.ttf`, efectos en `Assets/GJam2020/Sounds/` y `Assets/GJam2020/Sounds/Fx/` (archivos `ES_*.wav`), música en `Assets/GJam2020/Sounds/Music/`.
+
+## Mapas: PNG y CSV
+
+- **Fuente de verdad:** los PNG de `Assets/GJam2020/LevelDesigns/` (`1.png` a `50.png`). Un mapa se cambia editando su PNG.
+- **Artefacto generado:** los CSV de `Assets/Resources/` (`1.csv` a `50.csv`) se generan a partir de los PNG, con la escena `Assets/GJam2020/Scenes/MapTransform.unity` o con el script; ambos procedimientos están en `docs/MAPAS_PNG_VS_CSV.md`. Nunca se editan a mano: tras cambiar un PNG, se regenera su CSV.
+- **Estado:** el 2026-11-16 se comprobó que los 50 pares PNG/CSV son idénticos.
+- La carpeta `Assets/GJam2020/LevelDesigns/Deprecated/` (22 PNG que ningún asset ni escena referenciaba) se borró ese mismo día.
 
 ## Escenas y flujo
 
