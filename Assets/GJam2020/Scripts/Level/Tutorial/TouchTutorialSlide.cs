@@ -21,7 +21,6 @@ namespace GJam2020.Game.Tutorial
             Assert.IsNotNull(_inputSystem);
 
             startTime = Time.realtimeSinceStartup;
-            Invoke("StartBehavior", 2);
             Time.timeScale = 0;
         }
 
