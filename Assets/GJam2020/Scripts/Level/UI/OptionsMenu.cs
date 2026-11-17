@@ -6,8 +6,6 @@ namespace GJam2020.Level.UI
 {
     public class OptionsMenu : MonoBehaviour
     {
-        private bool _soundEnable = true;
-
         private void Awake()
         {
             //gameObject.SetActive(false);
@@ -27,18 +25,6 @@ namespace GJam2020.Level.UI
             gameObject.SetActive(false);
             GameManager.Get.IsPlaying = true;
             SoundManager.Get().Play();
-        }
-
-        public void EnableSound()
-        {
-            if(_soundEnable)
-            {
-                _soundEnable = false;
-            }
-            else
-            {
-                _soundEnable = true;
-            }
         }
 
         
