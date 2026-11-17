@@ -38,3 +38,8 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+# Local/editor
+.DS_Store
+.vscode/
+UserSettings/
+*.slnx
