@@ -7,14 +7,14 @@
 1. **Lectura del mapa.** Cada nivel usa `Assets/Resources/<N>.csv`, donde cada celda es un color `r-g-b`. El color se traduce a entidad con `Assets/Resources/Common_Map.asset` (suelo, agujero, muro, bandera de inicio y de meta, vida extra, teletransportador, puerta, llave, cubo de hielo).
 2. **Camino más corto.** Búsqueda en anchura (BFS) desde la bandera de inicio hasta la de meta, con pasos de una casilla en las cuatro direcciones, igual que `PlayerMovement`. No se puede pisar ninguna celda marcada como obstáculo (agujero, muro, puerta).
    - Aproximaciones: los teletransportadores se emparejan por orden de lectura; una puerta se puede cruzar después de recoger cualquier llave; el deslizamiento sobre hielo no se modela. Los niveles 2 a 10 solo tienen suelo, inicio, meta y vidas extra, así que estas aproximaciones no influyen en ellos. Los niveles 11 a 20 tienen además un par de teletransportadores (en el juego se emparejan por color y todos son del mismo color, así que el emparejamiento es inequívoco). Como en el juego (`Teleporter.OnTriggerEnter` → `PlayerMovement.UpdateMovementPosition`), el paso que entra en el teletransportador termina una casilla más allá de su pareja, en la dirección de entrada; ese paso cuenta como uno solo. Los 0,5 s de `AvatarPosition.Teleporter()` son solo el tiempo antes de poder volver a teletransportarse, no una pausa, así que no suman tiempo a un camino que lo cruza una vez y no se modelan.
-   - Niveles 21 a 30: los niveles 23, 24 y 25 tienen dos pares de teletransportadores de distinto color (el cian de `Common_Map` y `0.3137255-1-1`, que no está en `Common_Map`; el juego lo trata como teletransportador), y los niveles 28 y 30 usan solo este segundo color. Como en el juego, los teletransportadores se emparejan **por color** (`MapGenerator.PairPositions[color]`). Los niveles 26 a 30 tienen cubos de hielo, y el deslizamiento **sí** se modela: al entrar en una celda de hielo, el jugador avanza una casilla más en la misma dirección si no es un obstáculo (se encadena sobre hielo seguido), con medio paso de tiempo extra (`IceCube` → `SetNewFinalPosition`). Por eso la columna «Pasos» de esos niveles es un equivalente en tiempo y puede tener medios pasos. Con estos dos cambios los niveles 1 a 20 dan exactamente los mismos resultados.
-   - Niveles 31 a 40: además, al cruzar un teletransportador el jugador **no queda sobre el teletransportador de salida, sino una casilla más allá**, en la dirección en que entró y dentro del mismo paso (`Teleporter` → `PlayerMovement.UpdateMovementPosition`: posición final = par + dirección). Si esa casilla es un obstáculo o queda fuera del mapa, el estimador no usa ese cruce. A partir de este rango se aplica esta regla; los niveles 11 a 20 se corrigen por separado con la misma regla, y los niveles 21 a 30 de esta tabla se calcularon sin ella. Siguen sin modelarse la espera de 0,5 s antes de volver a teletransportarse y el impulso de salida más allá de esa casilla.
+   - Niveles 21 a 30: los niveles 23, 24 y 25 tienen dos pares de teletransportadores de distinto color (el cian de `Common_Map` y `0.3137255-1-1`, que no está en `Common_Map`; el juego lo trata como teletransportador), y los niveles 28 y 30 usan solo este segundo color. Como en el juego, los teletransportadores se emparejan **por color** (`MapGenerator.PairPositions[color]`). Los niveles 26 a 30 tienen cubos de hielo, y el deslizamiento **sí** se modela: al entrar en una celda de hielo, el jugador avanza una casilla más en la misma dirección si no es un obstáculo (se encadena sobre hielo seguido), con medio paso de tiempo extra (`IceCube` → `SetNewFinalPosition`). Por eso la columna «Pasos» de esos niveles es un equivalente en tiempo y puede tener medios pasos. Con estos dos cambios los niveles 1 a 20 dan exactamente los mismos resultados. Estos niveles también usan la regla de la casilla de salida del punto siguiente; sin ella, los niveles 21, 23, 24, 25, 28, 29 y 30 tenían umbrales más holgados de lo previsto (el 23, con 13 pasos en lugar de 11).
+   - Salida del teletransportador (todos los niveles con teletransportador, 11 a 40): al cruzar un teletransportador el jugador **no queda sobre el teletransportador de salida, sino una casilla más allá**, en la dirección en que entró y dentro del mismo paso (`Teleporter` → `PlayerMovement.UpdateMovementPosition`: posición final = par + dirección). Si esa casilla es un obstáculo o queda fuera del mapa, el estimador no usa ese cruce. Si esa casilla es hielo, el deslizamiento se aplica desde ahí. Siguen sin modelarse la espera de 0,5 s antes de volver a teletransportarse y el impulso de salida más allá de esa casilla.
 3. **Calibración.** El nivel 1 (umbral de 3 estrellas actual: 17 s) corresponde a una partida limpia de unos 15,5 s, y su camino más corto mide 11 pasos. Factor: 15,5 / 11 ≈ **1,409 s por paso**. Tiempo estimado T = pasos × 1,409.
 4. **Umbrales.** 3 estrellas = ⌈T × 1,10⌉ s; 2 estrellas = ⌈T × 1,50⌉ s. Se escriben en `maxTime3Stars` y `maxTime2Stars` de `Assets/GJam2020/Config/Level_N.asset`.
 
 Todos los niveles del 2 al 20 tienen camino de inicio a meta; ninguno queda sin resolver. En los niveles 11, 12, 14 y 15 la meta solo se alcanza usando el teletransportador, y en el 13 el teletransportador acorta el camino de 17 a 14 pasos; en el 16 al 20 no cambia la longitud del camino.
 
-Todos los niveles del 21 al 30 también tienen camino. **El nivel 25 solo se resuelve emparejando los teletransportadores por color:** con el emparejamiento antiguo por orden de lectura (que mezclaba los dos colores) la meta quedaba inalcanzable. En los niveles 26, 27 y 29 el hielo acorta el tiempo estimado (de 18 a 16, de 32 a 23 y de 22 a 20,5 pasos equivalentes).
+Todos los niveles del 21 al 30 también tienen camino. **El nivel 25 solo se resuelve emparejando los teletransportadores por color:** con el emparejamiento antiguo por orden de lectura (que mezclaba los dos colores) la meta quedaba inalcanzable. En los niveles 26 a 30 el hielo acorta el tiempo estimado (de 18 a 16, de 32 a 23, de 19 a 17, de 21 a 19,5 y de 24 a 20 pasos equivalentes). Con la regla de la casilla de salida, los niveles 21, 24, 25, 28, 29 y 30 bajan un paso y el 23 baja dos.
 
 Todos los niveles del 31 al 40 tienen camino; ninguno queda sin resolver. Con la regla de la casilla de salida, los niveles 33, 34, 35 y 40 bajan un paso respecto a dejar al jugador sobre el teletransportador, y el nivel 36 sube uno.
 
@@ -41,16 +41,16 @@ Todos los niveles del 31 al 40 tienen camino; ninguno queda sin resolver. Con la
 | 18 | 15 | 21,14 | 24 | 32 |
 | 19 | 15 | 21,14 | 24 | 32 |
 | 20 | 17 | 23,95 | 27 | 36 |
-| 21 | 17 | 23,95 | 27 | 36 |
+| 21 | 16 | 22,55 | 25 | 34 |
 | 22 | 13 | 18,32 | 21 | 28 |
-| 23 | 13 | 18,32 | 21 | 28 |
-| 24 | 16 | 22,55 | 25 | 34 |
-| 25 | 16 | 22,55 | 25 | 34 |
+| 23 | 11 | 15,5 | 18 | 24 |
+| 24 | 15 | 21,14 | 24 | 32 |
+| 25 | 15 | 21,14 | 24 | 32 |
 | 26 | 16 | 22,55 | 25 | 34 |
 | 27 | 23 | 32,41 | 36 | 49 |
-| 28 | 18 | 25,36 | 28 | 39 |
-| 29 | 20,5 | 28,89 | 32 | 44 |
-| 30 | 21 | 29,59 | 33 | 45 |
+| 28 | 17 | 23,95 | 27 | 36 |
+| 29 | 19,5 | 27,48 | 31 | 42 |
+| 30 | 20 | 28,18 | 32 | 43 |
 | 31 | 21 | 29,59 | 33 | 45 |
 | 32 | 29 | 40,86 | 45 | 62 |
 | 33 | 17 | 23,95 | 27 | 36 |
