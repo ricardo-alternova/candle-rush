@@ -57,6 +57,7 @@ namespace GJam2020.Core
 
         public void ResetGame()
         {
+            timePlaying = 0f;
             _MapSongAudioPlayer.Play(settings.SoundBackground, true, 0, 0.5f);
         }
 
@@ -89,6 +90,14 @@ namespace GJam2020.Core
             _MapSongAudioPlayer.Play(settings.SoundBackground, loop: true, delay: 0, FadeTime: 1.5f);
             Get = this;
             GameManager.Get.IsPlaying = true;
+        }
+
+        private void Update()
+        {
+            if (GameManager.Get != null && GameManager.Get.IsPlaying)
+            {
+                timePlaying += Time.deltaTime;
+            }
         }
     }
 }
