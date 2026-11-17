@@ -245,52 +245,9 @@ namespace GJam2020.Core
                     lastCommand.ReverseCommand.IsExecuting ||                        
                     _isHandlingCommand) return;
                 CommandPressed(command);
-                //HandleInput();
             }
         }
         
-        //Check if we press a key, if so do what the key is binded to 
-        //public void HandleInput()
-        //{
-        //    if (Input.GetKeyDown(KeyCode.W))
-        //    {
-        //        _isHandlingCommand = true;
-        //        if (CommandsManager.IsLastCommandReverse(_buttonW))
-        //            CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
-        //        else
-        //            _buttonW.Execute(playerMovement, true, OnCommandDone);
-        //    }
-        //    else if (Input.GetKeyDown(KeyCode.S))
-        //    {
-        //        _isHandlingCommand = true;
-        //        if (CommandsManager.IsLastCommandReverse(_buttonS))
-        //            CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
-        //        else
-        //            _buttonS.Execute(playerMovement, true, OnCommandDone);
-        //    }
-        //    else if (Input.GetKeyDown(KeyCode.A))
-        //    {
-        //        _isHandlingCommand = true;
-        //        if (CommandsManager.IsLastCommandReverse(_buttonA))
-        //            CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
-        //        else
-        //            _buttonA.Execute(playerMovement, true, OnCommandDone);
-        //    }
-        //    else if (Input.GetKeyDown(KeyCode.D))
-        //    {
-        //        _isHandlingCommand = true;
-        //        if (CommandsManager.IsLastCommandReverse(_buttonD))
-        //            CommandsManager.GetLastCommand.Undo(playerMovement, OnCommandDone);
-        //        else
-        //            _buttonD.Execute(playerMovement, true, OnCommandDone);
-        //    }
-
-        //    //if (Input.GetKeyDown(KeyCode.R))
-        //    //{
-        //    //    CommandsManager.Instance.StartRewindCommands(playerMovement, (() => Debug.Log("Rewind finished")));
-        //    //}
-        //}
-
         private void CommandPressed(Command command)
         {
             _isHandlingCommand = true;
