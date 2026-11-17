@@ -34,6 +34,18 @@ public class GameManager : MonoBehaviour
     public static string LEVELS_MENU_NAME = "LevelsMenu";
     public static string GAMEPLAY_NAME = "Gameplay";
     public int CurrentLevel { get { return _gameData.currentLevel; } }
+    public int TotalStars
+    {
+        get
+        {
+            if (_gameData == null)
+                LoadGameData();
+            int total = 0;
+            foreach (var score in _gameData.levelsScore)
+                total += score;
+            return total;
+        }
+    }
     public UnityEvent StartGame;
 
     [Tooltip("Set to -1 to enable all levels.")]
