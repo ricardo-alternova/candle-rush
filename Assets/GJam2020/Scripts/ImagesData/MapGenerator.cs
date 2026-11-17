@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -48,6 +49,7 @@ public class MapGenerator : MonoBehaviour
         {
             
             string[] colors = line.Split(',');
+            int columnCount = 0;
             foreach (string color in colors)
             {
                 height = colors.Length;
@@ -57,18 +59,17 @@ public class MapGenerator : MonoBehaviour
                     try
                     {
                         colorList.Add(new Color(
-                            float.Parse(parts[0]),
-                            float.Parse(parts[1]),
-                            float.Parse(parts[2])
+                            float.Parse(parts[0], CultureInfo.InvariantCulture),
+                            float.Parse(parts[1], CultureInfo.InvariantCulture),
+                            float.Parse(parts[2], CultureInfo.InvariantCulture)
                             ));
                     }
                     catch
                     {
-                        Debug.Log("line" + lineCount);
-                        Debug.Log(parts[0]);
+                        Debug.LogError("Invalid color in map '" + name + "' at row " + lineCount + ", column " + columnCount + ": '" + color + "'");
                     }
                 }
-
+                columnCount++;
             }
             lineCount++;
         }
