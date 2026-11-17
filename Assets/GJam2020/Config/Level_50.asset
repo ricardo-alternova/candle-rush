@@ -15,8 +15,8 @@ MonoBehaviour:
   number: 50
   map: {fileID: 2800000, guid: 7377d2134fd2dc14c824806b8bcfc8de, type: 3}
   startLocation: {x: 1, y: 0, z: 1}
-  maxTime3Stars: 0
-  maxTime2Stars: 0
+  maxTime3Stars: 42
+  maxTime2Stars: 58
   mapSettings: {fileID: 11400000, guid: 1c65f51c962ac534b8631b63992953c9, type: 2}
   nextLevel: {fileID: 0}
   soundBackground: {fileID: 8300000, guid: fa169d3b7989ea84cb6511775881ded3, type: 3}
