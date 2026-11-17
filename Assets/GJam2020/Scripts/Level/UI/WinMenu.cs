@@ -1,5 +1,6 @@
 ﻿using GJam2020.Core;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -47,6 +48,13 @@ namespace GJam2020.Level.UI
             int total = savedTotal - savedLevelScore + Mathf.Max(savedLevelScore, LevelManager.Get.Stars);
             totalStarsText.text = total.ToString();
             gameEndPanel.SetActive(true);
+
+            // The win buttons stay under the panel; keyboard or gamepad could still reach GoHome and skip the save.
+            foreach (var selectable in GetComponentsInChildren<UnityEngine.UI.Selectable>(true))
+                if (!selectable.transform.IsChildOf(gameEndPanel.transform))
+                    selectable.interactable = false;
+            if (EventSystem.current != null)
+                EventSystem.current.SetSelectedGameObject(gameEndPanel.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
         }
         
         private IEnumerator ShowStars(int stars)
